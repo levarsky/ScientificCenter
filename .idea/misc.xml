@@ -5,6 +5,9 @@
       <list>
         <option value="$PROJECT_DIR$/eureka/pom.xml" />
         <option value="$PROJECT_DIR$/gateway/pom.xml" />
+        <option value="$PROJECT_DIR$/payment_system/pom.xml" />
+        <option value="$PROJECT_DIR$/center/pom.xml" />
+        <option value="$PROJECT_DIR$/bank/pom.xml" />
       </list>
     </option>
   </component>
