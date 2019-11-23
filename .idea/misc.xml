@@ -8,6 +8,7 @@
         <option value="$PROJECT_DIR$/payment_system/pom.xml" />
         <option value="$PROJECT_DIR$/center/pom.xml" />
         <option value="$PROJECT_DIR$/bank/pom.xml" />
+        <option value="$PROJECT_DIR$/payment_system_sc/pom.xml" />
       </list>
     </option>
   </component>
