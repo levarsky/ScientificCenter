@@ -12,9 +12,11 @@
         <module name="gateway" />
         <module name="eureka" />
         <module name="center" />
+        <module name="authorization" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="authorization" target="1.8" />
       <module name="bank" target="1.8" />
       <module name="center" target="1.8" />
       <module name="eureka" target="1.8" />
@@ -25,6 +27,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="authorization" options="-parameters" />
       <module name="bank" options="-parameters" />
       <module name="center" options="-parameters" />
       <module name="eureka" options="-parameters" />
