@@ -17,13 +17,13 @@ public class TestServicePayment {
 
         HttpEntity<String> requestEntity = new HttpEntity<>(test);
 
-        ResponseEntity<String> exchange = restTemplate.exchange("http://localhost:8762/payment-sc/testPaymentSc", HttpMethod.POST , requestEntity, String.class);
+        //ResponseEntity<String> exchange = restTemplate.exchange("https://localhost:8762/payment-sc/testPaymentSc", HttpMethod.POST , requestEntity, String.class);
         
         /*System.out.println(exchange.getBody());
 
         String testService = " Test Service Payment return " ;*/
 
-        return exchange.getBody();
+        return "radi";//exchange.getBody();
     }
 
 
