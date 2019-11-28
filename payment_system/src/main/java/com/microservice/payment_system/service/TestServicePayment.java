@@ -11,19 +11,19 @@ import org.springframework.web.client.RestTemplate;
 public class TestServicePayment {
 
     @Autowired
-    private RestTemplate restTemplateNoLoad;
+    private RestTemplate restTemplate;
 
     public String testPayment(String test){
 
         HttpEntity<String> requestEntity = new HttpEntity<>(test);
 
-        ResponseEntity<String> exchange = restTemplateNoLoad.exchange("http://localhost:8768/testBank", HttpMethod.POST , requestEntity, String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange("http://localhost:8762/payment_sc/testPaymentSc", HttpMethod.POST , requestEntity, String.class);
+        
+        /*System.out.println(exchange.getBody());
 
-        System.out.println(exchange.getBody());
+        String testService = " Test Service Payment return " ;*/
 
-        String testService = " Test Service Payment return " ;
-
-        return testService;
+        return exchange.getBody();
     }
 
 
