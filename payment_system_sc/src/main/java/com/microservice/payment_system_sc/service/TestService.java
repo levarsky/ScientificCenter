@@ -16,8 +16,8 @@ public class TestService {
 
         HttpEntity<String> requestEntity = new HttpEntity<>(test);
 
-        //ResponseEntity<String> exchange = restTemplate.exchange("http://localhost:8768/testBank", HttpMethod.POST , requestEntity, String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange("http://localhost:8768/testBank", HttpMethod.POST , requestEntity, String.class);
 
-        return "DOSO DOVDE"; //exchange.getBody();
+        return exchange.getBody();
     }
 }
