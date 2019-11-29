@@ -26,7 +26,7 @@ public class PaymentSystemApplication {
         System.setProperty("javax.net.ssl.trustStore", "src/main/resources/kp.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "password");
         EurekaJerseyClientBuilder builder = new EurekaJerseyClientBuilder();
-        builder.withClientName("kp");
+        builder.withClientName("payment-system-client");
         builder.withSystemSSLConfiguration();
         builder.withMaxTotalConnections(10);
         builder.withMaxConnectionsPerHost(10);
