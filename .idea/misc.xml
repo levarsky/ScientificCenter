@@ -10,10 +10,12 @@
         <option value="$PROJECT_DIR$/bank/pom.xml" />
         <option value="$PROJECT_DIR$/payment_system_sc/pom.xml" />
         <option value="$PROJECT_DIR$/authorization/pom.xml" />
+        <option value="$PROJECT_DIR$/bitcoin/pom.xml" />
+        <option value="$PROJECT_DIR$/paypal/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager">
+  <component name="ProjectRootManager" version="2" project-jdk-name="13" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
