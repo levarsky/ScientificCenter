@@ -22,13 +22,17 @@ public class GatewayApplication {
     
     @Bean
     public DiscoveryClient.DiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws NoSuchAlgorithmException {
+
+
+        System.out.println(System.getProperty("gateway.jks"));
+
         DiscoveryClient.DiscoveryClientOptionalArgs args = new DiscoveryClient.DiscoveryClientOptionalArgs();
-        System.setProperty("javax.net.ssl.keyStore", "src/main/resources/gateway.jks");
+        System.setProperty("javax.net.ssl.keyStore", "/Users/mac/Documents/MASTER/SEP/Projekat/sc/gateway/src/main/resources/gateway.jks");
         System.setProperty("javax.net.ssl.keyStorePassword", "password");
-        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/gateway.jks");
+        System.setProperty("javax.net.ssl.trustStore", "/Users/mac/Documents/MASTER/SEP/Projekat/sc/gateway/src/main/resources/gateway.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "password");
         EurekaJerseyClientBuilder builder = new EurekaJerseyClientBuilder();
-        builder.withClientName("zuul-client");
+        builder.withClientName("zuul-server");
         builder.withSystemSSLConfiguration();
         builder.withMaxTotalConnections(10);
         builder.withMaxConnectionsPerHost(10);
