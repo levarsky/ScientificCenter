@@ -18,7 +18,7 @@ public class TestService {
         HttpEntity<String> requestEntity = new HttpEntity<>(test);
         
         //ResponseEntity<String> exchange = restTemplate.exchange("http://localhost:8765/testPayment", HttpMethod.POST , requestEntity, String.class);
-        ResponseEntity<String> exchange = restTemplate.exchange("https://localhost:8762/payment/testPayment", HttpMethod.POST , requestEntity, String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange("https://localhost:8088/payment/testPayment", HttpMethod.POST, requestEntity, String.class);
 
         System.out.println(exchange.getBody());
 

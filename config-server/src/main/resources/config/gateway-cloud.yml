@@ -1,0 +1,42 @@
+server:
+  port: 8088
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:gateway.p12
+    key-store-password: password
+    client-auth: need
+    trust-store: classpath:gatewayTryst.jks
+    trust-store-password: password
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: https://localhost:8767/eureka/
+  instance:
+    hostname: localhost
+    preferIpAddress: false
+    securePortEnabled: true
+    statusPageUrl: https://${eureka.instance.hostname}:${server.port}/info
+    healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
+    homePageUrl: https://localhost:${server.port}
+
+
+spring:
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          lower-case-service-id: true
+          enabled: false
+      routes:
+        - id: payment-system
+          uri: https://localhost:8765
+          predicates:
+            - Path=/payment/**
+          filters:
+            - RewritePath=/payment/(?<path>.*), /$\{path}
+
+logging:
+  level:
+    ROOT: DEBUG

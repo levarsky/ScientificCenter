@@ -6,16 +6,19 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="gateway" />
         <module name="config-server" />
+        <module name="authorization" />
+        <module name="gateway" />
+        <module name="payment_system" />
+        <module name="paypal" />
+        <module name="gateway-cloud" />
+        <module name="payment_system_sc" />
+        <module name="registry" />
         <module name="bank" />
         <module name="sellers" />
-        <module name="eureka" />
-        <module name="registry" />
-        <module name="bitcoin" />
         <module name="center" />
-        <module name="authorization" />
-        <module name="paypal" />
+        <module name="eureka" />
+        <module name="bitcoin" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -23,9 +26,13 @@
       <module name="bank" target="1.8" />
       <module name="bitcoin" target="1.8" />
       <module name="center" target="1.8" />
+      <module name="cloud-gateway" target="1.8" />
       <module name="config-server" target="1.8" />
       <module name="eureka" target="1.8" />
       <module name="gateway" target="1.8" />
+      <module name="gateway-cloud" target="1.8" />
+      <module name="payment_system" target="1.8" />
+      <module name="payment_system_sc" target="1.8" />
       <module name="paypal" target="1.8" />
       <module name="registry" target="1.8" />
       <module name="sellers" target="1.8" />
@@ -37,9 +44,13 @@
       <module name="bank" options="-parameters" />
       <module name="bitcoin" options="-parameters" />
       <module name="center" options="-parameters" />
+      <module name="cloud-gateway" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="gateway" options="-parameters" />
+      <module name="gateway-cloud" options="-parameters" />
+      <module name="payment_system" options="-parameters" />
+      <module name="payment_system_sc" options="-parameters" />
       <module name="paypal" options="-parameters" />
       <module name="registry" options="-parameters" />
       <module name="sellers" options="-parameters" />

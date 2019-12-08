@@ -9,6 +9,9 @@
       <module fileurl="file://$PROJECT_DIR$/config-server/config-server.iml" filepath="$PROJECT_DIR$/config-server/config-server.iml" />
       <module fileurl="file://$PROJECT_DIR$/eureka/eureka.iml" filepath="$PROJECT_DIR$/eureka/eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/gateway/gateway.iml" filepath="$PROJECT_DIR$/gateway/gateway.iml" />
+      <module fileurl="file://$PROJECT_DIR$/gateway-cloud/gateway-cloud.iml" filepath="$PROJECT_DIR$/gateway-cloud/gateway-cloud.iml" />
+      <module fileurl="file://$PROJECT_DIR$/registry/payment_system.iml" filepath="$PROJECT_DIR$/registry/payment_system.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sellers/payment_system_sc.iml" filepath="$PROJECT_DIR$/sellers/payment_system_sc.iml" />
       <module fileurl="file://$PROJECT_DIR$/paypal/paypal.iml" filepath="$PROJECT_DIR$/paypal/paypal.iml" />
       <module fileurl="file://$PROJECT_DIR$/registry/registry.iml" filepath="$PROJECT_DIR$/registry/registry.iml" />
       <module fileurl="file://$PROJECT_DIR$/sellers/sellers.iml" filepath="$PROJECT_DIR$/sellers/sellers.iml" />
