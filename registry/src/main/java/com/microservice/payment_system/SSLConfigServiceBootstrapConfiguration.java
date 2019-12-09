@@ -1,4 +1,4 @@
-package com.microservice.center.communication;
+package com.microservice.payment_system;
 
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -24,11 +24,12 @@ public class SSLConfigServiceBootstrapConfiguration {
     @Bean
     public ConfigServicePropertySourceLocator configServicePropertySourceLocator() throws Exception {
         final char[] password = "password".toCharArray();
-        final ClassPathResource resource = new ClassPathResource("center.p12");
+        final ClassPathResource resource = new ClassPathResource("bank.p12");
+        final ClassPathResource resourceTrust = new ClassPathResource("paymentTrust.jks");
 
         SSLContext sslContext = SSLContexts.custom()
                 .loadKeyMaterial(resource.getFile(), password, password)
-                .loadTrustMaterial(resource.getFile(), password, new TrustSelfSignedStrategy()).build();
+                .loadTrustMaterial(resourceTrust.getFile(), password, new TrustSelfSignedStrategy()).build();
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setSSLContext(sslContext)
                 .setSSLHostnameVerifier((s, sslSession) -> true)

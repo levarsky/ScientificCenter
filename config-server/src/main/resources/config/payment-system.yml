@@ -24,4 +24,4 @@ eureka:
 
 logging:
   level:
-    ROOT: DEBUG
+    ssl: DEBUG

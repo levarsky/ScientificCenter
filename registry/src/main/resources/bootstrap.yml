@@ -1,3 +1,7 @@
 spring:
   application:
     name: payment-system
+  cloud:
+    config:
+      uri: https://localhost:8888
+

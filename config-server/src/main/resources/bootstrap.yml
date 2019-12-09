@@ -1,0 +1,32 @@
+spring:
+  profiles:
+    active: native
+  cloud:
+    config:
+      server:
+        native:
+          search-locations: classpath:/config
+        encrypt:
+          enabled: false
+
+
+
+server:
+  port: 8888
+  ssl:
+    enabled: true
+    client-auth: need
+    key-store: classpath:config.p12
+    key-store-password: password
+    trust-store: classpath:configTrust.jks
+    trust-store-password: password
+    key-alias: localhost
+
+encrypt:
+  keyStore:
+    location: classpath:/config.p12
+    password: password
+    alias: localhost
+    secret: password
+
+

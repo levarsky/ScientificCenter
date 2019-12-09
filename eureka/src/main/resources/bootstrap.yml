@@ -1,3 +1,15 @@
 spring:
   application:
     name: eureka-server
+  cloud:
+    config:
+      uri: https://localhost:8888
+
+encrypt:
+  key-store:
+    type: PKCS12
+    alias: localhost
+    location: classpath:/configKey.p12
+    password: password
+    secret: password
+
