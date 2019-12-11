@@ -10,12 +10,7 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class TestServicePayment {
 
-    @Autowired
-    private RestTemplate restTemplate;
-
     public String testPayment(String test){
-
-        HttpEntity<String> requestEntity = new HttpEntity<>(test);
 
         //ResponseEntity<String> exchange = restTemplate.exchange("https://localhost:8762/payment-sc/testPaymentSc", HttpMethod.POST , requestEntity, String.class);
         
@@ -23,7 +18,7 @@ public class TestServicePayment {
 
         String testService = " Test Service Payment return " ;*/
 
-        return "radi";//exchange.getBody();
+        return "OVO RADI IIIIII";//exchange.getBody();
     }
 
 

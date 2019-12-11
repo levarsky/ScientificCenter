@@ -1,4 +1,4 @@
-package com.microservice.payment_system;
+package com.microservice.gatewaycloud;
 
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;
@@ -24,7 +24,7 @@ public class SSLConfigServiceBootstrapConfiguration {
     @Bean
     public ConfigServicePropertySourceLocator configServicePropertySourceLocator() throws Exception {
         final char[] password = "password".toCharArray();
-        final ClassPathResource resource = new ClassPathResource("bank.p12");
+        final ClassPathResource resource = new ClassPathResource("gateway.p12");
         final ClassPathResource resourceTrust = new ClassPathResource("eurekaTrust.jks");
 
         SSLContext sslContext = SSLContexts.custom()
@@ -39,6 +39,5 @@ public class SSLConfigServiceBootstrapConfiguration {
         configServicePropertySourceLocator.setRestTemplate(new RestTemplate(requestFactory));
         return configServicePropertySourceLocator;
     }
-
 
 }

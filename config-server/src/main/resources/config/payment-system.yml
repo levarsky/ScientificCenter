@@ -6,7 +6,7 @@ server:
     key-store: classpath:bank.p12
     key-store-password: password
     client-auth: need
-    trust-store: classpath:paymentTrust.jks
+    trust-store: classpath:eurekaTrust.jks
     trust-store-password: password
 
 eureka:
@@ -22,6 +22,3 @@ eureka:
     homePageUrl: https://localhost:${server.port}
 
 
-logging:
-  level:
-    ssl: DEBUG
