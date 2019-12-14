@@ -6,22 +6,23 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="config-server" />
-        <module name="authorization" />
-        <module name="gateway" />
         <module name="payment_system" />
-        <module name="paypal" />
-        <module name="gateway-cloud" />
-        <module name="payment_system_sc" />
-        <module name="registry" />
+        <module name="eureka" />
+        <module name="config-server" />
         <module name="bank" />
+        <module name="gateway" />
+        <module name="gateway-cloud" />
+        <module name="registry" />
+        <module name="bitcoin" />
         <module name="sellers" />
         <module name="center" />
-        <module name="eureka" />
-        <module name="bitcoin" />
+        <module name="auth-service" />
+        <module name="paypal" />
+        <module name="payment_system_sc" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="auth-service" target="1.8" />
       <module name="authorization" target="1.8" />
       <module name="bank" target="1.8" />
       <module name="bitcoin" target="1.8" />
@@ -40,6 +41,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="auth-service" options="-parameters" />
       <module name="authorization" options="-parameters" />
       <module name="bank" options="-parameters" />
       <module name="bitcoin" options="-parameters" />
