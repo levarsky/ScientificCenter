@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {MatTabsModule} from '@angular/material/tabs';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
-import {PaymentServiceService} from "../payment-service.service";
+import {PaymentServiceService} from "../services/payment-service.service";
 
 @Component({
   selector: 'app-payment',
@@ -22,6 +22,7 @@ export class PaymentComponent implements OnInit {
 
   onSubmit(){
     this.paymentService.pay(this.paymentForm.value.price);
-  }
+   }
+
 
 }

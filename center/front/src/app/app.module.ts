@@ -5,25 +5,21 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { PaymentComponent } from './payment/payment.component';
 import { NavbarComponent } from './navbar/navbar.component';
-import { BankComponent } from './bank/bank.component';
-import { PaypalComponent } from './paypal/paypal.component';
-import { BitcoinComponent } from './bitcoin/bitcoin.component';
 import { FormsModule, ReactiveFormsModule }         from '@angular/forms';
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
     AppComponent,
     PaymentComponent,
-    NavbarComponent,
-    BankComponent,
-    PaypalComponent,
-    BitcoinComponent
+    NavbarComponent
   ],
   imports: [
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    AppRoutingModule
+    AppRoutingModule,
+    HttpClientModule
   ],
   providers: [],
   bootstrap: [AppComponent]
