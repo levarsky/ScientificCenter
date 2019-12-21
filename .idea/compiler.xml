@@ -14,9 +14,9 @@
         <module name="gateway-cloud" />
         <module name="payment_system_sc" />
         <module name="registry" />
+        <module name="center" />
         <module name="bank" />
         <module name="sellers" />
-        <module name="center" />
         <module name="eureka" />
         <module name="bitcoin" />
       </profile>
@@ -35,6 +35,7 @@
       <module name="payment_system_sc" target="1.8" />
       <module name="paypal" target="1.8" />
       <module name="registry" target="1.8" />
+      <module name="selenium" target="1.5" />
       <module name="sellers" target="1.8" />
     </bytecodeTargetLevel>
   </component>

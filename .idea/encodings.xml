@@ -14,11 +14,14 @@
     <file url="file://$PROJECT_DIR$/eureka" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/eureka/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/gateway-cloud" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway-cloud/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/gateway/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/paypal" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/paypal/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/registry" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/registry/src/main/java" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/sellers" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/sellers/src/main/java" charset="UTF-8" />
   </component>
 </project>
