@@ -1,4 +1,4 @@
-package com.microservice.payment_system;
+package com.microservice.bank_service;
 
 import org.apache.http.conn.ssl.TrustSelfSignedStrategy;
 import org.apache.http.impl.client.CloseableHttpClient;

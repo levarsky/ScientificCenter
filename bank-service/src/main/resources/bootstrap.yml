@@ -1,6 +1,6 @@
 spring:
   application:
-    name: payment-system
+    name: bank-service
   cloud:
     config:
       uri: https://localhost:8888
