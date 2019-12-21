@@ -1,0 +1,41 @@
+spring:
+  datasource:
+    url: jdbc:mysql://localhost:3306/authusers?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
+    username: root
+    password: adminadmin
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+    hibernate.ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
+
+server:
+  servlet:
+    context-path: /uaa
+  port: 8081
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:auth.p12
+    key-store-password: password
+    client-auth: need
+    trust-store: classpath:eurekaTrust.jks
+    trust-store-password: password
+    key-alias: localhost
+
+eureka:
+  client:
+    serviceUrl:
+      defaultZone: https://localhost:8767/eureka/
+  instance:
+    hostname: localhost
+    preferIpAddress: false
+    securePort: ${server.port}
+    securePortEnabled: true
+    nonSecurePortEnabled: false
+    statusPageUrl: https://${eureka.instance.hostname}:${server.port}/info
+    healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
+    homePageUrl: https://localhost:${server.port}
+

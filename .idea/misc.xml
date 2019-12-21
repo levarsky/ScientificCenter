@@ -9,13 +9,14 @@
         <option value="$PROJECT_DIR$/center/pom.xml" />
         <option value="$PROJECT_DIR$/bank/pom.xml" />
         <option value="$PROJECT_DIR$/payment_system_sc/pom.xml" />
-        <option value="$PROJECT_DIR$/authorization/pom.xml" />
         <option value="$PROJECT_DIR$/bitcoin/pom.xml" />
         <option value="$PROJECT_DIR$/paypal/pom.xml" />
         <option value="$PROJECT_DIR$/config-server/pom.xml" />
         <option value="$PROJECT_DIR$/registry/pom.xml" />
         <option value="$PROJECT_DIR$/sellers/pom.xml" />
         <option value="$PROJECT_DIR$/gateway-cloud/pom.xml" />
+        <option value="$PROJECT_DIR$/auth-service/pom.xml" />
+        <option value="$PROJECT_DIR$/registration-service/pom.xml" />
       </list>
     </option>
   </component>

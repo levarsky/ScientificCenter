@@ -6,8 +6,8 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="auth-service" />
         <module name="config-server" />
-        <module name="authorization" />
         <module name="gateway" />
         <module name="payment_system" />
         <module name="paypal" />
@@ -19,9 +19,11 @@
         <module name="sellers" />
         <module name="eureka" />
         <module name="bitcoin" />
+        <module name="registration-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="auth-service" target="1.8" />
       <module name="authorization" target="1.8" />
       <module name="bank" target="1.8" />
       <module name="bitcoin" target="1.8" />
@@ -34,6 +36,7 @@
       <module name="payment_system" target="1.8" />
       <module name="payment_system_sc" target="1.8" />
       <module name="paypal" target="1.8" />
+      <module name="registration-service" target="1.8" />
       <module name="registry" target="1.8" />
       <module name="selenium" target="1.5" />
       <module name="sellers" target="1.8" />
@@ -41,6 +44,7 @@
   </component>
   <component name="JavacSettings">
     <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="auth-service" options="-parameters" />
       <module name="authorization" options="-parameters" />
       <module name="bank" options="-parameters" />
       <module name="bitcoin" options="-parameters" />
@@ -53,6 +57,7 @@
       <module name="payment_system" options="-parameters" />
       <module name="payment_system_sc" options="-parameters" />
       <module name="paypal" options="-parameters" />
+      <module name="registration-service" options="-parameters" />
       <module name="registry" options="-parameters" />
       <module name="sellers" options="-parameters" />
     </option>
