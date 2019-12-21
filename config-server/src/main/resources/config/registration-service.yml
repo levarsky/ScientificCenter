@@ -1,0 +1,46 @@
+server:
+  servlet:
+    context-path: /registration
+  port: 8082
+  ssl:
+    enabled: true
+    key-store-type: PKCS12
+    key-store: classpath:registration.p12
+    key-store-password: password
+    client-auth: need
+    trust-store: classpath:eurekaTrust.jks
+    trust-store-password: password
+    key-alias: localhost
+
+eureka:
+  instance:
+    hostname: localhost
+    securePort: ${server.port}
+    securePortEnabled: true
+    nonSecurePortEnabled: false
+    secureVirtualHostName: ${spring.application.name}
+    homePageUrl: https://${eureka.instance.hostname}:${server.port}/
+    statusPageUrl: https://${eureka.instance.hostname}:${server.port}/admin/info
+    metadataMap:
+      hostname: ${eureka.instance.hostname}
+      securePort: ${server.port}
+  client:
+    serviceUrl:
+      defaultZone: https://localhost:8767/eureka/
+
+
+security:
+  oauth2:
+    client:
+      clientId: registration-service
+      clientSecret: 1234
+      accessTokenUri: https://localhost:8081/uaa/oauth/token
+      grant-type: client_credentials
+      scope: server
+    resource:
+      user-info-uri: https://localhost:8081/uaa/user/current
+      token-info-uri: https://localhost:8081/uaa/oauth/check_token
+
+feign:
+  hystrix:
+    enabled: true

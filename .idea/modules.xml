@@ -13,6 +13,7 @@
       <module fileurl="file://$PROJECT_DIR$/registry/payment_system.iml" filepath="$PROJECT_DIR$/registry/payment_system.iml" />
       <module fileurl="file://$PROJECT_DIR$/sellers/payment_system_sc.iml" filepath="$PROJECT_DIR$/sellers/payment_system_sc.iml" />
       <module fileurl="file://$PROJECT_DIR$/paypal/paypal.iml" filepath="$PROJECT_DIR$/paypal/paypal.iml" />
+      <module fileurl="file://$PROJECT_DIR$/registration-service/registration-service.iml" filepath="$PROJECT_DIR$/registration-service/registration-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/registry/registry.iml" filepath="$PROJECT_DIR$/registry/registry.iml" />
       <module fileurl="file://$PROJECT_DIR$/sellers/sellers.iml" filepath="$PROJECT_DIR$/sellers/sellers.iml" />
     </modules>

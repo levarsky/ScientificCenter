@@ -5,6 +5,7 @@ import org.springframework.security.oauth2.common.OAuth2RefreshToken;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 
 import javax.persistence.*;
+import java.sql.Blob;
 
 @Entity
 public class OauthRefreshToken {
@@ -17,10 +18,8 @@ public class OauthRefreshToken {
     @Column
     private String tokenId;
     @Lob
-    @Column
     private byte[] token;
     @Lob
-    @Column
     private byte[] authentication;
 
     public Long getId() {

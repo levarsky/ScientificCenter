@@ -39,4 +39,5 @@ public class JDBCTokenConfig {
         return new JdbcTokenStore(dataSource());
     }
 
+
 }

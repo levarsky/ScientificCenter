@@ -9,6 +9,7 @@ import javax.validation.constraints.Size;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 public class User implements UserDetails {
@@ -30,6 +31,7 @@ public class User implements UserDetails {
     @Column
     private String email;
 
+    @JsonIgnore
     @Column
     private String password;
 
@@ -45,7 +47,7 @@ public class User implements UserDetails {
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
-    private List<Role> roles;
+    private Set<Role> roles;
 
     @JsonIgnore
     @OneToOne
@@ -54,7 +56,7 @@ public class User implements UserDetails {
     public User() {
     }
 
-    public User(String username, String firstName, String lastName, String email, String password, Boolean isEnabled, Boolean isVerified, List<Role> roles) {
+    public User(String username, String firstName, String lastName, String email, String password, Boolean isEnabled, Boolean isVerified) {
         this.username = username;
         this.firstName = firstName;
         this.lastName = lastName;
@@ -62,7 +64,6 @@ public class User implements UserDetails {
         this.password = password;
         this.isEnabled = isEnabled;
         this.isVerified = isVerified;
-        this.roles = roles;
     }
 
 
@@ -157,7 +158,7 @@ public class User implements UserDetails {
         isVerified = verified;
     }
 
-    public void setRoles(List<Role> roles) {
+    public void setRoles(Set<Role> roles) {
         this.roles = roles;
     }
 

@@ -1,0 +1,9 @@
+spring:
+  application:
+    name: registration-service
+  cloud:
+    config:
+      uri: https://localhost:8888
+  main:
+    allow-bean-definition-overriding: true
+

@@ -16,6 +16,19 @@ zuul:
       url: https://localhost:8765
       path: /payment/**
       service-id: payment-system
+    auth-service:
+      url: https://localhost:8081
+      path: /uaa/** #path that will be intercepted
+      serviceId: auth-service
+      stripPrefix: false #if zuul should replace the "/uaa/" segment
+      sensitiveHeaders:
+    registration-service:
+      url: https://localhost:8082
+      path: /registration/**
+      serviceId: registration-service
+      stripPrefix: false
+      sensitiveHeaders:
+
 
 
 eureka:

@@ -7,7 +7,7 @@ import javax.persistence.*;
 import java.util.*;
 
 @Entity
-public class AuthClientDetails implements ClientDetails {
+public class OauthClientDetails implements ClientDetails {
 
 
     @Id
@@ -18,21 +18,25 @@ public class AuthClientDetails implements ClientDetails {
     @Column
     private String clientSecret;
     @Column
-    private String grantTypes;
+    private String authorizedGrantTypes;
     @Column
-    private String scopes;
+    private String authorities;
     @Column
-    private String resources;
+    private String scope;
     @Column
-    private String redirectUris;
+    private String resourceIds;
+    @Column
+    private String webServerRedirectUri;
     @Column
     private Integer accessTokenValidity;
     @Column
     private Integer refreshTokenValidity;
     @Column
     private String additionalInformation;
+    @Column
+    private boolean autoapprove;
 
-    public AuthClientDetails() {
+    public OauthClientDetails() {
     }
 
     @Override
@@ -42,7 +46,7 @@ public class AuthClientDetails implements ClientDetails {
 
     @Override
     public Set<String> getResourceIds() {
-        return resources != null ? new HashSet<>(Arrays.asList(resources.split(","))) : null;
+        return resourceIds != null ? new HashSet<>(Arrays.asList(resourceIds.split(","))) : null;
     }
 
     @Override
@@ -62,17 +66,17 @@ public class AuthClientDetails implements ClientDetails {
 
     @Override
     public Set<String> getScope() {
-        return scopes != null ? new HashSet<>(Arrays.asList(scopes.split(","))) : null;
+        return scope != null ? new HashSet<>(Arrays.asList(scope.split(","))) : null;
     }
 
     @Override
     public Set<String> getAuthorizedGrantTypes() {
-        return grantTypes != null ? new HashSet<>(Arrays.asList(grantTypes.split(","))) : null;
+        return authorizedGrantTypes != null ? new HashSet<>(Arrays.asList(authorizedGrantTypes.split(","))) : null;
     }
 
     @Override
     public Set<String> getRegisteredRedirectUri() {
-        return redirectUris != null ? new HashSet<>(Arrays.asList(redirectUris.split(","))) : null;
+        return webServerRedirectUri != null ? new HashSet<>(Arrays.asList(webServerRedirectUri.split(","))) : null;
     }
 
     @Override
@@ -92,7 +96,7 @@ public class AuthClientDetails implements ClientDetails {
 
     @Override
     public boolean isAutoApprove(String s) {
-        return true;
+        return autoapprove;
     }
 
     @Override
@@ -108,20 +112,28 @@ public class AuthClientDetails implements ClientDetails {
         this.clientSecret = clientSecret;
     }
 
-    public void setGrantTypes(String grantTypes) {
-        this.grantTypes = grantTypes;
+    public void setAuthorizedGrantTypes(String authorizedGrantTypes) {
+        this.authorizedGrantTypes = authorizedGrantTypes;
     }
 
-    public void setScopes(String scopes) {
-        this.scopes = scopes;
+    public void setAuthorities(String authorities) {
+        this.authorities = authorities;
     }
 
-    public void setResources(String resources) {
-        this.resources = resources;
+    public void setScope(String scope) {
+        this.scope = scope;
     }
 
-    public void setRedirectUris(String redirectUris) {
-        this.redirectUris = redirectUris;
+    public void setResourceIds(String resourceIds) {
+        this.resourceIds = resourceIds;
+    }
+
+    public void setWebServerRedirectUri(String webServerRedirectUri) {
+        this.webServerRedirectUri = webServerRedirectUri;
+    }
+
+    public void setAutoapprove(boolean autoapprove) {
+        this.autoapprove = autoapprove;
     }
 
     public void setAccessTokenValidity(Integer accessTokenValidity) {
