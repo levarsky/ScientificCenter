@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: paypal-service
+  cloud:
+    config:
+      uri: https://localhost:8888
+

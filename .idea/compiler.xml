@@ -6,27 +6,26 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="auth-service" />
-        <module name="config-server" />
         <module name="gateway" />
-        <module name="payment_system" />
-        <module name="paypal" />
-        <module name="gateway-cloud" />
-        <module name="payment_system_sc" />
-        <module name="registry" />
-        <module name="center" />
-        <module name="bank" />
-        <module name="sellers" />
-        <module name="eureka" />
-        <module name="bitcoin" />
         <module name="registration-service" />
+        <module name="config-server" />
+        <module name="bitcoin_service" />
+        <module name="bank" />
+        <module name="eureka" />
+        <module name="registry" />
+        <module name="sellers-service" />
+        <module name="center" />
+        <module name="auth-service" />
+        <module name="bank-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
       <module name="auth-service" target="1.8" />
       <module name="authorization" target="1.8" />
       <module name="bank" target="1.8" />
+      <module name="bank-service" target="1.8" />
       <module name="bitcoin" target="1.8" />
+      <module name="bitcoin_service" target="1.8" />
       <module name="center" target="1.8" />
       <module name="cloud-gateway" target="1.8" />
       <module name="config-server" target="1.8" />
@@ -38,8 +37,7 @@
       <module name="paypal" target="1.8" />
       <module name="registration-service" target="1.8" />
       <module name="registry" target="1.8" />
-      <module name="selenium" target="1.5" />
-      <module name="sellers" target="1.8" />
+      <module name="sellers-service" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -47,19 +45,19 @@
       <module name="auth-service" options="-parameters" />
       <module name="authorization" options="-parameters" />
       <module name="bank" options="-parameters" />
+      <module name="bank-service" options="-parameters" />
       <module name="bitcoin" options="-parameters" />
+      <module name="bitcoin_service" options="-parameters" />
       <module name="center" options="-parameters" />
       <module name="cloud-gateway" options="-parameters" />
       <module name="config-server" options="-parameters" />
       <module name="eureka" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="gateway-cloud" options="-parameters" />
-      <module name="payment_system" options="-parameters" />
-      <module name="payment_system_sc" options="-parameters" />
       <module name="paypal" options="-parameters" />
       <module name="registration-service" options="-parameters" />
       <module name="registry" options="-parameters" />
-      <module name="sellers" options="-parameters" />
+      <module name="sellers-service" options="-parameters" />
     </option>
   </component>
 </project>
