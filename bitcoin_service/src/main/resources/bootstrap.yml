@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: bitcoin-service
+  cloud:
+    config:
+      uri: https://localhost:8888
+
