@@ -15,12 +15,11 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    @RequestMapping(value = "/{amount}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/{amount}", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public String testController(@PathVariable(value = "amount") Double amount){
         System.out.println("ETO TU SAM");
         paymentService.pay(amount);
         return "redirect:www.google.com";
-
     }
 
     @RequestMapping(method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)

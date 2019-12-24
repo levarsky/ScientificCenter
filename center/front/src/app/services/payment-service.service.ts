@@ -12,7 +12,7 @@ export class PaymentServiceService {
   constructor(private http: HttpClient) { }
 
   pay(value: number): Observable<any> {
-    console.log("service placam: " + value);
-    return this.http.post<any>(this.basicPath + "/pay/"+ value, value);
+    console.log("Service placam: " + value);
+    return this.http.post<any>(this.basicPath + "/pay/" + value, value);
   }
 }

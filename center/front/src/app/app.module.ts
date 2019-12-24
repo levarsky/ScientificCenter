@@ -7,12 +7,14 @@ import { PaymentComponent } from './payment/payment.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule }         from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
+import { BankComponent } from './bank/bank.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PaymentComponent,
-    NavbarComponent
+    NavbarComponent,
+    BankComponent
   ],
   imports: [
     BrowserModule,
