@@ -12,7 +12,13 @@ public class RegistrationService {
     private AuthServiceClient authServiceClient;
 
     public User createUser(User user) {
+
+        System.out.println("REG SERVICE");
         return this.authServiceClient.createUser(user);
+    }
+
+    public String getTest() {
+        return this.authServiceClient.getTest();
     }
 
 }

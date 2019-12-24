@@ -6,9 +6,12 @@ public class Request {
 
     private Double amount;
 
+    private Client client;
+
     private String firstName;
 
     private String lastName;
+
 
     public Long getTransactionId() {
         return transactionId;

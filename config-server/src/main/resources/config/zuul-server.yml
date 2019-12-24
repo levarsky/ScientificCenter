@@ -28,6 +28,12 @@ zuul:
       serviceId: registration-service
       stripPrefix: false
       sensitiveHeaders:
+    sellers-service:
+      url: https://localhost:8769
+      path: /sellers/**
+      serviceId: sellers-service
+      stripPrefix: false
+      sensitiveHeaders:
 
 
 
