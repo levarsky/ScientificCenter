@@ -32,14 +32,14 @@ eureka:
 security:
   oauth2:
     client:
-      clientId: registration-service
-      clientSecret: 1234
+      clientId: oauthorize
+      clientSecret: password
       accessTokenUri: https://localhost:8081/uaa/oauth/token
-      grant-type: client_credentials
+      grantType: client_credentials
       scope: server
     resource:
-      user-info-uri: https://localhost:8081/uaa/user/current
-      token-info-uri: https://localhost:8081/uaa/oauth/check_token
+      userInfoUri: https://localhost:8081/uaa/user/current
+      tokenInfoUri: https://localhost:8081/uaa/oauth/check_token
 
 feign:
   hystrix:
