@@ -7,7 +7,7 @@ import {Observable, throwError} from "rxjs";
 })
 export class PaymentServiceService {
 
-  private basicPath = 'https://localhost:8769/sellers';
+  private basicPath = 'https://localhost:8082/sellers';
 
   constructor(private http: HttpClient) { }
 
