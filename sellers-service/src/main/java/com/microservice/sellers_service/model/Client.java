@@ -11,6 +11,8 @@ public class Client {
     private Long id;
     @Column
     private String clientId;
+    @Column
+    private String clientName;
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "CLIENT_ID"), inverseJoinColumns = @JoinColumn(name = "PAYMENT_TYPE_ID"))
     private List<PaymentType> paymentTypes;
@@ -28,6 +30,14 @@ public class Client {
 
     public String getClientId() {
         return clientId;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     public void setClientId(String clientId) {
