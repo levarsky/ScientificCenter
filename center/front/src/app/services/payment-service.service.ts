@@ -7,12 +7,12 @@ import {Observable, throwError} from "rxjs";
 })
 export class PaymentServiceService {
 
-  private basicPath = 'http://localhost:8088/sellers/';
+  private basicPath = 'http://localhost:8080/pay/';
 
   constructor(private http: HttpClient) { }
 
   pay(value: number): Observable<any> {
     console.log("Service placam: " + value);
-    return this.http.post<any>(this.basicPath + value, value);
+    return this.http.get<any>(this.basicPath+value);
   }
 }
