@@ -1,5 +1,6 @@
 package com.microservice.sellers_service.controller;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,12 +11,11 @@ import org.springframework.web.servlet.view.RedirectView;
 public class ClientController {
 
     @RequestMapping(value = "/{price}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public RedirectView createCommunication(@PathVariable(value = "price") Double price) {
+    public ResponseEntity<String> createCommunication(@PathVariable(value = "price") Double price) {
         //Treba da primi predefinisani objekat koji sadrzi kolicinu novca, response je redirekcija na front za
         //izbor nacina placanja
-        RedirectView rv = new RedirectView();
-        rv.setUrl("http://localhost:4200");
-        return rv;
+        System.out.println("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/red", method = RequestMethod.GET)

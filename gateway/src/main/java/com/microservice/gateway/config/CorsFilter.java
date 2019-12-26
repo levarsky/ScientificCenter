@@ -1,4 +1,4 @@
-package com.microservice.sellers_service.config;
+package com.microservice.gateway.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.core.Ordered;
