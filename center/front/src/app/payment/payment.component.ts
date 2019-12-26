@@ -21,7 +21,10 @@ export class PaymentComponent implements OnInit {
   }
 
   onSubmit(){
-    this.paymentService.pay(this.paymentForm.value.price).subscribe();
+
+    this.paymentService.pay(this.paymentForm.value.price).subscribe(data=>{
+      window.location.href=data.url;
+    });
   }
 
 
