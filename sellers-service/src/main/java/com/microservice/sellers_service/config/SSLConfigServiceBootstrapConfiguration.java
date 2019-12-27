@@ -24,8 +24,8 @@ public class SSLConfigServiceBootstrapConfiguration {
     @Bean
     public ConfigServicePropertySourceLocator configServicePropertySourceLocator() throws Exception {
         final char[] password = "password".toCharArray();
-        final ClassPathResource resource = new ClassPathResource("sellers.p12");
-        final ClassPathResource resourceTrust = new ClassPathResource("eurekaTrust.jks");
+        final ClassPathResource resource = new ClassPathResource("bank.p12");
+        final ClassPathResource resourceTrust = new ClassPathResource("configTrust.jks");
 
         SSLContext sslContext = SSLContexts.custom()
                 .loadKeyMaterial(resource.getFile(), password, password)

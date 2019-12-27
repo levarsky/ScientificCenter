@@ -1,29 +1,48 @@
 package com.microservice.sellers_service.controller;
 
 import com.microservice.sellers_service.model.PaymentType;
+import com.microservice.sellers_service.model.Request;
 import com.microservice.sellers_service.service.PaymentTypeService;
-import org.apache.catalina.connector.Connector;
-import org.apache.catalina.connector.Response;
+import com.microservice.sellers_service.service.RequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.InetAddress;
 import java.util.List;
 
-@RestController(value="/pay")
+
+@RestController
+@RequestMapping(value = "/pay")
 public class ClientController {
 
     @Autowired
     private PaymentTypeService paymentTypeService;
 
-    private String serverPath = "http://localhost:4200";
+    @Autowired
+    private RequestService requestService;
+
+    private String serverPath = "http://localhost:4201";
+
+    @RequestMapping(value = "/{clientId}/{price}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String request(@PathVariable(value = "price") Double price,@PathVariable(value = "clientId") String clientId) {
+        System.out.println("Treba da se plati: " + price);
+        return requestService.createRequest(clientId,price).getToken();
+    }
+
+    @RequestMapping(value = "/request", method = RequestMethod.GET)
+    public void gePaymentTypes(@RequestParam(value = "token") String token,HttpServletResponse httpServletResponse) throws IOException {
+        httpServletResponse.sendRedirect(serverPath+"/request?token="+token);
+
+    }
 
     @RequestMapping(value = "/{price}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String createCommunication(@PathVariable(value = "price") Double price) {
@@ -31,16 +50,28 @@ public class ClientController {
         return serverPath;
     }
 
-    @RequestMapping(value = "/red", method = RequestMethod.GET)
-    public ModelAndView get() {
+    @RequestMapping(value = "/red", method = RequestMethod.GET,produces = MediaType.APPLICATION_JSON_VALUE)
+    public void get(HttpServletResponse httpServletResponse) throws IOException {
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:https://google.com");
-        return modelAndView;
+        modelAndView.setViewName("redirect:https://localhost:8769");
+        httpServletResponse.sendRedirect("http://localhost:4201");
+    }
+
+    @GetMapping(value = "/home")
+    public String home(Model model) {
+        return "forward:index.html";
     }
 
     @RequestMapping(value = "/paymentTypes", method = RequestMethod.GET)
-    public ResponseEntity<List<PaymentType>> gePaymentTypes() {
-        return new ResponseEntity<>(paymentTypeService.getPaymentTypes(),HttpStatus.OK);
+    public ResponseEntity<List<PaymentType>> gePaymentTypes(@RequestParam(value ="token" ) String token) {
+        return new ResponseEntity<>(paymentTypeService.getPaymentTypes(token), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/token", method = RequestMethod.GET)
+    public ResponseEntity<Request> getTokenRequest(@RequestParam(value ="token" ) String token) {
+        return new ResponseEntity<>(requestService.getRequest(token), HttpStatus.OK);
+    }
+
+
 
 }

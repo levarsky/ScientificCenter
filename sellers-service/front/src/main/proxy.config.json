@@ -1,0 +1,8 @@
+{
+  "/sellers": {
+    "target": "https://localhost:8769",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

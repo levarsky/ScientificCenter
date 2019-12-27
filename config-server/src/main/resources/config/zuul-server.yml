@@ -14,8 +14,8 @@ zuul:
   routes:
     payment-system:
       url: https://localhost:8765
-      path: /payment/**
-      service-id: payment-system
+      path: /bank-service/**
+      service-id: bank-service
     auth-service:
       url: https://localhost:8081
       path: /uaa/** #path that will be intercepted

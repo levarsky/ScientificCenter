@@ -1,5 +1,6 @@
 package com.microservice.authservice;
 
+import com.microservice.authservice.service.ClientService;
 import com.netflix.discovery.DiscoveryClient;
 import com.netflix.discovery.shared.transport.jersey.EurekaJerseyClientImpl;
 import org.springframework.boot.SpringApplication;
@@ -20,6 +21,7 @@ public class AuthServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AuthServiceApplication.class, args);
+
     }
 
     @Bean

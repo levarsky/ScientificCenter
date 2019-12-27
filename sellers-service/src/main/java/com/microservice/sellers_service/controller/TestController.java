@@ -18,6 +18,6 @@ public class TestController {
 	
 	@RequestMapping( method = RequestMethod.POST)
     public ResponseEntity<String> create(@RequestBody String test) {
-        return new ResponseEntity<>(testService.testPaymentSc(test), HttpStatus.OK);
+        return new ResponseEntity<>("TEST", HttpStatus.OK);
     }
 }

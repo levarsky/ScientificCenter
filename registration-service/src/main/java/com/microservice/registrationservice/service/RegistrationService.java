@@ -1,6 +1,7 @@
 package com.microservice.registrationservice.service;
 
 import com.microservice.registrationservice.client.AuthServiceClient;
+import com.microservice.registrationservice.model.OauthClientDetails;
 import com.microservice.registrationservice.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,13 +13,11 @@ public class RegistrationService {
     private AuthServiceClient authServiceClient;
 
     public User createUser(User user) {
-
-        System.out.println("REG SERVICE");
         return this.authServiceClient.createUser(user);
     }
 
-    public String getTest() {
-        return this.authServiceClient.getTest();
+    public OauthClientDetails registerClient(OauthClientDetails oauthClientDetails) {
+        return this.authServiceClient.registerClient(oauthClientDetails);
     }
 
 }

@@ -6,7 +6,7 @@ import { AppComponent } from './app.component';
 import { PaymentComponent } from './payment/payment.component';
 import { NavbarComponent } from './navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule }         from '@angular/forms';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BankComponent } from './bank/bank.component';
 
 @NgModule({
@@ -21,9 +21,15 @@ import { BankComponent } from './bank/bank.component';
     FormsModule,
     ReactiveFormsModule,
     AppRoutingModule,
-    HttpClientModule
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+
+    // [
+    //   {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
+    // ]
+
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

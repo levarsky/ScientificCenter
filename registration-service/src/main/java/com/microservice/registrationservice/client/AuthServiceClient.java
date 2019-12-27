@@ -1,5 +1,6 @@
 package com.microservice.registrationservice.client;
 
+import com.microservice.registrationservice.model.OauthClientDetails;
 import com.microservice.registrationservice.model.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -12,7 +13,7 @@ public interface AuthServiceClient {
     @PostMapping(value = "/uaa/user")
     User createUser(@RequestBody User user);
 
-    @GetMapping(value = "/uaa/user")
-    String getTest();
+    @PostMapping(value = "/uaa/client")
+    OauthClientDetails registerClient(@RequestBody OauthClientDetails oauthClientDetails);
 
 }
