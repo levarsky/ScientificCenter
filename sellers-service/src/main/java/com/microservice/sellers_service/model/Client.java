@@ -9,10 +9,19 @@ public class Client {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @Column
     private String clientId;
+
     @Column
     private String clientName;
+
+    @Column(length = 30)
+    private String MERCHANT_ID;
+
+    @Column(length = 100)
+    private String MERCHANT_PASSWORD;
+
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "CLIENT_ID"), inverseJoinColumns = @JoinColumn(name = "PAYMENT_TYPE_ID"))
     private List<PaymentType> paymentTypes;

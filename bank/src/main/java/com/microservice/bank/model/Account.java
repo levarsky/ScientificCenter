@@ -1,6 +1,9 @@
 package com.microservice.bank.model;
 
+import org.hibernate.validator.constraints.Length;
+
 import javax.persistence.*;
+import javax.validation.constraints.Digits;
 import java.util.Date;
 
 @Entity
@@ -10,28 +13,32 @@ public class Account {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String firstName;
+    @Column(length = 100)
+    private String cardHolderName;
 
     @Column
-    private String lastName;
-
-    @Column
+    @Length(max = 4, min = 3)
     private String cvv;
 
-    @Column
+    @Column(length = 16)
     private String cardNumber;
 
     @Column
     private Date expirationDate;
 
     @Column
+    @Digits(integer = 10 /*precision*/, fraction = 2 /*scale*/)
     private Double amount;
 
-    public Account(Long id, String firstName, String lastName, String cvv, String cardNumber, Date expirationDate, Double amount) {
+    @Column(length = 30)
+    private String MERCHANT_ID;
+
+    @Column(length = 100)
+    private String MERCHANT_PASSWORD;
+
+    public Account(Long id, String cardHolderName, String cvv, String cardNumber, Date expirationDate, Double amount) {
         this.id = id;
-        this.firstName = firstName;
-        this.lastName = lastName;
+        this.cardHolderName = cardHolderName;
         this.cvv = cvv;
         this.cardNumber = cardNumber;
         this.expirationDate = expirationDate;
@@ -44,22 +51,6 @@ public class Account {
 
     public void setId(Long id) {
         this.id = id;
-    }
-
-    public String getFirstName() {
-        return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
     }
 
     public String getCvv() {
@@ -92,5 +83,29 @@ public class Account {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public String getMERCHANT_ID() {
+        return MERCHANT_ID;
+    }
+
+    public void setMERCHANT_ID(String MERCHANT_ID) {
+        this.MERCHANT_ID = MERCHANT_ID;
+    }
+
+    public String getMERCHANT_PASSWORD() {
+        return MERCHANT_PASSWORD;
+    }
+
+    public void setMERCHANT_PASSWORD(String MERCHANT_PASSWORD) {
+        this.MERCHANT_PASSWORD = MERCHANT_PASSWORD;
+    }
+
+    public String getCardHolderName() {
+        return cardHolderName;
+    }
+
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
     }
 }

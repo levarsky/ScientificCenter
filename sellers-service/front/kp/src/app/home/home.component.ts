@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-
+import { PaymentType } from '../model'
+import { RegisterClientService } from '../services/register-client.service'
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class HomeComponent implements OnInit {
 
-  constructor() { }
+  types : PaymentType[];
+  constructor(private service : RegisterClientService) { }
 
   ngOnInit() {
+    this.service.getPaymentTypes().subscribe(data =>{
+      this.types = data;
+    })
   }
+
 
 }

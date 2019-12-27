@@ -13,4 +13,8 @@ export class RegisterClientService {
   register(name : string):Observable<any>{
     return this.http.post(this.baseUrl + name, name);
   }
+
+  getPaymentTypes():Observable<any>{
+    return this.http.get(this.baseUrl+"paymentTypes");
+  }
 }
