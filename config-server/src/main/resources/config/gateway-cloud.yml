@@ -40,6 +40,16 @@ spring:
       httpclient:
         ssl:
           useInsecureTrustManager: true
+  datasource:
+     url: jdbc:mysql://localhost:3306/authusers?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
+     username: root
+     password: admin
+     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+     hibernate.ddl-auto: update
+     properties:
+        hibernate:
+           dialect: org.hibernate.dialect.MySQL5Dialect
 
 
 

@@ -20,7 +20,6 @@ public class TestPayment {
 
     @RequestMapping( method = RequestMethod.POST)
     public String create(@RequestBody String test) {
-
         return new ResponseEntity<>(testServicePayment.testPayment(test), HttpStatus.OK).getBody();
     }
 }
