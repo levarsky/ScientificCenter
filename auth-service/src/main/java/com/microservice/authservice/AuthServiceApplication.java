@@ -1,5 +1,6 @@
 package com.microservice.authservice;
 
+import com.microservice.authservice.service.ClientService;
 import com.netflix.discovery.DiscoveryClient;
 import com.netflix.discovery.shared.transport.jersey.EurekaJerseyClientImpl;
 import org.springframework.boot.SpringApplication;
@@ -20,14 +21,15 @@ public class AuthServiceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AuthServiceApplication.class, args);
+
     }
 
     @Bean
     public DiscoveryClient.DiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws NoSuchAlgorithmException {
         DiscoveryClient.DiscoveryClientOptionalArgs args = new DiscoveryClient.DiscoveryClientOptionalArgs();
-        System.setProperty("javax.net.ssl.keyStore", "/Users/mac/Documents/MASTER/SEP/Projekat/sc/auth-service/src/main/resources/auth.p12");
+        System.setProperty("javax.net.ssl.keyStore", "src/main/resources/auth.p12");
         System.setProperty("javax.net.ssl.keyStorePassword", "password");
-        System.setProperty("javax.net.ssl.trustStore", "/Users/mac/Documents/MASTER/SEP/Projekat/sc/auth-service/src/main/resources/eurekaTrust.jks");
+        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/eurekaTrust.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "password");
         EurekaJerseyClientImpl.EurekaJerseyClientBuilder builder = new EurekaJerseyClientImpl.EurekaJerseyClientBuilder();
         builder.withClientName("auth-service");

@@ -1,7 +1,7 @@
 server:
   port: 8088
   ssl:
-    enabled: false
+    enabled: true
     key-store-type: PKCS12
     key-store: classpath:gateway.p12
     key-store-password: password
@@ -40,6 +40,16 @@ spring:
       httpclient:
         ssl:
           useInsecureTrustManager: true
+  datasource:
+     url: jdbc:mysql://localhost:3306/authusers?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
+     username: root
+     password: admin
+     driver-class-name: com.mysql.cj.jdbc.Driver
+  jpa:
+     hibernate.ddl-auto: update
+     properties:
+        hibernate:
+           dialect: org.hibernate.dialect.MySQL5Dialect
 
 
 

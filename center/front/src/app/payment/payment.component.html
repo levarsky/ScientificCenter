@@ -7,11 +7,11 @@
           <form class="form-signin" [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
             <div class="form-label-group">
               <label for="price">Price</label>
-              <input type="text" ngModel id="price" class="form-control" autofocus
+              <input type="text" id="price" class="form-control" autofocus
                      [formControlName]="'price'" name="price" required/>
             </div>
             <hr class="my-4">
-            <button type="submit" class="form-control" (click)="onSubmit()">Pay</button>
+            <button type="submit" class="form-control">Pay</button>
           </form>
         </div>
       </div>

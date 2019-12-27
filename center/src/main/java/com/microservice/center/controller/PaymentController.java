@@ -24,8 +24,12 @@ public class PaymentController {
     @RequestMapping(value= "/{amount}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resp> testController(@PathVariable(value="amount") Double amount) throws Exception {
         System.out.println("Stiglo da platim: " + amount);
-        String s = (String)httpClient.sendGet("URL OD PAYMENTA NA SELLERSU");
-        Resp r = new Resp(s);
+        //String s = (String)httpClient.sendGet("https://localhost:8088/sellers/pay/red");
+
+        String requestToken = this.paymentService.getToken(amount);
+        System.out.println(requestToken);
+        String url = "https://localhost:8088/sellers/pay/request?token="+requestToken;
+        Resp r = new Resp(url);
         return new ResponseEntity<>(r ,HttpStatus.OK);
     }
 

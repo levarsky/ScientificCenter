@@ -7,7 +7,6 @@ import {BankComponent} from "./bank/bank.component";
 
 const routes: Routes = [
   {path: '', component: PaymentComponent},
-  {path: 'forgot-password', component: BankComponent}
 ];
 
 @NgModule({

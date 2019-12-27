@@ -18,11 +18,13 @@ public class TestService {
         HttpEntity<String> requestEntity = new HttpEntity<>(test);
         
         //ResponseEntity<String> exchange = restTemplate.exchange("https://localhost:8765/testPayment", HttpMethod.POST , requestEntity, String.class);
-        ResponseEntity<String> exchange = restTemplate.exchange("https://localhost:8088/payment/testPayment", HttpMethod.POST, requestEntity, String.class);
+        //ResponseEntity<String> exchange = restTemplate.exchange("https://localhost:8088/sellers/testPayment", HttpMethod.POST, requestEntity, String.class);
 
-        System.out.println(exchange.getBody());
+        ResponseEntity<String> exchange2 = restTemplate.getForEntity("https://localhost:8088/sellers/api/red",String.class);
 
-        return exchange.getBody();
+        System.out.println(exchange2.getBody());
+
+        return exchange2.getBody();
     }
 
 

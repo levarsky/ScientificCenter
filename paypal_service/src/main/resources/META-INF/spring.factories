@@ -1,1 +1,1 @@
-org.springframework.cloud.bootstrap.BootstrapConfiguration=com.microservice.registrationservice.config.SSLConfigServiceBootstrapConfiguration
+org.springframework.cloud.bootstrap.BootstrapConfiguration=com.microservice.paypal_service.SSLConfigServiceBootstrapConfiguration
