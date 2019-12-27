@@ -1,5 +1,9 @@
 package com.microservice.paypal_service.controller;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
@@ -68,6 +72,9 @@ public class PaypalController {
 
 	@RequestMapping(method = RequestMethod.GET, value = PAYPAL_CANCEL_URL)
 	public String cancelPay(){
+		PaymentDetails paymentDetails = new PaymentDetails();
+		paymentDetails.setIsSuccessful(false);
+		paymentService.save(paymentDetails);
 		return "cancel";
 	}
 
@@ -81,6 +88,11 @@ public class PaypalController {
 			paymentDetails.setPayeeEmail("sb-rbwaj793614@business.example.com");
 			paymentDetails.setPayerEmail(payerId);
 			paymentDetails.setAmount(payment.getTransactions().get(0).getAmount().getTotal());
+			paymentDetails.setIsSuccessful(true);
+			
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			Date date = new Date();
+			paymentDetails.setDate(dateFormat.format(date));
 			paymentService.save(paymentDetails);
 			
 			if(payment.getState().equals("approved")){

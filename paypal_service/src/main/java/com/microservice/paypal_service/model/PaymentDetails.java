@@ -23,6 +23,12 @@ public class PaymentDetails {
 	
 	@Column
 	private String amount;
+	
+	@Column
+	private String date;
+	
+	@Column
+	private Boolean isSuccessful;
 
 	public Long getId() {
 		return id;
@@ -62,5 +68,21 @@ public class PaymentDetails {
 
 	public void setAmount(String amount) {
 		this.amount = amount;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public void setDate(String date) {
+		this.date = date;
+	}
+
+	public Boolean getIsSuccessful() {
+		return isSuccessful;
+	}
+
+	public void setIsSuccessful(Boolean isSuccessful) {
+		this.isSuccessful = isSuccessful;
 	}
 }
