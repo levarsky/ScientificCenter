@@ -1,17 +1,46 @@
 package com.microservice.bank.model;
 
+import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import java.util.Date;
 
 public class Request {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @Column(length = 30)
     private String MERCHANT_ID;
-    private String PASSWORD_ID;
+
+    @Column(length = 100)
+    private String MERCHANT_PASSWORD;
+
+    @Column
     private Double AMOUNT;
+
+    @Column
     private Integer MERCHANT_ORDER_ID;
+
+    @Column
     private Date MERCHANT_TIMESTAMP;
+
+    @Column
     private String SUCCESS_URL;
+
+    @Column
     private String FAILED_URL;
+
+    @Column
     private String ERROR_URL;
+
+    @Column(length = 30)
+    private String PAYMENT_ID;
+
+    public Request(){
+    }
 
     public String getMERCHANT_ID() {
         return MERCHANT_ID;
@@ -19,14 +48,6 @@ public class Request {
 
     public void setMERCHANT_ID(String MERCHANT_ID) {
         this.MERCHANT_ID = MERCHANT_ID;
-    }
-
-    public String getPASSWORD_ID() {
-        return PASSWORD_ID;
-    }
-
-    public void setPASSWORD_ID(String PASSWORD_ID) {
-        this.PASSWORD_ID = PASSWORD_ID;
     }
 
     public Double getAMOUNT() {
@@ -75,5 +96,29 @@ public class Request {
 
     public void setERROR_URL(String ERROR_URL) {
         this.ERROR_URL = ERROR_URL;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMERCHANT_PASSWORD() {
+        return MERCHANT_PASSWORD;
+    }
+
+    public void setMERCHANT_PASSWORD(String MERCHANT_PASSWORD) {
+        this.MERCHANT_PASSWORD = MERCHANT_PASSWORD;
+    }
+
+    public String getPAYMENT_ID() {
+        return PAYMENT_ID;
+    }
+
+    public void setPAYMENT_ID(String PAYMENT_ID) {
+        this.PAYMENT_ID = PAYMENT_ID;
     }
 }

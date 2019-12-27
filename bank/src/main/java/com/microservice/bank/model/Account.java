@@ -36,6 +36,8 @@ public class Account {
     @Column(length = 100)
     private String MERCHANT_PASSWORD;
 
+    public Account(){}
+
     public Account(Long id, String cardHolderName, String cvv, String cardNumber, Date expirationDate, Double amount) {
         this.id = id;
         this.cardHolderName = cardHolderName;
