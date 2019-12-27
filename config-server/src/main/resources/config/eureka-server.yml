@@ -1,7 +1,7 @@
 server:
   port: 8767
   ssl:
-    enabled: false
+    enabled: true
     key-store-type: PKCS12
     key-store: classpath:eureka.p12
     key-store-password: password

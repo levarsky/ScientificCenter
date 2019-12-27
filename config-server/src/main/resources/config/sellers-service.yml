@@ -2,25 +2,25 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/sellersdb?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
-    password: admin
+    password: adminadmin
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
 
 server:
+  port: 8769
   servlet:
     context-path: /sellers
-  port: 8769
   ssl:
-    enabled: false
+    enabled: true
     key-store-type: PKCS12
-    key-store: classpath:sellers.p12
+    key-store: classpath:bank.p12
     key-store-password: password
     client-auth: need
-    trust-store: classpath:eurekaTrust.jks
+    trust-store: classpath:configTrust.jks
     trust-store-password: password
 
 eureka:

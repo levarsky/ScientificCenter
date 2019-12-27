@@ -16,6 +16,8 @@ public class OauthClientDetails implements ClientDetails {
     @Column
     private String clientId;
     @Column
+    private String clientName;
+    @Column
     private String clientSecret;
     @Column
     private String authorizedGrantTypes;
@@ -42,6 +44,14 @@ public class OauthClientDetails implements ClientDetails {
     @Override
     public String getClientId() {
         return clientId;
+    }
+
+    public String getClientName() {
+        return clientName;
+    }
+
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     @Override

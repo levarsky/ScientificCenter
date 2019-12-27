@@ -28,7 +28,7 @@ public class RestTemplateConfig {
         SSLContext sslContext = SSLContextBuilder
                 .create()
                 .loadKeyMaterial(ResourceUtils.getFile("classpath:center.p12"), "password".toCharArray(), "password".toCharArray())
-                .loadTrustMaterial(ResourceUtils.getFile("classpath:eurekaTrust.jks"), "password".toCharArray())
+                .loadTrustMaterial(ResourceUtils.getFile("classpath:configTrust.jks"), "password".toCharArray())
                 .build();
 
         HttpClient client = HttpClients.custom()
