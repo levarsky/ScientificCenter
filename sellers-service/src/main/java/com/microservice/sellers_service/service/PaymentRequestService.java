@@ -23,6 +23,8 @@ public class PaymentRequestService {
     @Autowired
     private ClientService clientService;
     @Autowired
+    private PaymentTypeService paymentTypeService;
+    @Autowired
     private RestTemplate restTemplate;
 
     public PaymentRequest createRequest(String clientId,double amount){
@@ -44,9 +46,10 @@ public class PaymentRequestService {
 
     }
 
-    public PaymentRequest sendPaymentRequest(String token, PaymentType paymentType){
+    public PaymentRequest sendPaymentRequest(String token, Long id){
 
         PaymentRequest paymentRequest = getRequest(token);
+        PaymentType paymentType = paymentTypeService.getPaymentType(id);
 
         HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(paymentRequest);
 

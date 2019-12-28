@@ -69,6 +69,11 @@ public class ClientController {
         return new ResponseEntity<>(paymentRequestService.getRequest(token), HttpStatus.OK);
     }
 
+    @RequestMapping(value="/token",method = RequestMethod.POST)
+    public ResponseEntity<PaymentRequest> sendPaymentRequest(@RequestParam(value="token") String token,@RequestParam(value="id")Long id ){
+        return new ResponseEntity<>(paymentRequestService.sendPaymentRequest(token,id),HttpStatus.OK);
+    }
+
 
 
 }
