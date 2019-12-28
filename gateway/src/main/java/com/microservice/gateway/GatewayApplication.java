@@ -7,7 +7,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.security.oauth2.client.EnableOAuth2Sso;
+
 import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 import org.springframework.context.annotation.Bean;
@@ -19,7 +19,6 @@ import com.netflix.discovery.shared.transport.jersey.EurekaJerseyClientImpl.Eure
 @SpringBootApplication
 @EnableDiscoveryClient
 @EnableZuulProxy
-@EnableOAuth2Sso
 public class GatewayApplication {
 
     public static void main(String[] args) {
@@ -51,11 +50,11 @@ public class GatewayApplication {
         System.out.println(System.getProperty("gateway.jks"));
 
         DiscoveryClient.DiscoveryClientOptionalArgs args = new DiscoveryClient.DiscoveryClientOptionalArgs();
-        //System.setProperty("javax.net.ssl.keyStore", "/Users/mac/Documents/MASTER/SEP/Projekat/sc/gateway/src/main/resources/gateway.p12");
-        System.setProperty("javax.net.ssl.keyStore", "src/main/resources/gateway.p12");
+        System.setProperty("javax.net.ssl.keyStore", "/Users/mac/Documents/MASTER/SEP/Projekat/sc/gateway/src/main/resources/gateway.p12");
+        //System.setProperty("javax.net.ssl.keyStore", "src/main/resources/gateway.p12");
         System.setProperty("javax.net.ssl.keyStorePassword", "password");
-        //System.setProperty("javax.net.ssl.trustStore", "/Users/mac/Documents/MASTER/SEP/Projekat/sc/gateway/src/main/resources/eurekaTrust.jks");
-        System.setProperty("javax.net.ssl.trustStore", "src/main/resources/eurekaTrust.jks");
+        System.setProperty("javax.net.ssl.trustStore", "/Users/mac/Documents/MASTER/SEP/Projekat/sc/gateway/src/main/resources/eurekaTrust.jks");
+        //System.setProperty("javax.net.ssl.trustStore", "src/main/resources/eurekaTrust.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "password");
         EurekaJerseyClientBuilder builder = new EurekaJerseyClientBuilder();
         builder.withClientName("zuul-server");

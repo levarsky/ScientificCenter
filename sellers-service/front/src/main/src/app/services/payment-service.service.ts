@@ -25,4 +25,12 @@ export class PaymentServiceService {
     return this.http.get(this.baseUrl+"/pay/token",{params:param});
   }
 
+  sendRequest(token,id):Observable<any>{
+    let param = new HttpParams();
+    param = param.append('token',token);
+    param = param.append('id',id);
+
+    return this.http.get(this.baseUrl+"/pay/paymentRequest",{params:param});
+  }
+
 }

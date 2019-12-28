@@ -8,11 +8,27 @@ export class PaymentType{
 }
 
 export class Request{
-  amount: number;
-  token: string;
+  private _amount: number;
+  private _token: string;
   constructor(amount:number, token:string){
-    this.amount = amount;
-    this.token = token;
+    this._amount = amount;
+    this._token = token;
   }
 
+
+  get amount(): number {
+    return this._amount;
+  }
+
+  set amount(value: number) {
+    this._amount = value;
+  }
+
+  get token(): string {
+    return this._token;
+  }
+
+  set token(value: string) {
+    this._token = value;
+  }
 }
