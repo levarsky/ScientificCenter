@@ -1,5 +1,6 @@
 package com.microservice.sellers_service.service;
 
+import com.microservice.sellers_service.communication.BankPaymentServices;
 import com.microservice.sellers_service.model.Client;
 import com.microservice.sellers_service.model.PaymentRequest;
 import com.microservice.sellers_service.model.PaymentType;
@@ -26,6 +27,8 @@ public class PaymentRequestService {
     private PaymentTypeService paymentTypeService;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private BankPaymentServices bankPaymentServices;
 
     public PaymentRequest createRequest(String clientId,double amount){
 
@@ -53,9 +56,11 @@ public class PaymentRequestService {
 
         HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(paymentRequest);
 
-        ResponseEntity<PaymentRequest> exchange = restTemplate.exchange("https://"+"localhost:8765"+"/pay", HttpMethod.POST, requestEntity,PaymentRequest.class);
+        ResponseEntity<PaymentRequest> exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity,PaymentRequest.class);
 
-        return exchange.getBody();
+        PaymentRequest paymentRequest1 = this.bankPaymentServices.create(paymentRequest);
+
+        return paymentRequest1;
     }
 
 }

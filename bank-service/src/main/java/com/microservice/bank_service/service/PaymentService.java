@@ -30,6 +30,9 @@ public class PaymentService {
     public PaymentRequest pay(PaymentRequest paymentRequest){
 
         String url  = "https://localhost:8765";
+        String urlBank  = "https://localhost:8768";
+
+        System.out.println(paymentRequest.getClient().getClientId());
 
         Client client = paymentRequest.getClient();
 
@@ -41,20 +44,20 @@ public class PaymentService {
         transactionRepository.save(transaction);
 
         Request request = new Request();
-        request.setAMOUNT(paymentRequest.getAmount());
-        request.setMERCHANT_ID(client.getMerchantId());
-        request.setMERCHANT_PASSWORD(client.getMerchantPassword());
-        request.setMERCHANT_TIMESTAMP(new Date());
+        request.setAmount(paymentRequest.getAmount());
+        request.setMerchantId("FDSDGREGERGERGEG");
+        request.setMerchantPassword("FDSAFSFASDFDASFDSAFDSSDF");
+        request.setMerchantTimestamp(new Date());
 
 
-        request.setERROR_URL(url+"/error/"+transaction.getMerchantOrderId());
-        request.setFAILED_URL(url+"/failed/"+transaction.getMerchantOrderId());
-        request.setSUCCESS_URL(url+"/successful/"+transaction.getMerchantOrderId());
+        request.setErrorUrl(url+"/error/"+transaction.getMerchantOrderId());
+        request.setFailedUrl(url+"/failed/"+transaction.getMerchantOrderId());
+        request.setSuccessUrl(url+"/successful/"+transaction.getMerchantOrderId());
 
 
-        HttpEntity<Request> requestEntity = new HttpEntity<>(request);
+        HttpEntity<Request> requestEntity = new HttpEntity<Request>(request);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.POST, requestEntity,String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(urlBank+"/request", HttpMethod.POST, requestEntity,String.class);
 
         paymentRequest.setTransactionId(transaction.getMerchantOrderId().toString());
 

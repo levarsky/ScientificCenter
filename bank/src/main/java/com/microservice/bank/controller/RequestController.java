@@ -18,7 +18,7 @@ public class RequestController {
     @Autowired
     private RequestService requestService;
 
-    @RequestMapping(method = RequestMethod.GET)
+    @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody Request request) {
         requestService.generateResponse(request);
         return new ResponseEntity<>(HttpStatus.OK);

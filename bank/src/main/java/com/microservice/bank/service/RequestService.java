@@ -25,7 +25,11 @@ public class RequestService {
     private RequestRepository requestRepository;
 
     public void generateResponse(Request request){
-        Account account = accountRepository.findAccountByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
+
+        System.out.println(request.getMerchantId());
+        Account account = accountRepository.findByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
+
+
         if(account == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE MERCHANT TI NE VALJA");
 
@@ -64,7 +68,7 @@ public class RequestService {
         if(pom.getAmount() < request.getAmount())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE NEMAS DOVOLJNO PARA");
 
-        Account prodavac = accountRepository.findAccountByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
+        Account prodavac = accountRepository.findByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
 
         pom.setAmount(pom.getAmount() - request.getAmount());
         prodavac.setAmount(prodavac.getAmount() + request.getAmount());

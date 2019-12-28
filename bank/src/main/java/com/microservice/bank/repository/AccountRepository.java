@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 public interface AccountRepository extends JpaRepository<Account, Long> {
     //Account getAccountWithMerchant(String merchant_id, String merchant_pass);
 
-    Account findAccountByMerchantIdAndMerchantPassword(String merchantId,String merchantPassword);
+    Account findByMerchantIdAndMerchantPassword(String merchantId,String merchantPassword);
 }

@@ -20,7 +20,7 @@ public class Account {
     @Length(max = 4, min = 3)
     private String cvv;
 
-    @Column(length = 16)
+    @Column(length = 16,unique=true)
     private String cardNumber;
 
     @Column
@@ -30,7 +30,7 @@ public class Account {
     @Digits(integer = 10 /*precision*/, fraction = 2 /*scale*/)
     private Double amount;
 
-    @Column(length = 30)
+    @Column(length = 30,unique = true)
     private String merchantId;
 
     @Column(length = 100)
