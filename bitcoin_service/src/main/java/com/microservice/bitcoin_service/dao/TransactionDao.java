@@ -1,9 +1,14 @@
 package com.microservice.bitcoin_service.dao;
 
 public class TransactionDao {
+	
 	private String seedSender;
+	
 	private long amount;
+	
 	private String seedReceiver;
+	
+	
 	public String getSeedSender() {
 		return seedSender;
 	}
@@ -22,4 +27,5 @@ public class TransactionDao {
 	public void setSeedReceiver(String seedReceiver) {
 		this.seedReceiver = seedReceiver;
 	}
+	
 }
