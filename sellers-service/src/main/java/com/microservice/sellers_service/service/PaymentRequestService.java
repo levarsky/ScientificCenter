@@ -6,10 +6,7 @@ import com.microservice.sellers_service.model.PaymentRequest;
 import com.microservice.sellers_service.model.PaymentType;
 import com.microservice.sellers_service.repository.PaymentRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -55,12 +52,26 @@ public class PaymentRequestService {
         PaymentType paymentType = paymentTypeService.getPaymentType(id);
 
         HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(paymentRequest);
+        ResponseEntity<PaymentRequest> exchange;
 
-        ResponseEntity<PaymentRequest> exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity,PaymentRequest.class);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("amount",paymentRequest.getAmount().toString());
 
-        PaymentRequest paymentRequest1 = this.bankPaymentServices.create(paymentRequest);
 
-        return paymentRequest1;
+
+        if(paymentType.getServiceName()!="paypal-service"){
+            exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity,PaymentRequest.class);
+        }else{
+            exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay?amount="+paymentRequest.getAmount(), HttpMethod.POST, new HttpEntity<>(httpHeaders),PaymentRequest.class);
+        }
+
+
+
+
+
+        //PaymentRequest paymentRequest1 = this.bankPaymentServices.create(paymentRequest);
+
+        return exchange.getBody();
     }
 
 }

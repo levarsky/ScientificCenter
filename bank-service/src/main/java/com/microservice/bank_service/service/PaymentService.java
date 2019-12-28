@@ -68,7 +68,7 @@ public class PaymentService {
     public void successful(Integer id){
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "BRATE NEMA SA TIM ID-em");
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
         transaction.setSuccessful(true);
         transactionRepository.save(transaction);
         //REDIREKTOVATI
@@ -77,7 +77,7 @@ public class PaymentService {
     public void failed(Integer id){
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "BRATE NEMA SA TIM ID-em");
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
         transaction.setSuccessful(false);
         transactionRepository.save(transaction);
         //REDIREKTOVATI
@@ -86,7 +86,7 @@ public class PaymentService {
     public void error(Integer id){
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "BRATE NEMA SA TIM ID-em");
+            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
         transaction.setSuccessful(false);
         transactionRepository.save(transaction);
         //REDIREKTOVATI

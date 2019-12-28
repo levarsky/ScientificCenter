@@ -30,13 +30,13 @@ public class RequestService {
         Account account = accountRepository.findByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
 
 
-        if(account == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE MERCHANT TI NE VALJA");
+//        if(account == null)
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Merchant");
 
-        if(request.getAmount() == null || request.getMerchantOrderId() == null  ||
-                request.getMerchantTimestamp() == null || request.getSuccessUrl() == null ||
-                request.getFailedUrl() == null || request.getErrorUrl() == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "BRATE NE SME NISTA DA BUDE NULL");
+//        if(request.getAmount() == null || request.getMerchantOrderId() == null  ||
+//                request.getMerchantTimestamp() == null || request.getSuccessUrl() == null ||
+//                request.getFailedUrl() == null || request.getErrorUrl() == null)
+//            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Null");
 
         request.setPaymentId(generateRandomPaymentId());
         requestRepository.save(request);
@@ -59,14 +59,14 @@ public class RequestService {
         }
 
         if(pom == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE LOSE UNESENI PODACI");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"PODACI");
 
         Request request = requestRepository.findRequestByPaymentId(id);
         if(request == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE NEMA TE TRANSAKCIJE");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"TRANSAKCIJE");
 
         if(pom.getAmount() < request.getAmount())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE NEMAS DOVOLJNO PARA");
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"NOVAC");
 
         Account prodavac = accountRepository.findByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
 
