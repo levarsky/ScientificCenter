@@ -10,11 +10,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import javax.security.auth.login.AccountNotFoundException;
 import java.nio.charset.Charset;
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -27,20 +25,20 @@ public class RequestService {
     private RequestRepository requestRepository;
 
     public void generateResponse(Request request){
-        Account account = accountRepository.getAccountWithMerchant(request.getMERCHANT_ID(),request.getMERCHANT_PASSWORD());
+        Account account = accountRepository.findAccountByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
         if(account == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE MERCHANT TI NE VALJA");
 
-        if(request.getAMOUNT() == null || request.getMERCHANT_ORDER_ID() == null  ||
-                request.getMERCHANT_TIMESTAMP() == null || request.getSUCCESS_URL() == null ||
-                request.getFAILED_URL() == null || request.getERROR_URL() == null)
+        if(request.getAmount() == null || request.getMerchantOrderId() == null  ||
+                request.getMerchantTimestamp() == null || request.getSuccessUrl() == null ||
+                request.getFailedUrl() == null || request.getErrorUrl() == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "BRATE NE SME NISTA DA BUDE NULL");
 
-        request.setPAYMENT_ID(generateRandomPaymentId());
+        request.setPaymentId(generateRandomPaymentId());
         requestRepository.save(request);
 
         Response response = new Response();
-        response.setPAYMENT_ID(request.getPAYMENT_ID());
+        response.setPAYMENT_ID(request.getPaymentId());
         response.setPAYMENT_URL("http://localhost:8769/pay/");
         //OVDE REDIREKTUJ NA FORMU ZA PLACANJE
     }
@@ -59,17 +57,17 @@ public class RequestService {
         if(pom == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE LOSE UNESENI PODACI");
 
-        Request request = requestRepository.getRequestWithPaymentId(id);
+        Request request = requestRepository.findRequestByPaymentId(id);
         if(request == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE NEMA TE TRANSAKCIJE");
 
-        if(pom.getAmount() < request.getAMOUNT())
+        if(pom.getAmount() < request.getAmount())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"BRATE NEMAS DOVOLJNO PARA");
 
-        Account prodavac = accountRepository.getAccountWithMerchant(request.getMERCHANT_ID(),request.getMERCHANT_PASSWORD());
+        Account prodavac = accountRepository.findAccountByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
 
-        pom.setAmount(pom.getAmount() - request.getAMOUNT());
-        prodavac.setAmount(prodavac.getAmount() + request.getAMOUNT());
+        pom.setAmount(pom.getAmount() - request.getAmount());
+        prodavac.setAmount(prodavac.getAmount() + request.getAmount());
 
         accountRepository.save(pom);
     }

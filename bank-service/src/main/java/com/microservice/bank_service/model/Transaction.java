@@ -11,7 +11,7 @@ public class Transaction {
     private Long id;
 
     @Column
-    private Integer MERCHANT_ORDER_ID;
+    private Integer merchantOrderId;
 
     @Column
     private String clientId;
@@ -35,12 +35,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Integer getMERCHANT_ORDER_ID() {
-        return MERCHANT_ORDER_ID;
+    public Integer getMerchantOrderId() {
+        return merchantOrderId;
     }
 
-    public void setMERCHANT_ORDER_ID(Integer MERCHANT_ORDER_ID) {
-        this.MERCHANT_ORDER_ID = MERCHANT_ORDER_ID;
+    public void setMerchantOrderId(Integer MERCHANT_ORDER_ID) {
+        this.merchantOrderId = MERCHANT_ORDER_ID;
     }
 
     public String getClientId() {

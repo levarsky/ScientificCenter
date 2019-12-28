@@ -1,22 +1,19 @@
 package com.microservice.sellers_service.controller;
 
 import com.microservice.sellers_service.model.PaymentType;
-import com.microservice.sellers_service.model.Request;
+import com.microservice.sellers_service.model.PaymentRequest;
 import com.microservice.sellers_service.service.PaymentTypeService;
-import com.microservice.sellers_service.service.RequestService;
+import com.microservice.sellers_service.service.PaymentRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.view.RedirectView;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.List;
 
 
@@ -28,14 +25,14 @@ public class ClientController {
     private PaymentTypeService paymentTypeService;
 
     @Autowired
-    private RequestService requestService;
+    private PaymentRequestService paymentRequestService;
 
     private String serverPath = "http://localhost:4201";
 
     @RequestMapping(value = "/{clientId}/{price}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String request(@PathVariable(value = "price") Double price,@PathVariable(value = "clientId") String clientId) {
         System.out.println("Treba da se plati: " + price);
-        return requestService.createRequest(clientId,price).getToken();
+        return paymentRequestService.createRequest(clientId,price).getToken();
     }
 
     @RequestMapping(value = "/request", method = RequestMethod.GET)
@@ -68,8 +65,8 @@ public class ClientController {
     }
 
     @RequestMapping(value = "/token", method = RequestMethod.GET)
-    public ResponseEntity<Request> getTokenRequest(@RequestParam(value ="token" ) String token) {
-        return new ResponseEntity<>(requestService.getRequest(token), HttpStatus.OK);
+    public ResponseEntity<PaymentRequest> getTokenRequest(@RequestParam(value ="token" ) String token) {
+        return new ResponseEntity<>(paymentRequestService.getRequest(token), HttpStatus.OK);
     }
 
 

@@ -17,10 +17,10 @@ public class Client {
     private String clientName;
 
     @Column(length = 30)
-    private String MERCHANT_ID;
+    private String merchantId;
 
     @Column(length = 100)
-    private String MERCHANT_PASSWORD;
+    private String merchantPassword;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "CLIENT_ID"), inverseJoinColumns = @JoinColumn(name = "PAYMENT_TYPE_ID"))
@@ -61,19 +61,19 @@ public class Client {
         this.paymentTypes = paymentTypes;
     }
 
-    public String getMERCHANT_ID() {
-        return MERCHANT_ID;
+    public String getMerchantId() {
+        return merchantId;
     }
 
-    public void setMERCHANT_ID(String MERCHANT_ID) {
-        this.MERCHANT_ID = MERCHANT_ID;
+    public void setMerchantId(String MERCHANT_ID) {
+        this.merchantId = MERCHANT_ID;
     }
 
-    public String getMERCHANT_PASSWORD() {
-        return MERCHANT_PASSWORD;
+    public String getMerchantPassword() {
+        return merchantPassword;
     }
 
-    public void setMERCHANT_PASSWORD(String MERCHANT_PASSWORD) {
-        this.MERCHANT_PASSWORD = MERCHANT_PASSWORD;
+    public void setMerchantPassword(String MERCHANT_PASSWORD) {
+        this.merchantPassword = MERCHANT_PASSWORD;
     }
 }

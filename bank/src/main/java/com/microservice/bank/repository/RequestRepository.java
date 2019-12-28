@@ -7,6 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
-    @Query("SELECT r FROM Request r WHERE r.payment_id = ?1")
-    Request getRequestWithPaymentId(String payment_id);
+    Request findRequestByPaymentId(String paymentId);
 }

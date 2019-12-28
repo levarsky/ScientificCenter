@@ -19,8 +19,9 @@ public class RequestController {
     private RequestService requestService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public void create(@RequestBody Request request) {
+    public ResponseEntity<?> create(@RequestBody Request request) {
         requestService.generateResponse(request);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @RequestMapping(value = "/{id}",method = RequestMethod.POST)

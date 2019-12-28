@@ -1,0 +1,5 @@
+com/microservice/gatewaycloud/TestController.class
+com/microservice/gatewaycloud/NettyWebServerFactorySslCustomizer.class
+com/microservice/gatewaycloud/SSLConfigServiceBootstrapConfiguration.class
+com/microservice/gatewaycloud/GatewayCloudApplication.class
+com/microservice/gatewaycloud/TestService.class
