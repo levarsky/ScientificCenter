@@ -6,19 +6,20 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
-        <module name="registration-service" />
+        <module name="auth-service" />
+        <module name="config-server" />
+        <module name="eureka" />
         <module name="gateway" />
         <module name="bank_service" />
-        <module name="bank-service" />
-        <module name="config-server" />
+        <module name="paypal_service" />
+        <module name="sellers-service" />
+        <module name="center" />
         <module name="bank" />
         <module name="sellers" />
-        <module name="eureka" />
-        <module name="sellers-service" />
-        <module name="paypal_service" />
-        <module name="center" />
-        <module name="auth-service" />
         <module name="bitcoin_service" />
+        <module name="sellers_service" />
+        <module name="bank-service" />
+        <module name="registration-service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
