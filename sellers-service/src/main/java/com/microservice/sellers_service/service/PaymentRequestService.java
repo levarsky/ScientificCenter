@@ -53,7 +53,7 @@ public class PaymentRequestService {
 
         HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(paymentRequest);
 
-        ResponseEntity<PaymentRequest> exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity,PaymentRequest.class);
+        ResponseEntity<PaymentRequest> exchange = restTemplate.exchange("https://"+"localhost:8765"+"/pay", HttpMethod.POST, requestEntity,PaymentRequest.class);
 
         return exchange.getBody();
     }

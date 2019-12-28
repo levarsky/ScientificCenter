@@ -14,6 +14,7 @@ export class HomeComponent implements OnInit {
   paymentTypes : PaymentType[];
   paymentForm: FormGroup;
   request: Request;
+  token;
   constructor(private paymentService : PaymentServiceService,
               private route: ActivatedRoute,
               private formBuilder: FormBuilder) { }
@@ -33,6 +34,7 @@ export class HomeComponent implements OnInit {
 
         this.paymentService.getTokenRequest(params.token).subscribe(data=>{
           this.request = data;
+          this.token = data.token;
           this.paymentForm.patchValue({amount: data.amount });
         });
 
@@ -44,6 +46,12 @@ export class HomeComponent implements OnInit {
 
   onSubmit(){
 
+    console.log(this.paymentForm.get("payment").value);
+
+    this.paymentService.sendRequest(this.token,this.paymentForm.get("payment").value).subscribe(data=>{
+      console.log(data);
+      }
+    );
 
   }
 
