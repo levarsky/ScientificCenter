@@ -5,7 +5,7 @@ import java.util.Date;
 public class Request {
 
     private String MERCHANT_ID;
-    private String PASSWORD_ID;
+    private String MERCHANT_PASSWORD;
     private Double AMOUNT;
     private Integer MERCHANT_ORDER_ID;
     private Date MERCHANT_TIMESTAMP;
@@ -19,14 +19,6 @@ public class Request {
 
     public void setMERCHANT_ID(String MERCHANT_ID) {
         this.MERCHANT_ID = MERCHANT_ID;
-    }
-
-    public String getPASSWORD_ID() {
-        return PASSWORD_ID;
-    }
-
-    public void setPASSWORD_ID(String PASSWORD_ID) {
-        this.PASSWORD_ID = PASSWORD_ID;
     }
 
     public Double getAMOUNT() {
@@ -75,5 +67,13 @@ public class Request {
 
     public void setERROR_URL(String ERROR_URL) {
         this.ERROR_URL = ERROR_URL;
+    }
+
+    public String getMERCHANT_PASSWORD() {
+        return MERCHANT_PASSWORD;
+    }
+
+    public void setMERCHANT_PASSWORD(String MERCHANT_PASSWORD) {
+        this.MERCHANT_PASSWORD = MERCHANT_PASSWORD;
     }
 }

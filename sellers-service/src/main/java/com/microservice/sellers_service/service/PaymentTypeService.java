@@ -1,8 +1,7 @@
 package com.microservice.sellers_service.service;
 
-import com.microservice.sellers_service.model.Client;
 import com.microservice.sellers_service.model.PaymentType;
-import com.microservice.sellers_service.model.Request;
+import com.microservice.sellers_service.model.PaymentRequest;
 import com.microservice.sellers_service.repository.PaymentTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,18 +15,20 @@ public class PaymentTypeService {
     private PaymentTypeRepository paymentTypeRepository;
 
     @Autowired
-    private RequestService requestService;
+    private PaymentRequestService paymentRequestService;
 
     @Autowired
     private ClientService clientService;
 
     public List<PaymentType> getPaymentTypes(String token){
-        return requestService.getRequest(token).getClient().getPaymentTypes();
+        return paymentRequestService.getRequest(token).getClient().getPaymentTypes();
     }
 
-    public List<PaymentType> getPaymentTypes(Request request){
+    public List<PaymentType> getPaymentTypes(PaymentRequest request){
         return clientService.findByClientId(request.getClient().getClientId()).getPaymentTypes();
     }
+
+
 
 
 }

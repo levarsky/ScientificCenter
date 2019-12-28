@@ -31,10 +31,12 @@ public class Account {
     private Double amount;
 
     @Column(length = 30)
-    private String MERCHANT_ID;
+    private String merchantId;
 
     @Column(length = 100)
-    private String MERCHANT_PASSWORD;
+    private String merchantPassword;
+
+    public Account(){}
 
     public Account(Long id, String cardHolderName, String cvv, String cardNumber, Date expirationDate, Double amount) {
         this.id = id;
@@ -85,20 +87,20 @@ public class Account {
         this.amount = amount;
     }
 
-    public String getMERCHANT_ID() {
-        return MERCHANT_ID;
+    public String getMerchantId() {
+        return merchantId;
     }
 
-    public void setMERCHANT_ID(String MERCHANT_ID) {
-        this.MERCHANT_ID = MERCHANT_ID;
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
     }
 
-    public String getMERCHANT_PASSWORD() {
-        return MERCHANT_PASSWORD;
+    public String getMerchantPassword() {
+        return merchantPassword;
     }
 
-    public void setMERCHANT_PASSWORD(String MERCHANT_PASSWORD) {
-        this.MERCHANT_PASSWORD = MERCHANT_PASSWORD;
+    public void setMerchantPassword(String merchantPassword) {
+        this.merchantPassword = merchantPassword;
     }
 
     public String getCardHolderName() {

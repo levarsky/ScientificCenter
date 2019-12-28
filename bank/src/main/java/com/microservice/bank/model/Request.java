@@ -1,79 +1,122 @@
 package com.microservice.bank.model;
 
+import javax.persistence.*;
 import java.util.Date;
 
+@Entity
 public class Request {
 
-    private String MERCHANT_ID;
-    private String PASSWORD_ID;
-    private Double AMOUNT;
-    private Integer MERCHANT_ORDER_ID;
-    private Date MERCHANT_TIMESTAMP;
-    private String SUCCESS_URL;
-    private String FAILED_URL;
-    private String ERROR_URL;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-    public String getMERCHANT_ID() {
-        return MERCHANT_ID;
+    @Column(length = 30)
+    private String merchantId;
+
+    @Column(length = 100)
+    private String merchantPassword;
+
+    @Column
+    private Double amount;
+
+    @Column
+    private Integer merchantOrderId;
+
+    @Column
+    private Date merchantTimestamp;
+
+    @Column
+    private String successUrl;
+
+    @Column
+    private String failedUrl;
+
+    @Column
+    private String errorUrl;
+
+    @Column(length = 30)
+    private String paymentId;
+
+    public Request(){
     }
 
-    public void setMERCHANT_ID(String MERCHANT_ID) {
-        this.MERCHANT_ID = MERCHANT_ID;
+    public String getMerchantId() {
+        return merchantId;
     }
 
-    public String getPASSWORD_ID() {
-        return PASSWORD_ID;
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
     }
 
-    public void setPASSWORD_ID(String PASSWORD_ID) {
-        this.PASSWORD_ID = PASSWORD_ID;
+    public Double getAmount() {
+        return amount;
     }
 
-    public Double getAMOUNT() {
-        return AMOUNT;
+    public void setAmount(Double AMOUNT) {
+        this.amount = AMOUNT;
     }
 
-    public void setAMOUNT(Double AMOUNT) {
-        this.AMOUNT = AMOUNT;
+    public Integer getMerchantOrderId() {
+        return merchantOrderId;
     }
 
-    public Integer getMERCHANT_ORDER_ID() {
-        return MERCHANT_ORDER_ID;
+    public void setMerchantOrderId(Integer MERCHANT_ORDER_ID) {
+        this.merchantOrderId = MERCHANT_ORDER_ID;
     }
 
-    public void setMERCHANT_ORDER_ID(Integer MERCHANT_ORDER_ID) {
-        this.MERCHANT_ORDER_ID = MERCHANT_ORDER_ID;
+    public Date getMerchantTimestamp() {
+        return merchantTimestamp;
     }
 
-    public Date getMERCHANT_TIMESTAMP() {
-        return MERCHANT_TIMESTAMP;
+    public void setMerchantTimestamp(Date MERCHANT_TIMESTAMP) {
+        this.merchantTimestamp = MERCHANT_TIMESTAMP;
     }
 
-    public void setMERCHANT_TIMESTAMP(Date MERCHANT_TIMESTAMP) {
-        this.MERCHANT_TIMESTAMP = MERCHANT_TIMESTAMP;
+    public String getSuccessUrl() {
+        return successUrl;
     }
 
-    public String getSUCCESS_URL() {
-        return SUCCESS_URL;
+    public void setSuccessUrl(String SUCCESS_URL) {
+        this.successUrl = SUCCESS_URL;
     }
 
-    public void setSUCCESS_URL(String SUCCESS_URL) {
-        this.SUCCESS_URL = SUCCESS_URL;
+    public String getFailedUrl() {
+        return failedUrl;
     }
 
-    public String getFAILED_URL() {
-        return FAILED_URL;
+    public void setFailedUrl(String FAILED_URL) {
+        this.failedUrl = FAILED_URL;
     }
 
-    public void setFAILED_URL(String FAILED_URL) {
-        this.FAILED_URL = FAILED_URL;
+    public String getErrorUrl() {
+        return errorUrl;
     }
 
-    public String getERROR_URL() {
-        return ERROR_URL;
+    public void setErrorUrl(String ERROR_URL) {
+        this.errorUrl = ERROR_URL;
     }
 
-    public void setERROR_URL(String ERROR_URL) {
-        this.ERROR_URL = ERROR_URL;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getMerchantPassword() {
+        return merchantPassword;
+    }
+
+    public void setMerchantPassword(String merchantPassword) {
+        this.merchantPassword = merchantPassword;
+    }
+
+    public String getPaymentId() {
+        return paymentId;
+    }
+
+    public void setPaymentId(String PAYMENT_ID) {
+        this.paymentId = PAYMENT_ID;
     }
 }
