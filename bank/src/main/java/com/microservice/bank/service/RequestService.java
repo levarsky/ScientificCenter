@@ -6,14 +6,14 @@ import com.microservice.bank.model.Response;
 import com.microservice.bank.repository.AccountRepository;
 import com.microservice.bank.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.nio.charset.Charset;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Service
 public class RequestService {
@@ -24,7 +24,16 @@ public class RequestService {
     @Autowired
     private RequestRepository requestRepository;
 
-    public void generateResponse(Request request){
+    @Autowired
+    private RestTemplate restTemplate;
+
+    public Object generateResponse(Request request){
+
+        String bankPaymentForm = "http://localhost:4205/paymentRequest";
+
+
+
+        System.out.println(request.toString());
 
         System.out.println(request.getMerchantId());
         Account account = accountRepository.findByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
@@ -41,13 +50,21 @@ public class RequestService {
         request.setPaymentId(generateRandomPaymentId());
         requestRepository.save(request);
 
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl(bankPaymentForm)
+                .queryParam("paymentId", request.getPaymentId());
+
+        String paymentUrl = builder.build().encode().toUriString();
+
         Response response = new Response();
         response.setPAYMENT_ID(request.getPaymentId());
-        response.setPAYMENT_URL("http://localhost:8769/pay/");
+        response.setPAYMENT_URL(paymentUrl);
         //OVDE REDIREKTUJ NA FORMU ZA PLACANJE
+
+        return Collections.singletonMap("redirectUrl",paymentUrl);
     }
 
-    public void pay(Payment payment, String id){
+    public Object pay(Payment payment, String id){
         List<Account> accounts = accountRepository.findAll();
         Account pom = null;
         Date date = new Date();
@@ -58,15 +75,21 @@ public class RequestService {
             }
         }
 
-        if(pom == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"PODACI");
+        String redirectUrl;
 
         Request request = requestRepository.findRequestByPaymentId(id);
-        if(request == null)
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"TRANSAKCIJE");
+        if(request == null){
+            redirectUrl=request.getErrorUrl();
+            return Collections.singletonMap("redirectUrl",redirectUrl);
+        }
 
-        if(pom.getAmount() < request.getAmount())
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"NOVAC");
+        if(pom == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid data!");
+
+        if(pom.getAmount() < request.getAmount()){
+            redirectUrl=request.getFailedUrl();
+            return Collections.singletonMap("redirectUrl",redirectUrl);
+        }
 
         Account prodavac = accountRepository.findByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
 
@@ -74,12 +97,21 @@ public class RequestService {
         prodavac.setAmount(prodavac.getAmount() + request.getAmount());
 
         accountRepository.save(pom);
+
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
+
+        System.out.println(request.getSuccessUrl());
+
+        ResponseEntity<Object> exchange = restTemplate.exchange(request.getSuccessUrl(), HttpMethod.POST, requestEntity, Object.class);
+
+        return exchange.getBody();
     }
 
     private String generateRandomPaymentId() {
-        byte[] array = new byte[30]; // length is bounded by 7
-        new Random().nextBytes(array);
-        String generatedString = new String(array, Charset.forName("UTF-8"));
+        String generatedString = UUID.randomUUID().toString();
         return generatedString;
     }
 }

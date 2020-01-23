@@ -16,6 +16,11 @@ public class PaymentRequest {
     private Double amount;
     @Column
     private String transactionId;
+    @Transient
+    private String url;
+    @OneToOne
+    private PaymentType paymentType;
+
 
     public PaymentRequest() {
     }
@@ -58,5 +63,21 @@ public class PaymentRequest {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

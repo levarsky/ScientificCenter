@@ -4,6 +4,9 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve --proxy-config proxy.config.json ",
+    "postbuild": "npm run deploy",
+    "predeploy": "rimraf jetbrains://idea/navigate/reference?project=sc&fqn=static && mkdirp jetbrains://idea/navigate/reference?project=sc&fqn=static",
+    "deploy": "copyfiles -f jetbrains://idea/navigate/reference?project=sc&fqn=static",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",

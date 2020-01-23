@@ -1,9 +1,13 @@
 package com.microservice.center.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
+
+import java.util.Collections;
 
 @Service
 public class PaymentService {
@@ -11,25 +15,48 @@ public class PaymentService {
     @Autowired
     private RestTemplate restTemplate;
 
-    public void pay(Double amount){
-        System.out.println("Eto malo sam platio " + amount + "eur");
-    }
+    @Value("${sellers.api}")
+    private String sellersUrl;
+
+    @Value("${sellers.security.clientId}")
+    private String clientId;
+
+    @Value("${center.front}")
+    private String frontUrl;
 
     public String getToken(double amount){
 
-        String clientId = "aXx2CcgHxZP_30XSS48XxbgV_m1nbS2o_ZcUCmhx__4";
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl(sellersUrl)
+                .queryParam("clientId", clientId)
+                .queryParam("price", amount);
 
-        String url = "https://localhost:8088/sellers/pay/"+clientId+"/"+amount;
+
+        System.out.println(builder.build().encode().toUri());
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
         HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(url,HttpMethod.POST, requestEntity, String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(builder.build().encode().toUri(),HttpMethod.POST, requestEntity, String.class);
+
 
         return exchange.getBody();
     }
+
+    public String paymentSuccess(String requestId){
+        return frontUrl+"?success="+requestId;
+    }
+
+    public String paymentFail(String requestId){
+        return frontUrl+"?fail="+requestId;
+    }
+
+    public String paymentError(String requestId){
+        return frontUrl+"?error="+requestId;
+    }
+
 
 
 }

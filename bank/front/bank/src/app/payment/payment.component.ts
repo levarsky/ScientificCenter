@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from '@angular/forms';
 import {Payment} from "../model"
 import { PaymentService} from '../services/payment.service'
+import {ActivatedRoute} from "@angular/router";
 
 @Component({
   selector: 'app-payment',
@@ -12,10 +13,18 @@ export class PaymentComponent implements OnInit {
 
   paymentForm: FormGroup;
   payment : Payment;
+  paymentId;
 
-  constructor(private formBuilder: FormBuilder, private paymentService : PaymentService) { }
+  constructor(private formBuilder: FormBuilder,
+              private paymentService : PaymentService,
+              private route: ActivatedRoute) { }
 
   ngOnInit() {
+
+    this.route.queryParams.subscribe(params => {console.log(params)
+        this.paymentId = params.paymentId;
+    ;})
+
       this.paymentForm = this.formBuilder.group({
               pan: [''],
               securityCode: [''],
@@ -26,8 +35,9 @@ export class PaymentComponent implements OnInit {
 
   onSubmit(){
     this.payment = this.paymentForm.value;
-    this.paymentService.pay(this.payment).subscribe(data => {
-      console.log("Stigao response");
+    this.paymentService.pay(this.payment,this.paymentId).subscribe(data => {
+      console.log(data);
+      window.location.href = data.redirectUrl;
     })
   }
 

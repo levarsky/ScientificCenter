@@ -20,14 +20,12 @@ public class RequestController {
 
     @RequestMapping(method = RequestMethod.POST)
     public ResponseEntity<?> create(@RequestBody Request request) {
-        requestService.generateResponse(request);
-        return new ResponseEntity<>(HttpStatus.OK);
+        return new ResponseEntity<>(requestService.generateResponse(request),HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/{id}",method = RequestMethod.POST)
-    public ResponseEntity<?> pay(@RequestBody Payment payment, @PathVariable(value = "id") String id) {
-        requestService.pay(payment,id);
-        return new ResponseEntity<>(HttpStatus.OK);
+    @RequestMapping(value = "/pay",method = RequestMethod.POST)
+    public ResponseEntity<?> pay(@RequestBody Payment payment, @RequestParam String paymentId) {
+        return new ResponseEntity<>(requestService.pay(payment,paymentId),HttpStatus.OK);
     }
 
 }

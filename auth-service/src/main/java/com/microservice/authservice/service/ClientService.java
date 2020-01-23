@@ -53,7 +53,7 @@ public class ClientService {
         oauthClientDetails.setClientId(clientId);
         oauthClientDetails.setClientSecret(passwordEncoder.encode(secret));
         oauthClientDetails.setAccessTokenValidity(36000);
-        oauthClientDetails.setRefreshTokenValidity(36000);
+        oauthClientDetails.setRefreshTokenValidity(360000);
         oauthClientDetails.setScope("server");
         oauthClientDetails.setAuthorizedGrantTypes("refresh,client_credentials");
 

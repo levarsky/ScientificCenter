@@ -8,13 +8,15 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { FormsModule, ReactiveFormsModule }         from '@angular/forms';
 import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { BankComponent } from './bank/bank.component';
+import { PaymentStatusComponent } from './payment-status/payment-status.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     PaymentComponent,
     NavbarComponent,
-    BankComponent
+    BankComponent,
+    PaymentStatusComponent
   ],
   imports: [
     BrowserModule,

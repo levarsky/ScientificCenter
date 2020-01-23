@@ -71,7 +71,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-sm-9 col-md-7 col-lg-5 mx-auto\">\n      <div class=\"card card-signin my-5\">\n        <div class=\"card-body\">\n          <h5 class=\"card-title text-center\">Payment</h5>\n          <form class=\"form-signin\" [formGroup]=\"paymentForm\" (ngSubmit)=\"onSubmit()\">\n            <div class=\"form-label-group\">\n              <label for=\"price\">Price</label>\n              <input type=\"text\" ngModel id=\"price\" class=\"form-control\" autofocus\n                     [formControlName]=\"'price'\" name=\"price\" required/>\n            </div>\n            <hr class=\"my-4\">\n            <button type=\"submit\" class=\"form-control\" (click)=\"onSubmit()\">Pay</button>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n");
+/* harmony default export */ __webpack_exports__["default"] = ("<div class=\"container\">\n  <div class=\"row\">\n    <div class=\"col-sm-9 col-md-7 col-lg-5 mx-auto\">\n      <div class=\"card card-signin my-5\">\n        <div class=\"card-body\">\n          <h5 class=\"card-title text-center\">Payment</h5>\n          <form class=\"form-signin\" [formGroup]=\"paymentForm\" (ngSubmit)=\"onSubmit()\">\n            <div class=\"form-label-group\">\n              <label for=\"price\">Price</label>\n              <input type=\"text\" id=\"price\" class=\"form-control\" autofocus\n                     [formControlName]=\"'price'\" name=\"price\" required/>\n            </div>\n            <hr class=\"my-4\">\n            <button type=\"submit\" class=\"form-control\">Pay</button>\n          </form>\n        </div>\n      </div>\n    </div>\n  </div>\n</div>\n");
 
 /***/ }),
 
@@ -318,15 +318,12 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
 /* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
 /* harmony import */ var _payment_payment_component__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./payment/payment.component */ "./src/app/payment/payment.component.ts");
-/* harmony import */ var _bank_bank_component__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./bank/bank.component */ "./src/app/bank/bank.component.ts");
-
 
 
 
 
 const routes = [
     { path: '', component: _payment_payment_component__WEBPACK_IMPORTED_MODULE_3__["PaymentComponent"] },
-    { path: 'forgot-password', component: _bank_bank_component__WEBPACK_IMPORTED_MODULE_4__["BankComponent"] }
 ];
 let AppRoutingModule = class AppRoutingModule {
 };
@@ -405,8 +402,6 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _angular_forms__WEBPACK_IMPORTED_MODULE_7__ = __webpack_require__(/*! @angular/forms */ "./node_modules/@angular/forms/fesm2015/forms.js");
 /* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_8__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
 /* harmony import */ var _bank_bank_component__WEBPACK_IMPORTED_MODULE_9__ = __webpack_require__(/*! ./bank/bank.component */ "./src/app/bank/bank.component.ts");
-/* harmony import */ var _incterceptor_interceptor__WEBPACK_IMPORTED_MODULE_10__ = __webpack_require__(/*! ./incterceptor/interceptor */ "./src/app/incterceptor/interceptor.ts");
-
 
 
 
@@ -435,9 +430,9 @@ AppModule = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
             _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HttpClientModule"],
         ],
         providers: [
-            [
-                { provide: _angular_common_http__WEBPACK_IMPORTED_MODULE_8__["HTTP_INTERCEPTORS"], useClass: _incterceptor_interceptor__WEBPACK_IMPORTED_MODULE_10__["Interceptor"], multi: true }
-            ]
+        // [
+        //   {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }
+        // ]
         ],
         bootstrap: [_app_component__WEBPACK_IMPORTED_MODULE_4__["AppComponent"]]
     })
@@ -486,53 +481,6 @@ BankComponent = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
         styles: [tslib__WEBPACK_IMPORTED_MODULE_0__["__importDefault"](__webpack_require__(/*! ./bank.component.css */ "./src/app/bank/bank.component.css")).default]
     })
 ], BankComponent);
-
-
-
-/***/ }),
-
-/***/ "./src/app/incterceptor/interceptor.ts":
-/*!*********************************************!*\
-  !*** ./src/app/incterceptor/interceptor.ts ***!
-  \*********************************************/
-/*! exports provided: Interceptor */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "Interceptor", function() { return Interceptor; });
-/* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
-/* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
-/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
-/* harmony import */ var rxjs_operators__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! rxjs/operators */ "./node_modules/rxjs/_esm2015/operators/index.js");
-
-
-
-
-
-let Interceptor = class Interceptor {
-    constructor(_router) {
-        this._router = _router;
-    }
-    intercept(request, next) {
-        console.log("interceptor radi ");
-        // @ts-ignore
-        return next.handle(request).pipe(Object(rxjs_operators__WEBPACK_IMPORTED_MODULE_4__["map"])((event) => {
-            if (event instanceof _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpErrorResponse"]) {
-                console.log('event--->>>', event);
-            }
-            return event;
-        }));
-        //request = request.clone({headers: request.headers.set('Authorization', 'Bearer ' + token)});
-    }
-};
-Interceptor.ctorParameters = () => [
-    { type: _angular_router__WEBPACK_IMPORTED_MODULE_3__["Router"] }
-];
-Interceptor = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
-    Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])()
-], Interceptor);
 
 
 
@@ -624,37 +572,9 @@ let PaymentComponent = class PaymentComponent {
         });
     }
     onSubmit() {
-        var xhr = new XMLHttpRequest();
-        xhr.onreadystatechange = function () {
-            // if request done
-            if (xhr.readyState == XMLHttpRequest.DONE) {
-                // if 200 http status received
-                if (xhr.status == 200) {
-                    // server response as text
-                    document.body.innerText = 'Response: ' + xhr.responseText;
-                }
-                else {
-                    // error status
-                    document.body.innerText = 'Error: ' + xhr.status;
-                }
-            }
-        };
-        var data = 'This is my data';
-        // initialize or re-initialize POST request
-        xhr.open('GET', '/api', true);
-        // send request with data
-        //xhr.send();
-        let headers = xhr
-            .getAllResponseHeaders()
-            .split('\r\n')
-            .reduce((result, current) => {
-            let [name, value] = current.split(': ');
-            result[name] = value;
-            return result;
-            console.log(result);
-        }, {});
-        console.log(headers);
-        this.paymentService.pay(1).toPromise();
+        this.paymentService.pay(this.paymentForm.value.price).subscribe(data => {
+            window.location.href = data.url;
+        });
     }
 };
 PaymentComponent.ctorParameters = () => [
@@ -685,22 +605,28 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "PaymentServiceService", function() { return PaymentServiceService; });
 /* harmony import */ var tslib__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! tslib */ "./node_modules/tslib/tslib.es6.js");
 /* harmony import */ var _angular_core__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! @angular/core */ "./node_modules/@angular/core/fesm2015/core.js");
-/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+/* harmony import */ var _angular_router__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! @angular/router */ "./node_modules/@angular/router/fesm2015/router.js");
+/* harmony import */ var _angular_common_http__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! @angular/common/http */ "./node_modules/@angular/common/fesm2015/http.js");
+
 
 
 
 let PaymentServiceService = class PaymentServiceService {
-    constructor(http) {
+    constructor(http, router) {
         this.http = http;
-        this.basicPath = '/api';
+        this.router = router;
+        this.basicPath = 'pay/';
     }
     pay(value) {
-        console.log("Service placam: " + value);
-        return this.http.get(this.basicPath);
+        return this.http.get(this.basicPath + value);
+    }
+    testRedirect() {
+        return this.http.get('test/');
     }
 };
 PaymentServiceService.ctorParameters = () => [
-    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_2__["HttpClient"] }
+    { type: _angular_common_http__WEBPACK_IMPORTED_MODULE_3__["HttpClient"] },
+    { type: _angular_router__WEBPACK_IMPORTED_MODULE_2__["Router"] }
 ];
 PaymentServiceService = tslib__WEBPACK_IMPORTED_MODULE_0__["__decorate"]([
     Object(_angular_core__WEBPACK_IMPORTED_MODULE_1__["Injectable"])({

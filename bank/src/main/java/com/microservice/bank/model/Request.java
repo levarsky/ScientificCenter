@@ -34,7 +34,7 @@ public class Request {
     @Column
     private String errorUrl;
 
-    @Column(length = 30)
+    @Column
     private String paymentId;
 
     public Request(){

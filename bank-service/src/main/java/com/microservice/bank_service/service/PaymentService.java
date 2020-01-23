@@ -1,20 +1,18 @@
 package com.microservice.bank_service.service;
 
-import com.microservice.bank_service.model.Client;
-import com.microservice.bank_service.model.PaymentRequest;
-import com.microservice.bank_service.model.Request;
-import com.microservice.bank_service.model.Transaction;
+import com.microservice.bank_service.model.*;
+import com.microservice.bank_service.repository.ClientRepository;
 import com.microservice.bank_service.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
 import java.util.Date;
+import java.util.Map;
 import java.util.concurrent.ThreadLocalRandom;
 
 @Service
@@ -25,16 +23,26 @@ public class PaymentService {
     private TransactionRepository transactionRepository;
 
     @Autowired
+    private ClientService clientService;
+
+    @Autowired
     private RestTemplate restTemplate;
 
-    public PaymentRequest pay(PaymentRequest paymentRequest){
+    @Autowired
+    private RestTemplate restTemplateBalanced;
 
-        String url  = "https://localhost:8765";
+    private String sellersService = "https://sellers-service/sellers/payment/status";
+
+    public Object pay(PaymentRequest paymentRequest){
+
+        String url  = "https://localhost:8765/pay";
         String urlBank  = "https://localhost:8768";
 
         System.out.println(paymentRequest.getClient().getClientId());
 
-        Client client = paymentRequest.getClient();
+        Client client = clientService.getClientById(paymentRequest.getClient().getClientId());
+
+        System.out.println(paymentRequest.toString());
 
         Transaction transaction = new Transaction();
         transaction.setMerchantOrderId(ThreadLocalRandom.current().nextInt(1000000, 2000000000));
@@ -43,10 +51,13 @@ public class PaymentService {
         transaction.setTimestamp(new Date());
         transactionRepository.save(transaction);
 
+        paymentRequest.setTransactionId(transaction.getMerchantOrderId().toString());
+
         Request request = new Request();
         request.setAmount(paymentRequest.getAmount());
-        request.setMerchantId("FDSDGREGERGERGEG");
-        request.setMerchantPassword("FDSAFSFASDFDASFDSAFDSSDF");
+        request.setMerchantId(client.getMerchantId());
+        request.setMerchantPassword(client.getMerchantPassword());
+        request.setMerchantOrderId(transaction.getMerchantOrderId());
         request.setMerchantTimestamp(new Date());
 
 
@@ -57,39 +68,71 @@ public class PaymentService {
 
         HttpEntity<Request> requestEntity = new HttpEntity<Request>(request);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(urlBank+"/request", HttpMethod.POST, requestEntity,String.class);
+        ResponseEntity<Object> exchange = restTemplate.exchange(urlBank+"/request", HttpMethod.POST, requestEntity, Object.class);
 
         paymentRequest.setTransactionId(transaction.getMerchantOrderId().toString());
+
+        System.out.println(exchange.getBody());
+
+        Map map =(Map) exchange.getBody();
+
+        paymentRequest.setUrl(map.get("redirectUrl").toString());
 
         return paymentRequest;
 
     }
 
-    public void successful(Integer id){
+    public Object successful(Integer id){
+        System.out.println(id);
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
         transaction.setSuccessful(true);
         transactionRepository.save(transaction);
-        //REDIREKTOVATI
+        System.out.println("SAVEOVAO");
+
+        return Collections.singletonMap("redirectUrl",getUrl(sellersService,transaction.getMerchantOrderId().toString(),PaymentStatus.SUCCESSFUL));
+
     }
 
-    public void failed(Integer id){
+    public Object failed(Integer id){
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
         transaction.setSuccessful(false);
         transactionRepository.save(transaction);
-        //REDIREKTOVATI
+        return Collections.singletonMap("redirectUrl",getUrl(sellersService,transaction.getMerchantOrderId().toString(),PaymentStatus.FAILED));
+
     }
 
-    public void error(Integer id){
+    public Object error(Integer id){
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
         transaction.setSuccessful(false);
         transactionRepository.save(transaction);
-        //REDIREKTOVATI
+        return Collections.singletonMap("redirectUrl",getUrl(sellersService,transaction.getMerchantOrderId().toString(),PaymentStatus.ERROR));
+
+    }
+
+    public String getUrl(String url,String transactionId, PaymentStatus paymentStatus){
+
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .queryParam("transactionId",transactionId)
+                .queryParam("paymentStatus",paymentStatus);
+
+        String paymentUrl = builder.build().encode().toUriString();
+
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
+
+        ResponseEntity<String> exchange = restTemplateBalanced.exchange(paymentUrl, HttpMethod.GET, requestEntity, String.class);
+
+        return exchange.getBody();
+
     }
 
 }
