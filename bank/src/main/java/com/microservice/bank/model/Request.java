@@ -13,14 +13,14 @@ public class Request {
     @Column(length = 30)
     private String merchantId;
 
-    @Column(length = 100)
+    @Column
     private String merchantPassword;
 
     @Column
     private Double amount;
 
     @Column
-    private Integer merchantOrderId;
+    private Long merchantOrderId;
 
     @Column
     private Date merchantTimestamp;
@@ -56,11 +56,11 @@ public class Request {
         this.amount = amount;
     }
 
-    public Integer getMerchantOrderId() {
+    public Long getMerchantOrderId() {
         return merchantOrderId;
     }
 
-    public void setMerchantOrderId(Integer merchantOrderId) {
+    public void setMerchantOrderId(Long merchantOrderId) {
         this.merchantOrderId = merchantOrderId;
     }
 

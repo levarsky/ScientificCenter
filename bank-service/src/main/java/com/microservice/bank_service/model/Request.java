@@ -1,5 +1,6 @@
 package com.microservice.bank_service.model;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 public class Request {
@@ -7,7 +8,7 @@ public class Request {
     private String merchantId;
     private String merchantPassword;
     private Double amount;
-    private Integer merchantOrderId;
+    private Long merchantOrderId;
     private Date merchantTimestamp;
     private String successUrl;
     private String failedUrl;
@@ -29,11 +30,11 @@ public class Request {
         this.amount = amount;
     }
 
-    public Integer getMerchantOrderId() {
+    public Long getMerchantOrderId() {
         return merchantOrderId;
     }
 
-    public void setMerchantOrderId(Integer merchantOrderId) {
+    public void setMerchantOrderId(Long merchantOrderId) {
         this.merchantOrderId = merchantOrderId;
     }
 

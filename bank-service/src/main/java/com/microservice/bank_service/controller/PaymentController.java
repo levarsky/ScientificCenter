@@ -21,18 +21,18 @@ public class PaymentController {
     }
 
     @RequestMapping(value="/successful/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> successful(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<?> successful(@PathVariable(value = "id") Long id) {
 
         return new ResponseEntity<>(paymentService.successful(id),HttpStatus.OK);
     }
 
     @RequestMapping(value="/failed/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> failed(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<?> failed(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<>(paymentService.failed(id),HttpStatus.OK);
     }
 
     @RequestMapping(value="/error/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> error(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<?> error(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<>(paymentService.error(id), HttpStatus.OK);
 
     }
