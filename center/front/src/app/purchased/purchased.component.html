@@ -1,0 +1,20 @@
+<table class="table table-hover">
+  <thead>
+  <tr>
+    <th scope="col">Image</th>
+    <th scope="col">No</th>
+    <th scope="col">Title</th>
+    <th scope="col">Description</th>
+    <th scope="col">Price</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let publication of publications">
+    <td><img src="https://img.icons8.com/color/48/000000/add-book.png"></td>
+    <td>{{publication.no}}</td>
+    <td>{{publication.title}}</td>
+    <td>{{publication.description}}</td>
+    <td>{{publication.price}}&euro;</td>
+  </tr>
+  </tbody>
+</table>
