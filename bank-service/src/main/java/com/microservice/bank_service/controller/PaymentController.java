@@ -1,5 +1,13 @@
 package com.microservice.bank_service.controller;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.microservice.bank_service.model.Client;
 import com.microservice.bank_service.model.PaymentRequest;
 import com.microservice.bank_service.service.PaymentService;
 import com.netflix.ribbon.proxy.annotation.Http;
@@ -20,19 +28,29 @@ public class PaymentController {
         return new ResponseEntity<>(paymentService.pay(paymentRequest), HttpStatus.OK);
     }
 
+    @RequestMapping(value="/proba/{clientId}/{amount}", method = RequestMethod.GET)
+    public PaymentRequest proba(@PathVariable(value = "clientId") String clientId, @PathVariable(value = "amount") Double amount) {
+        PaymentRequest pr = new PaymentRequest();
+        Client client = new Client();
+        client.setClientId(clientId);
+        pr.setClient(client);
+        pr.setAmount(amount);
+    	return (PaymentRequest)paymentService.pay(pr);
+    }
+    
     @RequestMapping(value="/successful/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> successful(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<?> successful(@PathVariable(value = "id") Long id) {
 
         return new ResponseEntity<>(paymentService.successful(id),HttpStatus.OK);
     }
 
     @RequestMapping(value="/failed/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> failed(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<?> failed(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<>(paymentService.failed(id),HttpStatus.OK);
     }
 
     @RequestMapping(value="/error/{id}", method = RequestMethod.POST)
-    public ResponseEntity<?> error(@PathVariable(value = "id") Integer id) {
+    public ResponseEntity<?> error(@PathVariable(value = "id") Long id) {
         return new ResponseEntity<>(paymentService.error(id), HttpStatus.OK);
 
     }

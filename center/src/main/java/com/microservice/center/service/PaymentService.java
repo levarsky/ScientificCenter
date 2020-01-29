@@ -2,12 +2,14 @@ package com.microservice.center.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
-
-import java.util.Collections;
 
 @Service
 public class PaymentService {
@@ -30,7 +32,6 @@ public class PaymentService {
                 .fromHttpUrl(sellersUrl)
                 .queryParam("clientId", clientId)
                 .queryParam("price", amount);
-
 
         System.out.println(builder.build().encode().toUri());
 

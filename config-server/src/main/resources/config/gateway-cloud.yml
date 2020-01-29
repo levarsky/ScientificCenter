@@ -6,7 +6,7 @@ server:
     key-store: classpath:gateway.p12
     key-store-password: password
     key-alias: localhost
-    client-auth: need
+    #client-auth: need
     trust-store: classpath:eurekaTrust.jks
     trust-store-password: password
 

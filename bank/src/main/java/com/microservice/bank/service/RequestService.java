@@ -1,8 +1,5 @@
 package com.microservice.bank.service;
-import com.microservice.bank.model.Account;
-import com.microservice.bank.model.Payment;
-import com.microservice.bank.model.Request;
-import com.microservice.bank.model.Response;
+import com.microservice.bank.model.*;
 import com.microservice.bank.repository.AccountRepository;
 import com.microservice.bank.repository.RequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,13 +22,14 @@ public class RequestService {
     private RequestRepository requestRepository;
 
     @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
     private RestTemplate restTemplate;
 
     public Object generateResponse(Request request){
 
         String bankPaymentForm = "http://localhost:4205/paymentRequest";
-
-
 
         System.out.println(request.toString());
 
@@ -65,15 +63,19 @@ public class RequestService {
     }
 
     public Object pay(Payment payment, String id){
-        List<Account> accounts = accountRepository.findAll();
-        Account pom = null;
+
+        Account payerAccount = null;
         Date date = new Date();
-        for(Account a : accounts){
-            if(a.getCardNumber().equals(payment.getPan()) && a.getCvv().equals(payment.getSecurityCode()) &&
-                a.getCardHolderName().equals(payment.getCardHolderName()) && payment.getExpirationDate().after(date)){
-                pom = a;
-            }
-        }
+
+        Optional<Account> optionalAccount = accountRepository.
+                                        findByCardNumberAndCvvAndCardHolderNameAndExpirationDateIsGreaterThanEqual(
+                                                payment.getPan(),
+                                                payment.getSecurityCode(),
+                                                payment.getCardHolderName(),
+                                                payment.getExpirationDate());
+
+
+        payerAccount = optionalAccount.get();
 
         String redirectUrl;
 
@@ -83,20 +85,44 @@ public class RequestService {
             return Collections.singletonMap("redirectUrl",redirectUrl);
         }
 
-        if(pom == null)
+        if(payerAccount == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Invalid data!");
 
-        if(pom.getAmount() < request.getAmount()){
+        if(payerAccount.getAmount() < request.getAmount()){
             redirectUrl=request.getFailedUrl();
             return Collections.singletonMap("redirectUrl",redirectUrl);
         }
 
-        Account prodavac = accountRepository.findByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
+        Account clientAccount = accountRepository.
+                                            findByMerchantIdAndMerchantPassword(
+                                            request.getMerchantId(),
+                                            request.getMerchantPassword());
 
-        pom.setAmount(pom.getAmount() - request.getAmount());
-        prodavac.setAmount(prodavac.getAmount() + request.getAmount());
 
-        accountRepository.save(pom);
+        Transaction transactionDebit = new Transaction();
+
+        transactionDebit.setAmount(request.getAmount());
+        transactionDebit.setRequest(request);
+        transactionDebit.setTransactionDate(new Date());
+        transactionDebit.setAccount(payerAccount);
+
+        payerAccount.setAmount(payerAccount.getAmount() - request.getAmount());
+
+        transactionService.saveNew(transactionDebit,"DEBIT");
+        accountRepository.save(payerAccount);
+
+
+        Transaction transactionCredit = new Transaction();
+        transactionCredit.setAmount(request.getAmount());
+        transactionCredit.setRequest(request);
+        transactionCredit.setTransactionDate(new Date());
+        transactionCredit.setAccount(clientAccount);
+
+        clientAccount.setAmount(clientAccount.getAmount() + request.getAmount());
+
+        transactionService.saveNew(transactionCredit,"CREDIT");
+        accountRepository.save(clientAccount);
+
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);

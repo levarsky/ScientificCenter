@@ -45,7 +45,7 @@ public class PaymentService {
         System.out.println(paymentRequest.toString());
 
         Transaction transaction = new Transaction();
-        transaction.setMerchantOrderId(ThreadLocalRandom.current().nextInt(1000000, 2000000000));
+        transaction.setMerchantOrderId(ThreadLocalRandom.current().nextLong(1000000000L, 10000000000L));
         transaction.setAmount(paymentRequest.getAmount());
         transaction.setClientId(client.getClientId());
         transaction.setTimestamp(new Date());
@@ -67,7 +67,6 @@ public class PaymentService {
 
 
         HttpEntity<Request> requestEntity = new HttpEntity<Request>(request);
-
         ResponseEntity<Object> exchange = restTemplate.exchange(urlBank+"/request", HttpMethod.POST, requestEntity, Object.class);
 
         paymentRequest.setTransactionId(transaction.getMerchantOrderId().toString());
@@ -82,7 +81,7 @@ public class PaymentService {
 
     }
 
-    public Object successful(Integer id){
+    public Object successful(Long id){
         System.out.println(id);
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
@@ -95,7 +94,7 @@ public class PaymentService {
 
     }
 
-    public Object failed(Integer id){
+    public Object failed(Long id){
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
@@ -105,7 +104,7 @@ public class PaymentService {
 
     }
 
-    public Object error(Integer id){
+    public Object error(Long id){
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");

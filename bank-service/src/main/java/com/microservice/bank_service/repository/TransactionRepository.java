@@ -7,5 +7,5 @@ import org.springframework.data.jpa.repository.Query;
 
 public interface TransactionRepository extends JpaRepository<Transaction, Long> {
 
-    Transaction findByMerchantOrderId(Integer merchantOrderId);
+    Transaction findByMerchantOrderId(Long merchantOrderId);
 }
