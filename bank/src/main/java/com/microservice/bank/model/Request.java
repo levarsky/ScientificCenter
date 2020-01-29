@@ -13,14 +13,14 @@ public class Request {
     @Column(length = 30)
     private String merchantId;
 
-    @Column(length = 100)
+    @Column
     private String merchantPassword;
 
     @Column
     private Double amount;
 
     @Column
-    private Integer merchantOrderId;
+    private Long merchantOrderId;
 
     @Column
     private Date merchantTimestamp;
@@ -34,7 +34,7 @@ public class Request {
     @Column
     private String errorUrl;
 
-    @Column(length = 30)
+    @Column
     private String paymentId;
 
     public Request(){
@@ -52,48 +52,48 @@ public class Request {
         return amount;
     }
 
-    public void setAmount(Double AMOUNT) {
-        this.amount = AMOUNT;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
-    public Integer getMerchantOrderId() {
+    public Long getMerchantOrderId() {
         return merchantOrderId;
     }
 
-    public void setMerchantOrderId(Integer MERCHANT_ORDER_ID) {
-        this.merchantOrderId = MERCHANT_ORDER_ID;
+    public void setMerchantOrderId(Long merchantOrderId) {
+        this.merchantOrderId = merchantOrderId;
     }
 
     public Date getMerchantTimestamp() {
         return merchantTimestamp;
     }
 
-    public void setMerchantTimestamp(Date MERCHANT_TIMESTAMP) {
-        this.merchantTimestamp = MERCHANT_TIMESTAMP;
+    public void setMerchantTimestamp(Date merchantTimestamp) {
+        this.merchantTimestamp = merchantTimestamp;
     }
 
     public String getSuccessUrl() {
         return successUrl;
     }
 
-    public void setSuccessUrl(String SUCCESS_URL) {
-        this.successUrl = SUCCESS_URL;
+    public void setSuccessUrl(String successUrl) {
+        this.successUrl = successUrl;
     }
 
     public String getFailedUrl() {
         return failedUrl;
     }
 
-    public void setFailedUrl(String FAILED_URL) {
-        this.failedUrl = FAILED_URL;
+    public void setFailedUrl(String failedUrl) {
+        this.failedUrl = failedUrl;
     }
 
     public String getErrorUrl() {
         return errorUrl;
     }
 
-    public void setErrorUrl(String ERROR_URL) {
-        this.errorUrl = ERROR_URL;
+    public void setErrorUrl(String errorUrl) {
+        this.errorUrl = errorUrl;
     }
 
     public Long getId() {
@@ -116,7 +116,7 @@ public class Request {
         return paymentId;
     }
 
-    public void setPaymentId(String PAYMENT_ID) {
-        this.paymentId = PAYMENT_ID;
+    public void setPaymentId(String paymentId) {
+        this.paymentId = paymentId;
     }
 }

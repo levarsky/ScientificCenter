@@ -22,7 +22,7 @@ export class HomeComponent implements OnInit {
   ngOnInit() {
 
     this.paymentForm = this.formBuilder.group({
-      amount:0,
+      amount:[{value:0,disabled: true}],
       payment: "",
     });
 
@@ -50,6 +50,7 @@ export class HomeComponent implements OnInit {
 
     this.paymentService.sendRequest(this.token,this.paymentForm.get("payment").value).subscribe(data=>{
       console.log(data);
+      window.location.href=data.url;
       }
     );
 

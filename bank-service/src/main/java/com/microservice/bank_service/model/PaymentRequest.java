@@ -9,6 +9,7 @@ public class PaymentRequest {
     private Client client;
     private Double amount;
     private String transactionId;
+    private String url;
 
     public PaymentRequest() {
     }
@@ -43,5 +44,13 @@ public class PaymentRequest {
 
     public void setTransactionId(String transactionId) {
         this.transactionId = transactionId;
+    }
+
+    public String getUrl() {
+        return url;
+    }
+
+    public void setUrl(String url) {
+        this.url = url;
     }
 }

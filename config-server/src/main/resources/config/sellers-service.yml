@@ -34,3 +34,7 @@ eureka:
     statusPageUrl: https://${eureka.instance.hostname}:${server.port}/info
     healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
     homePageUrl: https://localhost:${server.port}
+
+feign:
+  hystrix:
+    enabled: true

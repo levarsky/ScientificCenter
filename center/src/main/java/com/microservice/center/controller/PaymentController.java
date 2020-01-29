@@ -19,12 +19,8 @@ public class PaymentController {
     @Autowired
     private PaymentService paymentService;
 
-    private HttpClient httpClient = new HttpClient();
-
     @RequestMapping(value= "/{amount}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Resp> testController(@PathVariable(value="amount") Double amount) throws Exception {
-        System.out.println("Stiglo da platim: " + amount);
-        //String s = (String)httpClient.sendGet("https://localhost:8088/sellers/pay/red");
 
         String requestToken = this.paymentService.getToken(amount);
         System.out.println(requestToken);
@@ -32,6 +28,23 @@ public class PaymentController {
         Resp r = new Resp(url);
         return new ResponseEntity<>(r ,HttpStatus.OK);
     }
+
+    @RequestMapping(value= "/success",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> paymentSuccess(@RequestParam String requestId) throws Exception {
+        return new ResponseEntity<>(paymentService.paymentSuccess(requestId),HttpStatus.OK);
+    }
+
+    @RequestMapping(value= "/fail",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> paymentFail(@RequestParam String requestId) throws Exception {
+        return new ResponseEntity<>(paymentService.paymentFail(requestId),HttpStatus.OK);
+    }
+
+    @RequestMapping(value= "/error",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> paymentError(@RequestParam String requestId) throws Exception {
+        return new ResponseEntity<>(paymentService.paymentError(requestId),HttpStatus.OK);
+    }
+
+
 
 
 }

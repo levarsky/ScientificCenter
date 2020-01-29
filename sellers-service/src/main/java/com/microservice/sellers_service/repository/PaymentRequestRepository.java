@@ -7,4 +7,6 @@ import java.util.Optional;
 
 public interface PaymentRequestRepository extends JpaRepository<PaymentRequest,Long> {
     Optional<PaymentRequest> findByToken(String token);
+
+    Optional<PaymentRequest> findByTransactionId(String transactionId);
 }

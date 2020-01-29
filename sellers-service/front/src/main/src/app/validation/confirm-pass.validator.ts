@@ -5,14 +5,16 @@ export class ConfirmPasswordValidator {
     let password = registrationFormGroup.controls.password.value;
     let repeatPassword = registrationFormGroup.controls.passwordConfirm.value;
 
-    if (repeatPassword.length <= 6) {
-      return null;
-    }
+    if (password != null && repeatPassword != null) {
+      if (repeatPassword.length <= 0) {
+        return null;
+      }
 
-    if (repeatPassword !== password) {
-      return {
-        doesMatchPassword: true
-      };
+      if (repeatPassword !== password) {
+        return {
+          doesMatchPassword: true
+        };
+      }
     }
 
     return null;

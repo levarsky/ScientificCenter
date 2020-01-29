@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row">
     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-      <div class="card card-signin my-5">
+      <div class="card ">
         <div class="card-body">
           <h5 class="card-title text-center">Payment</h5>
           <form class="form-signin"  (ngSubmit)="onSubmit()" [formGroup]="paymentForm">
@@ -22,7 +22,7 @@
               <input type="date" id="date" [formControlName]="'expirationDate'" class="form-control" name="expirationDate" required/>
             </div>
             <hr class="my-4">
-            <button type="submit" class="form-control" (click)="onSubmit()">Pay</button>
+            <button type="submit" class="form-control" >Pay</button>
           </form>
         </div>
       </div>

@@ -16,11 +16,14 @@ public class Client {
     @Column
     private String clientName;
 
-    @Column(length = 30)
-    private String MERCHANT_ID;
+    @Column
+    private String successUrl;
 
-    @Column(length = 100)
-    private String MERCHANT_PASSWORD;
+    @Column
+    private String failedUrl;
+
+    @Column
+    private String errorUrl;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "CLIENT_ID"), inverseJoinColumns = @JoinColumn(name = "PAYMENT_TYPE_ID"))
@@ -59,5 +62,29 @@ public class Client {
 
     public void setPaymentTypes(List<PaymentType> paymentTypes) {
         this.paymentTypes = paymentTypes;
+    }
+
+    public String getSuccessUrl() {
+        return successUrl;
+    }
+
+    public void setSuccessUrl(String successUrl) {
+        this.successUrl = successUrl;
+    }
+
+    public String getFailedUrl() {
+        return failedUrl;
+    }
+
+    public void setFailedUrl(String failedUrl) {
+        this.failedUrl = failedUrl;
+    }
+
+    public String getErrorUrl() {
+        return errorUrl;
+    }
+
+    public void setErrorUrl(String errorUrl) {
+        this.errorUrl = errorUrl;
     }
 }

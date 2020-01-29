@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.view.RedirectView;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
@@ -23,10 +26,10 @@ public class TestSc {
     private TestService testService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public ModelAndView get() {
-        ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("redirect:https://127.0.0.1:8769");
-        return modelAndView;
-    }
+    public String handleFoo(HttpServletResponse httpServletResponse) throws IOException {
 
+        return "redirect:"+"https://www.google.com";
+    }
 }
+
+

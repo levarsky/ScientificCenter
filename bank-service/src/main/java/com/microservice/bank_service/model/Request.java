@@ -1,79 +1,80 @@
 package com.microservice.bank_service.model;
 
+import java.math.BigInteger;
 import java.util.Date;
 
 public class Request {
 
-    private String MERCHANT_ID;
-    private String MERCHANT_PASSWORD;
-    private Double AMOUNT;
-    private Integer MERCHANT_ORDER_ID;
-    private Date MERCHANT_TIMESTAMP;
-    private String SUCCESS_URL;
-    private String FAILED_URL;
-    private String ERROR_URL;
+    private String merchantId;
+    private String merchantPassword;
+    private Double amount;
+    private Long merchantOrderId;
+    private Date merchantTimestamp;
+    private String successUrl;
+    private String failedUrl;
+    private String errorUrl;
 
-    public String getMERCHANT_ID() {
-        return MERCHANT_ID;
+    public String getMerchantId() {
+        return merchantId;
     }
 
-    public void setMERCHANT_ID(String MERCHANT_ID) {
-        this.MERCHANT_ID = MERCHANT_ID;
+    public void setMerchantId(String merchantId) {
+        this.merchantId = merchantId;
     }
 
-    public Double getAMOUNT() {
-        return AMOUNT;
+    public Double getAmount() {
+        return amount;
     }
 
-    public void setAMOUNT(Double AMOUNT) {
-        this.AMOUNT = AMOUNT;
+    public void setAmount(Double amount) {
+        this.amount = amount;
     }
 
-    public Integer getMERCHANT_ORDER_ID() {
-        return MERCHANT_ORDER_ID;
+    public Long getMerchantOrderId() {
+        return merchantOrderId;
     }
 
-    public void setMERCHANT_ORDER_ID(Integer MERCHANT_ORDER_ID) {
-        this.MERCHANT_ORDER_ID = MERCHANT_ORDER_ID;
+    public void setMerchantOrderId(Long merchantOrderId) {
+        this.merchantOrderId = merchantOrderId;
     }
 
-    public Date getMERCHANT_TIMESTAMP() {
-        return MERCHANT_TIMESTAMP;
+    public Date getMerchantTimestamp() {
+        return merchantTimestamp;
     }
 
-    public void setMERCHANT_TIMESTAMP(Date MERCHANT_TIMESTAMP) {
-        this.MERCHANT_TIMESTAMP = MERCHANT_TIMESTAMP;
+    public void setMerchantTimestamp(Date merchantTimestamp) {
+        this.merchantTimestamp = merchantTimestamp;
     }
 
-    public String getSUCCESS_URL() {
-        return SUCCESS_URL;
+    public String getSuccessUrl() {
+        return successUrl;
     }
 
-    public void setSUCCESS_URL(String SUCCESS_URL) {
-        this.SUCCESS_URL = SUCCESS_URL;
+    public void setSuccessUrl(String successUrl) {
+        this.successUrl = successUrl;
     }
 
-    public String getFAILED_URL() {
-        return FAILED_URL;
+    public String getFailedUrl() {
+        return failedUrl;
     }
 
-    public void setFAILED_URL(String FAILED_URL) {
-        this.FAILED_URL = FAILED_URL;
+    public void setFailedUrl(String failedUrl) {
+        this.failedUrl = failedUrl;
     }
 
-    public String getERROR_URL() {
-        return ERROR_URL;
+    public String getErrorUrl() {
+        return errorUrl;
     }
 
-    public void setERROR_URL(String ERROR_URL) {
-        this.ERROR_URL = ERROR_URL;
+    public void setErrorUrl(String errorUrl) {
+        this.errorUrl = errorUrl;
     }
 
-    public String getMERCHANT_PASSWORD() {
-        return MERCHANT_PASSWORD;
+    public String getMerchantPassword() {
+        return merchantPassword;
     }
 
-    public void setMERCHANT_PASSWORD(String MERCHANT_PASSWORD) {
-        this.MERCHANT_PASSWORD = MERCHANT_PASSWORD;
+    public void setMerchantPassword(String merchantPassword) {
+        this.merchantPassword = merchantPassword;
     }
 }

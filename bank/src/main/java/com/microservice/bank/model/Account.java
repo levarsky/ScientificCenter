@@ -4,7 +4,9 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.Digits;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class Account {
@@ -20,7 +22,7 @@ public class Account {
     @Length(max = 4, min = 3)
     private String cvv;
 
-    @Column(length = 16)
+    @Column(length = 16,unique=true)
     private String cardNumber;
 
     @Column
@@ -30,11 +32,14 @@ public class Account {
     @Digits(integer = 10 /*precision*/, fraction = 2 /*scale*/)
     private Double amount;
 
-    @Column(length = 30)
+    @Column(length = 30,unique = true)
     private String merchantId;
 
     @Column(length = 100)
     private String merchantPassword;
+
+    @OneToMany(mappedBy="account",cascade = CascadeType.ALL)
+    private List<Transaction> transactions = new ArrayList<>();
 
     public Account(){}
 
@@ -109,5 +114,13 @@ public class Account {
 
     public void setCardHolderName(String cardHolderName) {
         this.cardHolderName = cardHolderName;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

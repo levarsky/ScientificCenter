@@ -1,18 +1,18 @@
 package com.microservice.sellers_service.service;
 
+import com.microservice.sellers_service.communication.BankPaymentServices;
 import com.microservice.sellers_service.model.Client;
 import com.microservice.sellers_service.model.PaymentRequest;
 import com.microservice.sellers_service.model.PaymentType;
 import com.microservice.sellers_service.repository.PaymentRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -26,6 +26,8 @@ public class PaymentRequestService {
     private PaymentTypeService paymentTypeService;
     @Autowired
     private RestTemplate restTemplate;
+    @Autowired
+    private BankPaymentServices bankPaymentServices;
 
     public PaymentRequest createRequest(String clientId,double amount){
 
@@ -46,16 +48,45 @@ public class PaymentRequestService {
 
     }
 
-    public PaymentRequest sendPaymentRequest(String token, Long id){
+    public PaymentRequest getRequestByTransactionId(String transactionId){
+        return this.paymentRequestRepository.findByTransactionId(transactionId).orElseThrow(
+                ()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Transaction does not exist"));
+
+    }
+
+    public Object sendPaymentRequest(String token, Long id){
 
         PaymentRequest paymentRequest = getRequest(token);
         PaymentType paymentType = paymentTypeService.getPaymentType(id);
 
-        HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(paymentRequest);
+        paymentRequest.setPaymentType(paymentType);
 
-        ResponseEntity<PaymentRequest> exchange = restTemplate.exchange("https://"+"localhost:8765"+"/pay", HttpMethod.POST, requestEntity,PaymentRequest.class);
+        HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(paymentRequest);
+        ResponseEntity<PaymentRequest> exchange = null;
+
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.add("amount",paymentRequest.getAmount().toString());
+
+
+
+
+        if(paymentType.getServiceName()!="paypal-service"){
+            exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity, PaymentRequest.class);
+        }else{
+            //exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay?amount="+paymentRequest.getAmount(), HttpMethod.POST, new HttpEntity<>(httpHeaders),PaymentRequest.class);
+        }
+
+        //PaymentRequest paymentRequest1 = this.bankPaymentServices.create(paymentRequest);
+
+        System.out.println(exchange.getBody());
+
+        PaymentRequest paymentRequestReceived = (PaymentRequest) exchange.getBody();
+
+        paymentRequest.setTransactionId(paymentRequestReceived.getTransactionId());
+        paymentRequestRepository.save(paymentRequest);
 
         return exchange.getBody();
     }
+
 
 }

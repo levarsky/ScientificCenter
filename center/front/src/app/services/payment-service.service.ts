@@ -10,7 +10,7 @@ import {map} from "rxjs/operators";
 })
 export class PaymentServiceService {
 
-  private basicPath = 'api/pay/';
+  private basicPath = 'center/pay/';
 
   constructor(private http: HttpClient, private router: Router) { }
 
@@ -18,4 +18,9 @@ export class PaymentServiceService {
     return this.http.get(this.basicPath+value);
 
   }
+
+  testRedirect():Observable<any>{
+    return this.http.get('test/');
+  }
+
 }

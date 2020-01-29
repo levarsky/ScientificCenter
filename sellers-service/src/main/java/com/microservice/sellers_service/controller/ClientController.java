@@ -29,8 +29,8 @@ public class ClientController {
 
     private String serverPath = "http://localhost:4201";
 
-    @RequestMapping(value = "/{clientId}/{price}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public String request(@PathVariable(value = "price") Double price,@PathVariable(value = "clientId") String clientId) {
+    @RequestMapping(method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
+    public String request(@RequestParam Double price,@RequestParam  String clientId) {
         System.out.println("Treba da se plati: " + price);
         return paymentRequestService.createRequest(clientId,price).getToken();
     }
@@ -70,9 +70,11 @@ public class ClientController {
     }
 
     @RequestMapping(value="/paymentRequest",method = RequestMethod.GET)
-    public ResponseEntity<PaymentRequest> sendPaymentRequest(@RequestParam(value="token") String token,@RequestParam(value="id")Long id ){
+    public ResponseEntity<?> sendPaymentRequest(@RequestParam String token,@RequestParam Long id ){
         return new ResponseEntity<>(paymentRequestService.sendPaymentRequest(token,id),HttpStatus.OK);
     }
+
+
 
 
 

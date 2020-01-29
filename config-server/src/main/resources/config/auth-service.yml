@@ -32,9 +32,7 @@ eureka:
   instance:
     hostname: localhost
     preferIpAddress: false
-    securePort: ${server.port}
     securePortEnabled: true
-    nonSecurePortEnabled: false
     statusPageUrl: https://${eureka.instance.hostname}:${server.port}/info
     healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
     homePageUrl: https://localhost:${server.port}

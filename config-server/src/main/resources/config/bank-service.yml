@@ -16,9 +16,15 @@ server:
     key-store-type: PKCS12
     key-store: classpath:bank.p12
     key-store-password: password
+<<<<<<< HEAD
     #client-auth: need
     #trust-store: classpath:eurekaTrust.jks
     #trust-store-password: password
+=======
+
+    trust-store: classpath:eurekaTrust.jks
+    trust-store-password: password
+>>>>>>> c05966b8498b08fd1eea735c655c498d0bff0424
 
 eureka:
   client:

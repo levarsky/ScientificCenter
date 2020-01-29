@@ -10,8 +10,8 @@ public class Transaction {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private Integer merchantOrderId;
+    @Column(unique = true)
+    private Long merchantOrderId;
 
     @Column
     private String clientId;
@@ -35,12 +35,12 @@ public class Transaction {
         this.id = id;
     }
 
-    public Integer getMerchantOrderId() {
+    public Long getMerchantOrderId() {
         return merchantOrderId;
     }
 
-    public void setMerchantOrderId(Integer MERCHANT_ORDER_ID) {
-        this.merchantOrderId = MERCHANT_ORDER_ID;
+    public void setMerchantOrderId(Long merchantOrderId) {
+        this.merchantOrderId = merchantOrderId;
     }
 
     public String getClientId() {

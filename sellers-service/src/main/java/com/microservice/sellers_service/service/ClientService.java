@@ -16,6 +16,13 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
+    public Client findById(Long id){
+
+        return clientRepository.findById(id).orElseThrow
+                (()-> new ResponseStatusException(HttpStatus.BAD_REQUEST, "Client does not exist"));
+
+    }
+
     public Client findByClientId(String clientId){
 
         return clientRepository.findByClientId(clientId).orElseThrow
