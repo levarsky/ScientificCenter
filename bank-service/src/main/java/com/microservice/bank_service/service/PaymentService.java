@@ -30,6 +30,7 @@ public class PaymentService {
     public PaymentRequest pay(PaymentRequest paymentRequest){
 
         String url  = "https://localhost:8765";
+        String urlBank  = "http://localhost:8768";
 
         Client client = paymentRequest.getClient();
 
@@ -54,7 +55,7 @@ public class PaymentService {
 
         HttpEntity<Request> requestEntity = new HttpEntity<>(request);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(url, HttpMethod.POST, requestEntity,String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(urlBank+"/request", HttpMethod.POST, requestEntity,String.class);
 
         paymentRequest.setTransactionId(transaction.getMerchantOrderId().toString());
 

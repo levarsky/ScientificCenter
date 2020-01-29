@@ -19,7 +19,8 @@ public class PaymentService {
 
         String clientId = "aXx2CcgHxZP_30XSS48XxbgV_m1nbS2o_ZcUCmhx__4";
 
-        String url = "https://localhost:8088/sellers/pay/"+clientId+"/"+amount;
+        //String url = "https://localhost:8088/sellers/pay/"+clientId+"/"+amount;
+        String url = "https://localhost:8769/sellers/pay/"+clientId+"/"+amount;
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);

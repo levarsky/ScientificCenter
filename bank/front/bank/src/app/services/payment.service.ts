@@ -8,7 +8,7 @@ import {Observable, throwError} from "rxjs";
 })
 export class PaymentService {
 
-  private baseUrl = "http://localhost:8768/request";
+  private baseUrl = "http://localhost:8768/request/SKLJK";
 
   constructor(private http: HttpClient) { }
 
