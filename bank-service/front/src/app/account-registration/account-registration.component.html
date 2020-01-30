@@ -1,0 +1,31 @@
+<div class="container">
+  <div class="row">
+    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
+      <div class="card ">
+        <div class="card-body">
+          <h5 class="card-title text-center">Payment</h5>
+          <form class="form-signin"  (ngSubmit)="onSubmit()" [formGroup]="paymentForm">
+            <div class="form-label-group">
+              <label for="pan">Card number</label>
+              <input type="text" id="pan" [formControlName]="'pan'" class="form-control" autofocus name="price" required/>
+            </div>
+            <div class="form-label-group">
+              <label for="sc">Security Code</label>
+              <input type="text" id="sc" [formControlName]="'securityCode'" class="form-control" name="sc" required/>
+            </div>
+            <div class="form-label-group">
+              <label for="chn">Card Holder Name</label>
+              <input type="text" id="chn" [formControlName]="'cardHolderName'" class="form-control" name="cardHolderName" required/>
+            </div>
+            <div class="form-label-group">
+              <label for="date">Date</label>
+              <input type="date" id="date" [formControlName]="'expirationDate'" class="form-control" name="expirationDate" required/>
+            </div>
+            <hr class="my-4">
+            <button type="submit" class="form-control" >Pay</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -13,18 +13,12 @@ public class Client {
     @Column
     private String clientId;
 
-    @Column
-    private String clientName;
-
     @Column(length = 30)
     private String merchantId;
 
     @Column(length = 100)
     private String merchantPassword;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    @JoinTable(joinColumns = @JoinColumn(name = "CLIENT_ID"), inverseJoinColumns = @JoinColumn(name = "PAYMENT_TYPE_ID"))
-    private List<PaymentType> paymentTypes;
 
     public Client() {
     }
@@ -41,24 +35,9 @@ public class Client {
         return clientId;
     }
 
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
-    }
-
-    public List<PaymentType> getPaymentTypes() {
-        return paymentTypes;
-    }
-
-    public void setPaymentTypes(List<PaymentType> paymentTypes) {
-        this.paymentTypes = paymentTypes;
     }
 
     public String getMerchantId() {

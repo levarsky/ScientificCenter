@@ -23,6 +23,9 @@ public class PaymentService {
         PaymentRequest paymentRequest = paymentRequestService.getRequestByTransactionId(transactionId);
         Client client = paymentRequest.getClient();
 
+        paymentRequest.setStatus(paymentStatus.toString());
+        paymentRequestService.saveRequest(paymentRequest);
+
         if(paymentStatus.equals(PaymentStatus.ERROR))
             return uriBuilder(client.getErrorUrl(),paymentRequest.getToken());
         if(paymentStatus.equals(PaymentStatus.FAILED))

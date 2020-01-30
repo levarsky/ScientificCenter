@@ -28,6 +28,11 @@ public class ClientController {
         return new ResponseEntity<>(clientService.getClient(), HttpStatus.OK);
     }
 
+    @GetMapping(value="/registerPayment")
+    public ResponseEntity<?> getRegistrationUrl(@RequestParam String serviceName,@RequestParam String mode){
+
+        return new ResponseEntity<>(registrationService.registerNewPaymentType(serviceName,mode),HttpStatus.OK);
+    }
 
 
 }

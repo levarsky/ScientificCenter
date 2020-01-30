@@ -18,6 +18,8 @@ public class PaymentRequest {
     private String transactionId;
     @Column
     private boolean accessed=false;
+    @Column
+    private String status;
     @Transient
     private String url;
     @OneToOne
@@ -88,5 +90,13 @@ public class PaymentRequest {
 
     public void setAccessed(boolean accessed) {
         this.accessed = accessed;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

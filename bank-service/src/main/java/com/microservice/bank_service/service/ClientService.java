@@ -1,13 +1,23 @@
 package com.microservice.bank_service.service;
 
+import com.microservice.bank_service.model.Account;
 import com.microservice.bank_service.model.Client;
+import com.microservice.bank_service.model.RegistrationRequest;
 import com.microservice.bank_service.repository.ClientRepository;
+import com.microservice.bank_service.repository.RegistrationRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
+import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
 import java.util.Optional;
+import java.util.UUID;
 
 @Service
 public class ClientService {
@@ -15,6 +25,18 @@ public class ClientService {
     @Autowired
     private ClientRepository clientRepository;
 
+    @Autowired
+    private RestTemplate restTemplate;
+
+    @Autowired
+    private RegistrationRequestService registrationRequestService;
+
+    @Autowired
+    private AuthService authService;
+
+    private String registrationForm = "http://localhost:4206/registrationRequest";
+
+    private String bankUrl = "https://localhost:8768/merchant";
 
     public Client getClientById(String clientId){
         Optional<Client> clientOptional = clientRepository.findByClientId(clientId);
@@ -23,4 +45,85 @@ public class ClientService {
         return clientOptional.get();
     }
 
+    public Client registerNewClient(Account account,String tokenId){
+
+        String clientId = authService.getAuth().getPrincipal().toString();
+
+        RegistrationRequest registrationRequest = registrationRequestService.getRegistrationRequest(clientId,tokenId);
+
+        Optional<Client> optionalClient = clientRepository.findByClientId(clientId);
+
+        String mode = registrationRequest.getMode();
+
+        if (mode.equals("CREATE")){
+
+            if(optionalClient.isPresent())
+                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Client registered!");
+
+        }
+
+        Client client = null;
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(account);
+
+        ResponseEntity<Client> exchange = restTemplate.exchange(bankUrl, HttpMethod.POST
+                , requestEntity, Client.class);
+
+        if (mode.equals("EDIT")){
+            client = exchange.getBody();
+            client.setId(optionalClient.get().getId());
+        }else if (mode.equals("CREATE")){
+            client = exchange.getBody();
+            client.setId(null);
+            client.setClientId(registrationRequest.getClientId());
+        }
+
+
+        return clientRepository.save(client);
+    }
+
+
+    public Object registerUrl(String clientId,String username,String mode) {
+
+        RegistrationRequest registrationRequest = new RegistrationRequest();
+
+        registrationRequest.setAccessed(false);
+        registrationRequest.setClientId(clientId);
+        registrationRequest.setUsername(username);
+        registrationRequest.setMode(mode);
+
+        String token = generateRandomPaymentId();
+
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl(registrationForm)
+                .queryParam("tokenId",token);
+
+        registrationRequest.setTokenId(generateRandomPaymentId());
+
+        registrationRequestService.save(registrationRequest);
+
+        return Collections.singletonMap("redirectUrl",builder.build().encode().toUriString());
+    }
+
+    private String generateRandomPaymentId() {
+        String generatedString = UUID.randomUUID().toString();
+        return generatedString;
+    }
+
+    public void checkUrl(String tokenId) {
+
+        String clientId = authService.getAuth().getPrincipal().toString();
+
+        System.out.print(clientId);
+
+        RegistrationRequest registrationRequest = registrationRequestService.getRegistrationRequest(clientId,tokenId);
+
+        if (registrationRequest.isAccessed()){
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Not valid!");
+        }
+
+        registrationRequest.setAccessed(true);
+        registrationRequestService.save(registrationRequest);
+
+    }
 }

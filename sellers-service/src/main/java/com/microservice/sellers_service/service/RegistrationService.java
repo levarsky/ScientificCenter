@@ -4,8 +4,10 @@ package com.microservice.sellers_service.service;
 import com.microservice.sellers_service.communication.AuthServiceClient;
 import com.microservice.sellers_service.model.Client;
 import com.microservice.sellers_service.model.OauthClientDetails;
+import com.microservice.sellers_service.model.RegistrationRequest;
 import com.microservice.sellers_service.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.http.*;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,9 @@ public class RegistrationService {
 
     @Autowired
     private AuthServiceClient authServiceClient;
+
+    @Autowired
+    private AuthService authService;
 
     @Autowired
     private ClientService clientService;
@@ -70,6 +75,29 @@ public class RegistrationService {
 //        ResponseEntity<String> exchange = restTemplate.exchange(paymentUrl, HttpMethod.GET, requestEntity, String.class);
 //
 //        return exchange.getBody();
+
+    }
+
+    public Object registerNewPaymentType(String serviceName,String mode){
+
+        Client client = clientService.getClient();
+
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl("https://"+serviceName+"/client")
+                .queryParam("clientId",client.getClientId())
+                .queryParam("username",client.getUsername())
+                .queryParam("mode",mode);
+
+        String requestUrl = builder.build().encode().toUriString();
+
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
+
+        ResponseEntity<Object> exchange = restTemplate.exchange(requestUrl,HttpMethod.GET,requestEntity,Object.class);
+
+        return  exchange.getBody();
 
     }
 
