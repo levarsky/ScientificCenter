@@ -27,13 +27,24 @@ INSERT INTO `naucna_c`.`magazine_scientific_area` (`magazine_list_id`, `scientif
 INSERT INTO `naucna_c`.`magazine_scientific_area` (`magazine_list_id`, `scientific_area_id`) VALUES (7, 1);
 INSERT INTO `naucna_c`.`magazine_scientific_area` (`magazine_list_id`, `scientific_area_id`) VALUES (8, 4);
 
-INSERT INTO `naucna_c`.`user` (`id`, `city`, `country`, `email`, `first_name`, `last_name`, `title`) VALUES ('1', 'Novi Sad', 'Serbia', 'vmosorinski@gmail.com', 'Veljko', 'Mosorinski', 'Dipl. ing');
-INSERT INTO `naucna_c`.`user` (`id`, `city`, `country`, `email`, `first_name`, `last_name`, `title`) VALUES ('2', 'Novi Sad', 'Serbia', 'mihajlol@gmail.com', 'Mihajlo', 'Levarski', 'Dipl. ing');
-INSERT INTO `naucna_c`.`user` (`id`, `city`, `country`, `email`, `first_name`, `last_name`, `title`) VALUES ('3', 'Novi Sad', 'Serbia', 'milicamat@gmail.com', 'Milica', 'Matijevic', 'Dipl. ing');
-INSERT INTO `naucna_c`.`user` (`id`, `city`, `country`, `email`, `first_name`, `last_name`, `title`) VALUES ('4', 'Belgrade', 'Serbia', 'djordjej@gmail.com', 'Djordje', 'Jovanovic', 'Dipl. ing');
-INSERT INTO `naucna_c`.`user` (`id`, `city`, `country`, `email`, `first_name`, `last_name`, `title`) VALUES ('5', 'Nis', 'Serbia', 'peraperic@gmail.com', 'Petar', 'Peric', 'Dipl. ing');
-INSERT INTO `naucna_c`.`user` (`id`, `city`, `country`, `email`, `first_name`, `last_name`, `title`) VALUES ('6', 'Kragujevac', 'Serbia', 'jmarkovic@gmail.com', 'Jovan', 'Markovic', 'Srednjoskolac');
-INSERT INTO `naucna_c`.`user` (`id`, `city`, `country`, `email`, `first_name`, `last_name`, `title`) VALUES ('7', 'Jagodina', 'Serbia', 'lmartinovic@gmail.com', 'Lea', 'Martinovic', 'Hemicar');
+INSERT INTO naucna_c.user (id, city, country, email, first_name, last_name, password, title, username, is_enabled, is_verified, last_password_reset_date) VALUES (1, 'Novi Sad', 'Serbia', 'vmosorinski@gmail.com', 'Veljko', 'Mosorinski', '$2a$10$sdS4tyjj41yuxYrSwQUYIeT1dOlvcBxWA8COUEYzDM18bs6.kj5Xe', 'Dipl. ing', 'veljko', true, true, null);
+INSERT INTO naucna_c.user (id, city, country, email, first_name, last_name, password, title, username, is_enabled, is_verified, last_password_reset_date) VALUES (2, 'Novi Sad', 'Serbia', 'mihajlol@gmail.com', 'Mihajlo', 'Levarski', '$2a$10$zUOD59wuEsBFSBzRLVr.eO3XNGhcz9.EeIm24WddRAxE6eIjueESS', 'Dipl. ing', 'mihajlo', true, true, null);
+INSERT INTO naucna_c.user (id, city, country, email, first_name, last_name, password, title, username, is_enabled, is_verified, last_password_reset_date) VALUES (3, 'Novi Sad', 'Serbia', 'milicamat@gmail.com', 'Milica', 'Matijevic', '$2a$10$wn2wzdZS2Ffrcx75OTRnye/j3VebFZomzxBJisL/0w3rdPJtYVih2', 'Dipl. ing', 'milica', true, true, null);
+INSERT INTO naucna_c.user (id, city, country, email, first_name, last_name, password, title, username, is_enabled, is_verified, last_password_reset_date) VALUES (4, 'Belgrade', 'Serbia', 'djordjej@gmail.com', 'Djordje', 'Jovanovic', '$2a$10$hveZzwUYFsUwjnM/Ske/VeWEOkY0k/jwrw/DDRdnaOBDRIvztNjmm', 'Dipl. ing', 'djordje', true, true, null);
+INSERT INTO naucna_c.user (id, city, country, email, first_name, last_name, password, title, username, is_enabled, is_verified, last_password_reset_date) VALUES (5, 'Nis', 'Serbia', 'peraperic@gmail.com', 'Petar', 'Peric', '$2a$10$9E7q3MXImIxCwFJj8dlkuOlEZDEHp2OovmJfolHeiot/VGD1MyzpG', 'Dipl. ing', 'petar', true, true, null);
+INSERT INTO naucna_c.user (id, city, country, email, first_name, last_name, password, title, username, is_enabled, is_verified, last_password_reset_date) VALUES (6, 'Kragujevac', 'Serbia', 'jmarkovic@gmail.com', 'Jovan', 'Markovic', '$2a$10$gN0RvhS0HOqPXuuWWCDkWexm1gWxxGsjcQT.zVrhVIuw3LREfWVdi', 'Srednjoskolac', 'jovan', true, true, null);
+INSERT INTO naucna_c.user (id, city, country, email, first_name, last_name, password, title, username, is_enabled, is_verified, last_password_reset_date) VALUES (7, 'Jagodina', 'Serbia', 'lmartinovic@gmail.com', 'Lea', 'Martinovic', '$2a$10$uabDAg80c3Jd6uFAoTMfR.LzOrih5DXy3X.s4tTEwjhqozh/QiiKq', 'Hemicar', 'lea', true, true, null);
+INSERT INTO naucna_c.user (id, city, country, email, first_name, last_name, password, title, username, is_enabled, is_verified, last_password_reset_date) VALUES (8, 'Novi Sad', 'Serbia', 'd1547450@urhen.com', 'Nikola', 'Nikolic', '$2a$10$Aa/rpEZEyIgIByoeNxxZOOF.GyC0MYTHrXOOTMaVMppVOKX33VQ0i', null, 'nikola', true, true, null);
+INSERT INTO naucna_c.role (id, name) VALUES (1, 'ROLE_USER');
+INSERT INTO naucna_c.user_roles (user_id, role_id) VALUES (1, 1);
+INSERT INTO naucna_c.user_roles (user_id, role_id) VALUES (2, 1);
+INSERT INTO naucna_c.user_roles (user_id, role_id) VALUES (3, 1);
+INSERT INTO naucna_c.user_roles (user_id, role_id) VALUES (4, 1);
+INSERT INTO naucna_c.user_roles (user_id, role_id) VALUES (5, 1);
+INSERT INTO naucna_c.user_roles (user_id, role_id) VALUES (6, 1);
+INSERT INTO naucna_c.user_roles (user_id, role_id) VALUES (7, 1);
+INSERT INTO naucna_c.user_roles (user_id, role_id) VALUES (8, 1);
+
 
 INSERT INTO `naucna_c`.`user_magazine_redactor` (`redactors_id`, `magazine_redactor_id`) VALUES (1, 1);
 INSERT INTO `naucna_c`.`user_magazine_redactor` (`redactors_id`, `magazine_redactor_id`) VALUES (2, 1);

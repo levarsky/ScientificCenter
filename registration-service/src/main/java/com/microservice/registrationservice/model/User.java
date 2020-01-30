@@ -1,6 +1,5 @@
 package com.microservice.registrationservice.model;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -10,7 +9,6 @@ import java.util.Date;
 import java.util.Set;
 
 public class User {
-
 
     private Long id;
 

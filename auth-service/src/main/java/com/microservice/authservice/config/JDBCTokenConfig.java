@@ -36,7 +36,7 @@ public class JDBCTokenConfig {
 
     @Bean
     public TokenStore tokenStore() {
-        return new JdbcTokenStore(dataSource());
+        return new CustomJdbcTokenStore(dataSource());
     }
 
 

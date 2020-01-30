@@ -7,6 +7,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -15,13 +16,10 @@ import org.springframework.web.util.UriComponentsBuilder;
 public class PaymentService {
 
     @Autowired
-    private RestTemplate restTemplate;
+    private OAuth2RestOperations restTemplateOauth;
 
     @Value("${sellers.api}")
     private String sellersUrl;
-
-    @Value("${sellers.security.clientId}")
-    private String clientId;
 
     @Value("${center.front}")
     private String frontUrl;
@@ -30,7 +28,6 @@ public class PaymentService {
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromHttpUrl(sellersUrl)
-                .queryParam("clientId", clientId)
                 .queryParam("price", amount);
 
         System.out.println(builder.build().encode().toUri());
@@ -40,8 +37,12 @@ public class PaymentService {
 
         HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
 
-        ResponseEntity<String> exchange = restTemplate.exchange(builder.build().encode().toUri(),HttpMethod.POST, requestEntity, String.class);
 
+        System.out.println(restTemplateOauth.getAccessToken());
+
+        ResponseEntity<String> exchange = restTemplateOauth.exchange(builder.build().encode().toUri(),HttpMethod.POST, requestEntity, String.class);
+
+        System.out.println(exchange.toString());
 
         return exchange.getBody();
     }

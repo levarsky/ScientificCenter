@@ -11,6 +11,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 
 
+
 server:
   servlet:
     context-path: /uaa
@@ -21,9 +22,8 @@ server:
     key-store: classpath:auth.p12
     key-store-password: password
     client-auth: need
-    trust-store: classpath:eurekaTrust.jks
+    trust-store: classpath:configTrust.jks
     trust-store-password: password
-    key-alias: localhost
 
 eureka:
   client:
@@ -36,4 +36,8 @@ eureka:
     statusPageUrl: https://${eureka.instance.hostname}:${server.port}/info
     healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
     homePageUrl: https://localhost:${server.port}
+
+feign:
+  hystrix:
+    enabled: false
 

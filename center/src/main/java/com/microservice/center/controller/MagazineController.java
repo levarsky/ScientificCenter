@@ -5,7 +5,7 @@ import com.microservice.center.model.Publication;
 import com.microservice.center.model.ScentificArea;
 import com.microservice.center.model.User;
 import com.microservice.center.service.MagazineService;
-import org.graalvm.compiler.lir.LIRInstruction;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

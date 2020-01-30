@@ -7,10 +7,13 @@ import { HomeComponent } from './home/home.component';
 import { BankComponent } from './bank/bank.component';
 import { RegisterComponentComponent } from './register-component/register-component.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { HttpModule } from '@angular/http';
-import { HttpClientModule } from '@angular/common/http';
+import {HTTP_INTERCEPTORS, HttpClientModule} from '@angular/common/http';
 import { RegistrationComponent } from './registration/registration.component';
 import { LoginComponent } from './login/login.component';
+import {CookieModule, CookieService} from "ngx-cookie";
+import { PaymentRequestComponent } from './payment-request/payment-request.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import {AuthInterceptor} from "./interceptor/auth.interceptor";
 
 @NgModule({
   declarations: [
@@ -20,6 +23,8 @@ import { LoginComponent } from './login/login.component';
     RegisterComponentComponent,
     RegistrationComponent,
     LoginComponent,
+    PaymentRequestComponent,
+    DashboardComponent,
 
   ],
   imports: [
@@ -27,11 +32,13 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule,
-    HttpClientModule
+    HttpClientModule,
+    CookieModule.forRoot()
 
   ],
-  providers: [],
+  providers: [
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

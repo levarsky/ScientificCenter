@@ -1,7 +1,7 @@
 {
   "/sellers": {
     "target": "https://localhost:8769",
-    "secure": false,
+    "secure": true,
     "logLevel": "debug",
     "changeOrigin": true
   }

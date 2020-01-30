@@ -10,7 +10,12 @@ server:
     trust-store: classpath:eurekaTrust.jks
     trust-store-password: password
 
+
 zuul:
+  host:
+    connect-timeout-millis: 1000000
+    socket-timeout-millis: 1000000
+  sensitiveHeaders: Cookie,Set-Cookie
   routes:
     payment-system:
       url: https://localhost:8765
@@ -34,8 +39,9 @@ zuul:
       serviceId: sellers-service
       stripPrefix: false
       sensitiveHeaders:
-
-
+  ribbon:
+    ReadTimeout: 1000000
+    ConnectTimeout: 1000000
 
 eureka:
   client:
@@ -48,4 +54,14 @@ eureka:
     statusPageUrl: https://${eureka.instance.hostname}:${server.port}/info
     healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
     homePageUrl: https://localhost:${server.port}
+
+
+
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          enabled: false
+
 

@@ -8,8 +8,13 @@ import { Observable } from 'rxjs';
 export class UserService {
 
   private basicPath = 'center/user';
+  private regPath = 'center/registration';
 
   constructor(private httpClient: HttpClient) { }
+
+  signup(user):Observable<any>{
+    return this.httpClient.post(this.regPath+"/user",user)
+  }
 
   purchased() {
       return this.httpClient.get(this.basicPath + "/purchased") as Observable<any>;

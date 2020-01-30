@@ -3,9 +3,9 @@ const PROXY_CONFIG = [
     context: [
       "/api"
     ],
-    target: "https://localhost:8769/",
+    target: "https://localhost:8769",
     logLevel: "debug",
-    secure: true,
+    secure: false,
     changeOrigin: true
   }
 ]

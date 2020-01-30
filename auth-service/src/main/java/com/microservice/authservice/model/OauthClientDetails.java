@@ -1,41 +1,37 @@
 package com.microservice.authservice.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.oauth2.provider.ClientDetails;
 
 import javax.persistence.*;
 import java.util.*;
 
-@Entity
+
 public class OauthClientDetails implements ClientDetails {
 
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-    @Column
+
     private String clientId;
-    @Column
-    private String clientName;
-    @Column
+
     private String clientSecret;
-    @Column
+
     private String authorizedGrantTypes;
-    @Column
+
     private String authorities;
-    @Column
+
     private String scope;
-    @Column
+
     private String resourceIds;
-    @Column
+
     private String webServerRedirectUri;
-    @Column
+
     private Integer accessTokenValidity;
-    @Column
+
     private Integer refreshTokenValidity;
-    @Column
+
     private String additionalInformation;
-    @Column
+
     private boolean autoapprove;
 
     public OauthClientDetails() {
@@ -46,14 +42,7 @@ public class OauthClientDetails implements ClientDetails {
         return clientId;
     }
 
-    public String getClientName() {
-        return clientName;
-    }
-
-    public void setClientName(String clientName) {
-        this.clientName = clientName;
-    }
-
+    @JsonIgnore
     @Override
     public Set<String> getResourceIds() {
         return resourceIds != null ? new HashSet<>(Arrays.asList(resourceIds.split(","))) : null;
@@ -74,21 +63,25 @@ public class OauthClientDetails implements ClientDetails {
         return false;
     }
 
+    @JsonIgnore
     @Override
     public Set<String> getScope() {
         return scope != null ? new HashSet<>(Arrays.asList(scope.split(","))) : null;
     }
 
+    @JsonIgnore
     @Override
     public Set<String> getAuthorizedGrantTypes() {
         return authorizedGrantTypes != null ? new HashSet<>(Arrays.asList(authorizedGrantTypes.split(","))) : null;
     }
 
+    @JsonIgnore
     @Override
     public Set<String> getRegisteredRedirectUri() {
         return webServerRedirectUri != null ? new HashSet<>(Arrays.asList(webServerRedirectUri.split(","))) : null;
     }
 
+    @JsonIgnore
     @Override
     public Collection<GrantedAuthority> getAuthorities() {
         return new ArrayList<>();
@@ -158,11 +151,4 @@ public class OauthClientDetails implements ClientDetails {
         this.additionalInformation = additionalInformation;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 }

@@ -17,6 +17,8 @@ import { CartComponent } from './cart/cart.component';
 import { PurchasedComponent } from './purchased/purchased.component';
 import { SubscriptionsComponent } from './subscriptions/subscriptions.component';
 import { PublicationsComponent } from './publications/publications.component';
+import {AuthInterceptor} from "./incterceptor/auth.interceptor";
+import {CookieModule} from "ngx-cookie";
 
 @NgModule({
   declarations: [
@@ -40,8 +42,12 @@ import { PublicationsComponent } from './publications/publications.component';
     ReactiveFormsModule,
     AppRoutingModule,
     HttpClientModule,
+    CookieModule.forRoot()
   ],
   providers: [
+
+
+    { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }
 
     // [
     //   {provide: HTTP_INTERCEPTORS, useClass: Interceptor, multi: true }

@@ -1,6 +1,6 @@
 package com.microservice.authservice.config;
 
-import com.microservice.authservice.service.AuthClientDetailsService;
+
 import com.microservice.authservice.service.CustomUserDetailsService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -21,6 +21,7 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import javax.sql.DataSource;
 
 
+
 @Configuration
 @EnableAuthorizationServer
 public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdapter {
@@ -33,9 +34,6 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     private CustomUserDetailsService customUserDetailsService;
 
     @Autowired
-    private AuthClientDetailsService authClientDetailsService;
-
-    @Autowired
     private TokenStore tokenStore;
 
     @Autowired
@@ -44,17 +42,21 @@ public class AuthorizationServerConfig extends AuthorizationServerConfigurerAdap
     @Autowired
     private DataSource dataSource;
 
+    @Bean
+    public JdbcClientDetailsService jdbcClientDetailsService(){
+        return new JdbcClientDetailsService(dataSource);
+    }
+
     @Override
     public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-        JdbcClientDetailsService jdbcClientDetailsService = new JdbcClientDetailsService(dataSource);
-        clients.withClientDetails(jdbcClientDetailsService);
+        clients.withClientDetails(jdbcClientDetailsService());
     }
 
     @Override
     public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
 
         security.tokenKeyAccess("permitAll()")
-                .checkTokenAccess("isAuthenticated()")
+                .checkTokenAccess("permitAll()")
                 .passwordEncoder(passwordEncoder)
                 .allowFormAuthenticationForClients();
     }

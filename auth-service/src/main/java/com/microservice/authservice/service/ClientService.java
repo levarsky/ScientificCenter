@@ -1,10 +1,13 @@
 package com.microservice.authservice.service;
 
+import com.microservice.authservice.config.JDBCTokenConfig;
 import com.microservice.authservice.model.OauthClientDetails;
-import com.microservice.authservice.repository.OauthClientDetailsRepository;
 import org.apache.commons.codec.Encoder;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.token.TokenService;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.config.annotation.builders.JdbcClientDetailsServiceBuilder;
+import org.springframework.security.oauth2.provider.client.JdbcClientDetailsService;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -16,16 +19,16 @@ import java.util.Base64;
 public class ClientService {
 
     @Autowired
-    private OauthClientDetailsRepository oauthClientDetailsRepository;
-
-    @Autowired
     private PasswordEncoder passwordEncoder;
 
-    public OauthClientDetails createClient(OauthClientDetails oauthClientDetailsSend) {
+    @Autowired
+    private JdbcClientDetailsService jdbcClientDetailsService;
+
+
+    public OauthClientDetails createClient() {
 
         String clientId = null;
         String secret = null;
-
 
         try {
             SecureRandom secureRandom = SecureRandom.getInstance("NativePRNG");
@@ -35,12 +38,10 @@ public class ClientService {
             secureRandom.nextBytes(clientBt);
             secureRandom.nextBytes(secretBt);
 
-
             Base64.Encoder encoder = Base64.getUrlEncoder().withoutPadding();
 
             clientId = encoder.encodeToString(clientBt);
             secret = encoder.encodeToString(secretBt);
-
 
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
@@ -48,24 +49,20 @@ public class ClientService {
 
         OauthClientDetails oauthClientDetails = new OauthClientDetails();
 
-        oauthClientDetails.setClientName(oauthClientDetailsSend.getClientName());
-
         oauthClientDetails.setClientId(clientId);
         oauthClientDetails.setClientSecret(passwordEncoder.encode(secret));
         oauthClientDetails.setAccessTokenValidity(36000);
         oauthClientDetails.setRefreshTokenValidity(360000);
         oauthClientDetails.setScope("server");
-        oauthClientDetails.setAuthorizedGrantTypes("refresh,client_credentials");
+        oauthClientDetails.setAuthorizedGrantTypes("refresh_token,client_credentials");
 
         oauthClientDetails.setAutoapprove(true);
 
-        oauthClientDetailsRepository.save(oauthClientDetails);
+        jdbcClientDetailsService.addClientDetails(oauthClientDetails);
 
         oauthClientDetails.setClientSecret(secret);
 
-
         return oauthClientDetails;
-
     }
 
 

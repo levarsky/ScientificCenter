@@ -1,18 +1,20 @@
 package com.microservice.authservice.model;
 
-import org.codehaus.jackson.annotate.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
 import javax.validation.constraints.Size;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 @Entity
-public class User implements UserDetails {
+public class User implements UserDetails, Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,22 +38,21 @@ public class User implements UserDetails {
     private String password;
 
     @Column
-    private Boolean isEnabled;
+    private Boolean isEnabled = false;
 
+    @JsonIgnore
     @Column
     private Date lastPasswordResetDate;
 
     @Column
-    private Boolean isVerified;
+    private Boolean isVerified = false;
+
 
     @JsonIgnore
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
     private Set<Role> roles;
 
-    @JsonIgnore
-    @OneToOne
-    private VerificationToken verificationToken;
 
     public User() {
     }
@@ -162,11 +163,8 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    public VerificationToken getVerificationToken() {
-        return verificationToken;
-    }
 
-    public void setVerificationToken(VerificationToken verificationToken) {
-        this.verificationToken = verificationToken;
+    public void setId(Long id) {
+        this.id = id;
     }
 }

@@ -35,6 +35,14 @@ eureka:
     healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
     homePageUrl: https://localhost:${server.port}
 
-feign:
-  hystrix:
-    enabled: true
+security:
+  oauth2:
+    client:
+      clientId: oauthorize
+      clientSecret: password
+      accessTokenUri: https://localhost:8081/uaa/oauth/token
+      grantType: client_credentials
+      scope: read write
+    resource:
+      userInfoUri: https://localhost:8081/uaa/user/current
+      tokenInfoUri: https://localhost:8081/uaa/oauth/check_token

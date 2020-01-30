@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ConfirmPasswordValidator} from "../validation/confirm-pass.validator";
+import {RegistrationService} from "../services/registration.service";
 
 @Component({
   selector: 'app-registration',
@@ -16,7 +17,8 @@ export class RegistrationComponent implements OnInit {
 
   submitted = false;
 
-  constructor(private formBuilder: FormBuilder) {
+  constructor(private formBuilder: FormBuilder,
+              private registrationService:RegistrationService) {
   }
 
   ngOnInit() {
@@ -34,6 +36,14 @@ export class RegistrationComponent implements OnInit {
   }
 
   onSubmit() {
+
+    console.log(this.signUpForm.value);
+
+    this.registrationService.signup(this.signUpForm.value).subscribe(data=>{
+      console.log(data);
+    });
+
+
 
   }
 }

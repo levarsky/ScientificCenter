@@ -18,17 +18,15 @@ export class RegisterComponentComponent implements OnInit {
 
   ngOnInit() {
     this.form = this.formBuilder.group({
-          name:[''],
+          clientName:[''],
           clientId:[''],
           clientSecret:['']
     });
   }
 
   onSubmit(){
-    this.registerClientService.register(this.form.value.name).subscribe( data =>{
-      this.form.value.name = data.name;
-      this.form.value.clientSecret = data.clientSecret;
-      this.form.value.clientId = data.clientId;
+    this.registerClientService.reg(this.form.get('clientName').value).subscribe( data =>{
+      console.log(data)
     });
   }
 

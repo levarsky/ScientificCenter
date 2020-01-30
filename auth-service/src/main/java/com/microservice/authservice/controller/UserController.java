@@ -1,6 +1,7 @@
 package com.microservice.authservice.controller;
 
 import com.microservice.authservice.model.User;
+import com.microservice.authservice.model.UserDTO;
 import com.microservice.authservice.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -23,13 +24,14 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<?> registerUser(@RequestBody User user) {
-        return new ResponseEntity<>(userService.saveUser(user), HttpStatus.OK);
+    public void registerUser(@RequestBody UserDTO userDTO) {
+         userService.saveUser(userDTO);
     }
 
-    @GetMapping
-    public String getTest() {
-        return "OVO JE TEST";
+    @RequestMapping(value = "/confirm",method = RequestMethod.GET)
+    public String confirm(@RequestParam(value = "token") String token){
+        return  userService.confirmToken(token);
     }
+
 
 }

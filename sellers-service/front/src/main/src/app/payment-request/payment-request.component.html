@@ -1,0 +1,19 @@
+<div class="container">
+
+  <form [formGroup]="paymentForm" (ngSubmit)="onSubmit()">
+    <div class="form-group">
+      <label for="amount">Amount</label>
+      <input type="text" id="amount" class="form-control" autofocus
+             [formControlName]="'amount'" name="amount" />
+    </div>
+    <div class="form-group">
+      <label for="paymentSelect">Payment type</label>
+      <select class="form-control" id="paymentSelect" formControlName="payment">
+        <option *ngFor="let paymentType of paymentTypes"
+                [value]="paymentType.id">{{paymentType.name}}</option>
+      </select>
+    </div>
+    <button class="btn btn-primary text-uppercase" type="submit">Choose</button>
+  </form>
+
+</div>

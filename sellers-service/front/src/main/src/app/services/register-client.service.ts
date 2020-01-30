@@ -7,11 +7,21 @@ import { Observable, Subscription} from 'rxjs';
 })
 export class RegisterClientService {
 
-  private baseUrl = "http://localhost:8769/";
+  private baseUrl = "https://localhost:8769/sellers";
   constructor(private http: HttpClient) { }
 
-  register(name : string):Observable<any>{
-    return this.http.post(this.baseUrl + name, name);
+  signup(user):Observable<any>{
+    return this.http.post(this.baseUrl+"/user",user)
+  }
+
+  register(client):Observable<any>{
+    return this.http.post(this.baseUrl+"/client",client);
+  }
+
+  reg(name):Observable<any>{
+    let param = new HttpParams();
+    param = param.append('name',name);
+    return this.http.post(this.baseUrl+"/client",{params:param});
   }
 
 

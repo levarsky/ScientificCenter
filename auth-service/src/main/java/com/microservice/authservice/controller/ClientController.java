@@ -19,8 +19,8 @@ public class ClientController {
     private ClientService clientService;
 
     @PostMapping
-    public ResponseEntity<?> registerClient(@RequestBody OauthClientDetails oauthClientDetails) {
-        return new ResponseEntity<>(clientService.createClient(oauthClientDetails), HttpStatus.OK);
+    public OauthClientDetails registerClient() {
+        return clientService.createClient();
     }
 
 }

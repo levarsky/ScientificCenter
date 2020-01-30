@@ -16,11 +16,12 @@ public class PaymentRequest {
     private Double amount;
     @Column
     private String transactionId;
+    @Column
+    private boolean accessed=false;
     @Transient
     private String url;
     @OneToOne
     private PaymentType paymentType;
-
 
     public PaymentRequest() {
     }
@@ -79,5 +80,13 @@ public class PaymentRequest {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public boolean isAccessed() {
+        return accessed;
+    }
+
+    public void setAccessed(boolean accessed) {
+        this.accessed = accessed;
     }
 }

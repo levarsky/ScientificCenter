@@ -27,17 +27,20 @@ public class PaymentRequestService {
     @Autowired
     private RestTemplate restTemplate;
     @Autowired
-    private BankPaymentServices bankPaymentServices;
+    private AuthService authService;
 
-    public PaymentRequest createRequest(String clientId,double amount){
+    public PaymentRequest createRequest(double amount){
 
         String token = UUID.randomUUID().toString();
 
         PaymentRequest request = new PaymentRequest();
 
+        String clientId = authService.getAuth().getPrincipal().toString();
+
         request.setAmount(amount);
         request.setClient(clientService.findByClientId(clientId));
         request.setToken(token);
+
 
         return paymentRequestRepository.save(request);
     }

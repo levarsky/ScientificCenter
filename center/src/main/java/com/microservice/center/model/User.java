@@ -1,11 +1,14 @@
 package com.microservice.center.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 @Entity
-public class User {
+public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,6 +19,13 @@ public class User {
 
     @Column(length = 100)
     private String lastName;
+
+    @Column
+    private String username;
+
+    @JsonIgnore
+    @Column
+    private String password;
 
     @Column(length = 100)
     private String city;
@@ -28,6 +38,16 @@ public class User {
 
     @Column(length = 100)
     private String email;
+
+    @Column
+    private Boolean isEnabled ;
+
+    @JsonIgnore
+    @Column
+    private Date lastPasswordResetDate;
+
+    @Column
+    private Boolean isVerified ;
 
     @ManyToMany(mappedBy = "interestedUsers")
     private List<ScentificArea> scentificAreaList;
@@ -43,6 +63,11 @@ public class User {
 
     @ManyToMany
     private List<Publication> purchased;
+
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = @JoinColumn(name = "USER_ID"), inverseJoinColumns = @JoinColumn(name = "ROLE_ID"))
+    private Set<Role> roles;
 
     public User() {
         scentificAreaList = new ArrayList<>();
@@ -146,5 +171,76 @@ public class User {
 
     public void setPurchased(List<Publication> purchased) {
         this.purchased = purchased;
+    }
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return roles;
+    }
+
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return username;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setEnabled(Boolean enabled) {
+        isEnabled = enabled;
+    }
+
+    public Date getLastPasswordResetDate() {
+        return lastPasswordResetDate;
+    }
+
+    public void setLastPasswordResetDate(Date lastPasswordResetDate) {
+        this.lastPasswordResetDate = lastPasswordResetDate;
+    }
+
+    public Boolean getVerified() {
+        return isVerified;
+    }
+
+    public void setVerified(Boolean verified) {
+        isVerified = verified;
+    }
+
+    public Set<Role> getRoles() {
+        return roles;
+    }
+
+    public void setRoles(Set<Role> roles) {
+        this.roles = roles;
     }
 }

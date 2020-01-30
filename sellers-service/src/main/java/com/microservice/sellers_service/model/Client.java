@@ -1,6 +1,7 @@
 package com.microservice.sellers_service.model;
 
 import javax.persistence.*;
+import java.util.Date;
 import java.util.List;
 
 @Entity
@@ -16,6 +17,9 @@ public class Client {
     @Column
     private String clientName;
 
+    @Column(unique = true)
+    private String username;
+
     @Column
     private String successUrl;
 
@@ -24,6 +28,9 @@ public class Client {
 
     @Column
     private String errorUrl;
+
+    @Column
+    private Date registrationDate;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(joinColumns = @JoinColumn(name = "CLIENT_ID"), inverseJoinColumns = @JoinColumn(name = "PAYMENT_TYPE_ID"))
@@ -86,5 +93,21 @@ public class Client {
 
     public void setErrorUrl(String errorUrl) {
         this.errorUrl = errorUrl;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public Date getRegistrationDate() {
+        return registrationDate;
+    }
+
+    public void setRegistrationDate(Date registrationDate) {
+        this.registrationDate = registrationDate;
     }
 }

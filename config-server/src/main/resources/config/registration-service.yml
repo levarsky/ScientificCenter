@@ -36,11 +36,18 @@ security:
       clientSecret: password
       accessTokenUri: https://localhost:8081/uaa/oauth/token
       grantType: client_credentials
-      scope: server
+      scope: read write
     resource:
       userInfoUri: https://localhost:8081/uaa/user/current
       tokenInfoUri: https://localhost:8081/uaa/oauth/check_token
 
+
 feign:
+  client:
+    config:
+      default:
+        connectTimeout: 160000000
+        readTimeout: 160000000
+        loggerLevel: basic
   hystrix:
-    enabled: true
+    enabled: false
