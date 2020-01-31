@@ -25,6 +25,9 @@ public class RequestService {
     private TransactionService transactionService;
 
     @Autowired
+    private MerchantService merchantService;
+
+    @Autowired
     private RestTemplate restTemplate;
 
     public Object generateResponse(Request request){
@@ -34,7 +37,7 @@ public class RequestService {
         System.out.println(request.toString());
 
         System.out.println(request.getMerchantId());
-        Account account = accountRepository.findByMerchantIdAndMerchantPassword(request.getMerchantId(),request.getMerchantPassword());
+        Account account = merchantService.getAccountFromMerchant(request.getMerchantId(),request.getMerchantPassword());
 
 
 //        if(account == null)
@@ -93,8 +96,7 @@ public class RequestService {
             return Collections.singletonMap("redirectUrl",redirectUrl);
         }
 
-        Account clientAccount = accountRepository.
-                                            findByMerchantIdAndMerchantPassword(
+        Account clientAccount = merchantService.getAccountFromMerchant(
                                             request.getMerchantId(),
                                             request.getMerchantPassword());
 

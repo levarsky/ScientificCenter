@@ -29,6 +29,10 @@ public class PaymentRequestService {
     @Autowired
     private AuthService authService;
 
+    public PaymentRequest saveRequest(PaymentRequest paymentRequest){
+        return paymentRequestRepository.save(paymentRequest);
+    }
+
     public PaymentRequest createRequest(double amount){
 
         String token = UUID.randomUUID().toString();
