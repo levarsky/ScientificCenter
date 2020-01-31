@@ -1,0 +1,8 @@
+{
+  "/client": {
+    "target": "https://localhost:8765",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

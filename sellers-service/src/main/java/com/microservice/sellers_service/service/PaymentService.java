@@ -5,6 +5,7 @@ import com.microservice.sellers_service.model.PaymentRequest;
 import com.microservice.sellers_service.model.PaymentStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -16,9 +17,11 @@ public class PaymentService {
     private PaymentRequestService paymentRequestService;
 
     @Autowired
-    private RestTemplate restTemplateNotBalanced;
+    private OAuth2RestOperations restTemplateNotBalanced;
 
-    public String paymentStatus(String transactionId, PaymentStatus paymentStatus) {
+    public String paymentStatus(String transactionId, String paymentStatus) {
+
+        System.out.println("Dosao dovdee");
 
         PaymentRequest paymentRequest = paymentRequestService.getRequestByTransactionId(transactionId);
         Client client = paymentRequest.getClient();
@@ -26,9 +29,9 @@ public class PaymentService {
         paymentRequest.setStatus(paymentStatus.toString());
         paymentRequestService.saveRequest(paymentRequest);
 
-        if(paymentStatus.equals(PaymentStatus.ERROR))
+        if(paymentStatus.equals("ERROR"))
             return uriBuilder(client.getErrorUrl(),paymentRequest.getToken());
-        if(paymentStatus.equals(PaymentStatus.FAILED))
+        if(paymentStatus.equals("FAILED"))
             return uriBuilder(client.getFailedUrl(),paymentRequest.getToken());
 
         //SUCCESS

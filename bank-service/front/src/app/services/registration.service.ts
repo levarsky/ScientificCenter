@@ -7,13 +7,19 @@ import {Observable} from "rxjs";
 })
 export class RegistrationService {
 
-  private baseUrl = "https://localhost:8768/request";
+  private baseUrl = "/client";
 
   constructor(private http: HttpClient) { }
 
-  pay(payment,id):Observable<any>{
+  checkUrl(id):Observable<any>{
     let param = new HttpParams();
-    param = param.append('paymentId',id)
-    return this.http.post(this.baseUrl+"/pay", payment,{params:param});
+    param = param.append('tokenId',id)
+    return this.http.get(this.baseUrl+"/checkUrl",{params:param});
+  }
+
+  register(account,id):Observable<any>{
+    let param = new HttpParams();
+    param = param.append('tokenId',id)
+    return this.http.post(this.baseUrl, account,{params:param});
   }
 }

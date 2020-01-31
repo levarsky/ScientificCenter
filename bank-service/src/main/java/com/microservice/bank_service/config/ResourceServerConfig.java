@@ -53,7 +53,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     @Override
     public void configure(final HttpSecurity http) throws Exception {
         // @formatter:off
-        http    .authorizeRequests()
+        http    .anonymous().and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/pay/successful/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/pay/error/**").permitAll()
+                .antMatchers(HttpMethod.POST,"/pay/failed/**").permitAll()
                 .anyRequest().authenticated();
         // @formatter:on
     }

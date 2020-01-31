@@ -11,8 +11,5 @@ public interface AccountRepository extends JpaRepository<Account, Long> {
     //Account getAccountWithMerchant(String merchant_id, String merchant_pass);
 
     Account findByMerchantIdAndMerchantPassword(String merchantId,String merchantPassword);
-    Optional<Account> findByCardNumberAndCvvAndCardHolderNameAndExpirationDateIsGreaterThanEqual(String cardNumber,
-                                                                                                 String cvv,
-                                                                                                 String cardHolderName,
-                                                                                                 Date expirationDate);
+    Optional<Account> findByCardNumberAndCvvAndCardHolderName(String cardNumber,String cvv,String cardHolderName);
 }

@@ -1,6 +1,7 @@
 package com.microservice.center.model;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class Transaction {
     private Magazine magazine;
 
     @ManyToMany(mappedBy = "transactions")
-    private List<Publication> publicationList;
+    private List<Publication> publicationList = new ArrayList<>();
 
     public Transaction() {}
 

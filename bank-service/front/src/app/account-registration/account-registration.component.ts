@@ -11,8 +11,7 @@ import {ActivatedRoute} from "@angular/router";
 export class AccountRegistrationComponent implements OnInit {
 
   paymentForm: FormGroup;
-  payment ;
-  paymentId;
+  tokenId;
 
   constructor(private formBuilder: FormBuilder,
               private registrationService : RegistrationService,
@@ -21,23 +20,34 @@ export class AccountRegistrationComponent implements OnInit {
   ngOnInit() {
 
     this.route.queryParams.subscribe(params => {console.log(params)
-      this.paymentId = params.paymentId;
-      ;})
+      this.tokenId = params.tokenId;
+
+      this.registrationService.checkUrl(this.tokenId).subscribe(data=>{
+
+      },error=>{
+        console.log(error.error.message);
+      });
+
+      ;},error => {
+      console.log(error.erros.message);
+    });
 
     this.paymentForm = this.formBuilder.group({
-      pan: [''],
-      securityCode: [''],
+      cardNumber: [''],
+      cvv: [''],
       cardHolderName: [''],
       expirationDate: ['']
     });
   }
 
   onSubmit(){
-    this.payment = this.paymentForm.value;
-    this.paymentService.pay(this.payment,this.paymentId).subscribe(data => {
+    console.log(this.paymentForm.value);
+    //this.payment = this.paymentForm.value;
+    this.registrationService.register(this.paymentForm.value,this.tokenId).subscribe(data=>{
       console.log(data);
-      window.location.href = data.redirectUrl;
-    })
+    },error=>{
+      console.log(error.erros.message);
+    });
   }
 
 }

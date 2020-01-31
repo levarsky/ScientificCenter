@@ -1,7 +1,4 @@
 package com.microservice.center.model;
-
-import org.graalvm.compiler.lir.aarch64.AArch64AtomicMove;
-
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;

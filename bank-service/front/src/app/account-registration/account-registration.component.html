@@ -3,15 +3,15 @@
     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
       <div class="card ">
         <div class="card-body">
-          <h5 class="card-title text-center">Payment</h5>
+          <h5 class="card-title text-center">Add card</h5>
           <form class="form-signin"  (ngSubmit)="onSubmit()" [formGroup]="paymentForm">
             <div class="form-label-group">
               <label for="pan">Card number</label>
-              <input type="text" id="pan" [formControlName]="'pan'" class="form-control" autofocus name="price" required/>
+              <input type="text" id="pan" [formControlName]="'cardNumber'" class="form-control" autofocus name="price" required/>
             </div>
             <div class="form-label-group">
               <label for="sc">Security Code</label>
-              <input type="text" id="sc" [formControlName]="'securityCode'" class="form-control" name="sc" required/>
+              <input type="text" id="sc" [formControlName]="'cvv'" class="form-control" name="sc" required/>
             </div>
             <div class="form-label-group">
               <label for="chn">Card Holder Name</label>
