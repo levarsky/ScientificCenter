@@ -2,9 +2,12 @@ package com.microservice.center.service;
 
 import com.microservice.center.model.*;
 import com.microservice.center.repository.RoleRepository;
+import com.microservice.center.repository.TransactionRepository;
 import com.microservice.center.repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,6 +32,15 @@ public class UserService {
 
     @Autowired
     private EmailService emailService;
+
+    @Autowired
+    private TransactionService transactionService;
+
+    @Autowired
+    private PublicationService publicationService;
+
+    @Autowired
+    private MagazineService magazineService;
 
     public void save(User user){
         userRepository.save(user);
@@ -86,6 +98,25 @@ public class UserService {
 
     }
 
+    public void addFromTransactionToUser(Transaction transaction){
+        User user = getCurrentUser();
+        if(transaction.getMagazine() != null){
+            user.getSubscriptions().add(transaction.getMagazine());
+            transaction.getMagazine().getReaders().add(user);
+            userRepository.save(user);
+            magazineService.save(transaction.getMagazine());
+        }
+
+        if(!transaction.getPublicationList().isEmpty()){
+            for(Publication p : transaction.getPublicationList()){
+                user.getPurchased().add(p);
+                p.getReaders().add(user);
+                publicationService.save(p);
+            }
+            userRepository.save(user);
+        }
+    }
+
     public User getUser(String username){
         Optional<User> user = userRepository.findByUsername(username);
 
@@ -99,7 +130,11 @@ public class UserService {
         return verificationTokenService.confirmToken(token);
     }
 
-
+    public User getCurrentUser() {
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findByUsername(auth.getName());
+        return user.get();
+    }
 
     public User findById(Long id){
         Optional<User> user = userRepository.findById(id);

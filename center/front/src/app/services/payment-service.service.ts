@@ -14,10 +14,15 @@ export class PaymentServiceService {
 
   constructor(private http: HttpClient, private router: Router) { }
 
-  pay(value: number):Observable<any>{
-    return this.http.get(this.basicPath+value);
+  pay(value: number, ids : number[]):Observable<any>{
+    return this.http.post(this.basicPath+value,ids);
 
   }
+
+  subscribe(value: number, id :number):Observable<any>{
+      return this.http.get(this.basicPath + "subscribe/"+value + "/" + id);
+
+    }
 
   testRedirect():Observable<any>{
     return this.http.get('test/');

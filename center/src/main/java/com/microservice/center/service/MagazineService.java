@@ -23,6 +23,10 @@ public class MagazineService {
         return magazineRepository.findAll();
     }
 
+    public void save(Magazine magazine){
+        magazineRepository.save(magazine);
+    }
+
     public Magazine findById(Long id) {
         Optional<Magazine> magazine = magazineRepository.findById(id);
         if(!magazine.isPresent())

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {MagazineService} from "../services/magazine.service";
 import {Magazine, ScentificArea, User, Cart} from "../model"
+import {PaymentServiceService} from "../services/payment-service.service";
 
 @Component({
   selector: 'app-magazine',
@@ -18,7 +19,7 @@ export class MagazineComponent implements OnInit {
   magazines : Magazine[];
   cart : Cart;
 
-  constructor(private router: ActivatedRoute, private magazineService : MagazineService) {
+  constructor(private router: ActivatedRoute, private magazineService : MagazineService, private paymentService : PaymentServiceService) {
    this.router.queryParams.subscribe(data => {
             this.id =  data.id;
             console.log(this.id);
@@ -40,6 +41,12 @@ export class MagazineComponent implements OnInit {
 
   ngOnInit() {
 
+  }
+
+  subscribe(){
+    this.paymentService.subscribe(this.magazine.price, this.magazine.price).subscribe(data=>{
+         window.location.href=data.url;
+    });
   }
 
 }

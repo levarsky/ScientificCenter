@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {Magazine, ScentificArea, User, Cart} from "../model"
+import {PaymentServiceService} from "../services/payment-service.service";
 
 @Component({
   selector: 'app-cart',
@@ -11,7 +12,7 @@ export class CartComponent implements OnInit {
   cart : Cart;
 
   sum : number;
-  constructor() { }
+  constructor(private paymentService : PaymentServiceService) { }
 
   ngOnInit() {
      if(localStorage.getItem("cart") != null){
@@ -32,6 +33,22 @@ export class CartComponent implements OnInit {
   remove(id : number) {
       this.cart.products = this.cart.products.filter(magazine => magazine.id != id );
       localStorage.setItem("cart",JSON.stringify(this.cart));
+  }
+
+  checkout(){
+    if(localStorage.getItem("cart") == null){
+      alert("Cart is empty!");
+    }else{
+      this.cart = JSON.parse(localStorage.getItem("cart"));
+      let list = [];
+      for (let product of this.cart.products) {
+              list.push(product.id);
+      }
+      this.paymentService.pay(this.sum, list).subscribe(data=>{
+          window.location.href=data.url;
+      });
+    }
+
   }
 
 }

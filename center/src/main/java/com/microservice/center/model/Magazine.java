@@ -44,12 +44,16 @@ public class Magazine {
     @ManyToMany(mappedBy = "subscriptions")
     private List<User> readers;
 
+    @OneToMany(mappedBy = "magazine")
+    private List<Transaction> transactions;
+
     public Magazine() {
         scientificArea = new ArrayList<>();
         redactors = new ArrayList<>();
         reviewer = new ArrayList<>();
         publications = new ArrayList<>();
         readers = new ArrayList<>();
+        transactions = new ArrayList<>();
     }
 
     public Long getId() {
@@ -130,5 +134,13 @@ public class Magazine {
 
     public void setReaders(List<User> readers) {
         this.readers = readers;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

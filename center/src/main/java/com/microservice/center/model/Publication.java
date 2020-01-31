@@ -1,5 +1,7 @@
 package com.microservice.center.model;
 
+import org.graalvm.compiler.lir.aarch64.AArch64AtomicMove;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -29,8 +31,12 @@ public class Publication {
     @ManyToMany
     private List<User> readers;
 
+    @ManyToMany
+    private List<Transaction> transactions;
+
     public Publication() {
         readers = new ArrayList<>();
+        transactions = new ArrayList<>();
     }
 
     public Long getId() {
@@ -79,5 +85,21 @@ public class Publication {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public List<User> getReaders() {
+        return readers;
+    }
+
+    public void setReaders(List<User> readers) {
+        this.readers = readers;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 }

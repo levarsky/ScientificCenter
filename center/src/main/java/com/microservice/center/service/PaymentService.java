@@ -59,6 +59,10 @@ public class PaymentService {
         return frontUrl+"?error="+requestId;
     }
 
+    public String paymentCancel(String requestId){
+        return frontUrl+"?cancel="+requestId;
+    }
+
 
 
 }

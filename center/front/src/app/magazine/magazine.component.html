@@ -24,7 +24,7 @@
                 {{magazine.price}} &euro;
               </p>
               <p>
-                <button *ngIf="magazine.readerPays" type="button" class="btn btn-success">Subscribe</button>
+                <button *ngIf="magazine.readerPays" type="button" class="btn btn-success" (click)="subscribe()">Subscribe</button>
                 <button *ngIf="!magazine.readerPays" type="button" class="btn btn-primary" >Follow</button><br><br>
                 <button *ngIf="magazine.readerPays" type="button" class="btn btn-primary" [routerLink]="['/publications']" [queryParams]="{id: magazine.id}">See Publications</button>
               </p>
