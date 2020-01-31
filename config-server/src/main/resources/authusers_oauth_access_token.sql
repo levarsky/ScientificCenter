@@ -64,7 +64,7 @@ INSERT INTO bank.transaction (id, amount, transaction_date, transaction_id, acco
 INSERT INTO bank.transaction (id, amount, transaction_date, transaction_id, account_id, request_id, transaction_type_id) VALUES (25, 5, '2020-01-31 17:47:03', 1928231510, 4, 4, 1);
 INSERT INTO bank.transaction_type (id, name) VALUES (1, 'CREDIT');
 INSERT INTO bank.transaction_type (id, name) VALUES (2, 'DEBIT');
-INSERT INTO bankservice.client (id, client_id, client_name, merchant_id, merchant_password) VALUES (4, '_CsfltCDjn-RPgxf6hHEjetUIYQDaMa8gM5hpqE-j2A', null, 'NEKI', 'NEKI');
+INSERT INTO bankservice.client (id, client_id, merchant_id, merchant_password) VALUES (4, '_CsfltCDjn-RPgxf6hHEjetUIYQDaMa8gM5hpqE-j2A', 'NEKI', 'NEKI');
 INSERT INTO bankservice.registration_request (id, accessed, client_id, mode, token_id, username) VALUES (1, true, '_CsfltCDjn-RPgxf6hHEjetUIYQDaMa8gM5hpqE-j2A', 'CREATE', 'ca440069-f9df-4fab-9e55-59e223ce3344', 'marko');
 INSERT INTO bankservice.transaction (id, amount, client_id, merchant_order_id, successful, timestamp) VALUES (1, 200, 'aXx2CcgHxZP_30XSS48XxbgV_m1nbS2o_ZcUCmhx__4', 1833304378, null, '2020-01-22 18:25:29');
 INSERT INTO bankservice.transaction (id, amount, client_id, merchant_order_id, successful, timestamp) VALUES (2, 200, 'aXx2CcgHxZP_30XSS48XxbgV_m1nbS2o_ZcUCmhx__4', 116883706, null, '2020-01-22 18:27:48');

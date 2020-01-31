@@ -45,13 +45,13 @@ export class AuthService {
     var expireDate = new Date().getTime() + (1000 * token.expires_in);
     console.log(token.expires_in);
     console.log(token)
-    this.cookie.putObject("access_token", token.access_token, {expires:expireDate.toString()});
+    this.cookie.putObject("sellers_token", token.access_token, {expires:expireDate.toString()});
     console.log('Obtained Access token');
     this.router.navigate(['home'])
   }
 
   getToken(){
-    return this.cookie.get("access_token");
+    return this.cookie.get("sellers_token");
   }
 
   isValid():boolean{
@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   logout(){
-    this.cookie.remove('access_token');
+    this.cookie.remove('sellers_token');
   }
 
 

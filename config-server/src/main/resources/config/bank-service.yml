@@ -2,7 +2,7 @@ spring:
   datasource:
     url: jdbc:mysql://localhost:3306/bankservice?allowPublicKeyRetrieval=true&useSSL=false&createDatabaseIfNotExist=true&serverTimezone=UTC
     username: root
-    password: adminadmin
+    password: admin
   jpa:
     hibernate.ddl-auto: update
     properties:
@@ -16,7 +16,7 @@ server:
     key-store-type: PKCS12
     key-store: classpath:bank.p12
     key-store-password: password
-    #client-auth: need
+    client-auth: need
     trust-store: classpath:eurekaTrust.jks
     trust-store-password: password
 
