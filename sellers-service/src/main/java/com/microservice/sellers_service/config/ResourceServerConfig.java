@@ -79,6 +79,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         http
                 .anonymous().and()
                 .authorizeRequests()
+                .antMatchers(HttpMethod.GET,"/pay/request*").permitAll()
                 .antMatchers(HttpMethod.GET,"/pay/paymentTypes*").permitAll()
                 .antMatchers(HttpMethod.GET,"/pay/token*").permitAll()
                 .antMatchers(HttpMethod.GET,"/pay/paymentRequest*").permitAll()

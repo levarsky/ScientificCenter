@@ -2,6 +2,7 @@ package com.microservice.bank.service;
 
 import com.microservice.bank.model.Account;
 import com.microservice.bank.model.Merchant;
+import com.microservice.bank.model.MerchantDTO;
 import com.microservice.bank.repository.MerchantRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,16 +30,17 @@ public class MerchantService {
        return merchant.get().getAccount();
     }
 
-    public Merchant getMerchantDetails(Account account){
+    public MerchantDTO getMerchantDetails(Account account){
+
+        Account optionalAccount = accountService.getAccount(account.getCardNumber(),account.getCvv(),account.getCardHolderName(),account.getExpirationDate());
 
 
-        Optional<Account> optionalAccount = accountService.getAccount(account.getCardNumber(),account.getCvv(),account.getCardHolderName(),account.getExpirationDate());
 
-        if (!optionalAccount.isPresent()){
+        if (optionalAccount==null){
             //PROVERA U DRUGOJ BANCI
         }
 
-        if (merchantRepository.existsByAccount_Id(optionalAccount.get().getId()))
+        if (merchantRepository.existsByAccount_Id(optionalAccount.getId()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Merchant details exist!");
 
 
@@ -67,9 +69,15 @@ public class MerchantService {
 
         merchant.setMerchantId(merchantId);
         merchant.setMerchantPassword(merchantPassword);
-        merchant.setAccount(optionalAccount.get());
+        merchant.setAccount(optionalAccount);
 
-        return merchantRepository.save(merchant);
+        MerchantDTO merchantDTO = new MerchantDTO();
+        merchantDTO.setMerchantId(merchantId);
+        merchantDTO.setMerchantPassword(merchantPassword);
+
+        merchantRepository.save(merchant);
+
+        return merchantDTO;
     }
 
 }

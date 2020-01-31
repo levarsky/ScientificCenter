@@ -5,6 +5,7 @@ import com.microservice.bank_service.repository.ClientRepository;
 import com.microservice.bank_service.repository.TransactionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -29,7 +30,7 @@ public class PaymentService {
     private RestTemplate restTemplate;
 
     @Autowired
-    private RestTemplate restTemplateBalanced;
+    private OAuth2RestOperations restTemplateBalanced;
 
     private String sellersService = "https://sellers-service/sellers/payment/status";
 
@@ -81,45 +82,30 @@ public class PaymentService {
 
     }
 
-    public Object successful(Long id){
-        System.out.println(id);
+    public Object paymentStatus(Long id,String status){
+
         Transaction transaction = transactionRepository.findByMerchantOrderId(id);
         if(transaction == null)
             throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
-        transaction.setSuccessful(true);
-        transactionRepository.save(transaction);
-        System.out.println("SAVEOVAO");
+        if(status.equals("SUCCESSFUL")){
+            transaction.setSuccessful(true);
+        }else
+            transaction.setSuccessful(false);
 
-        return Collections.singletonMap("redirectUrl",getUrl(sellersService,transaction.getMerchantOrderId().toString(),PaymentStatus.SUCCESSFUL));
+        transactionRepository.save(transaction);
+        return Collections.singletonMap("redirectUrl",getUrl(sellersService,transaction.getMerchantOrderId().toString(),status));
+
 
     }
 
-    public Object failed(Long id){
-        Transaction transaction = transactionRepository.findByMerchantOrderId(id);
-        if(transaction == null)
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
-        transaction.setSuccessful(false);
-        transactionRepository.save(transaction);
-        return Collections.singletonMap("redirectUrl",getUrl(sellersService,transaction.getMerchantOrderId().toString(),PaymentStatus.FAILED));
-
-    }
-
-    public Object error(Long id){
-        Transaction transaction = transactionRepository.findByMerchantOrderId(id);
-        if(transaction == null)
-            throw new ResponseStatusException(HttpStatus.NO_CONTENT, "ID-em");
-        transaction.setSuccessful(false);
-        transactionRepository.save(transaction);
-        return Collections.singletonMap("redirectUrl",getUrl(sellersService,transaction.getMerchantOrderId().toString(),PaymentStatus.ERROR));
-
-    }
-
-    public String getUrl(String url,String transactionId, PaymentStatus paymentStatus){
+    public String getUrl(String url,String transactionId, String paymentStatus){
 
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromHttpUrl(url)
                 .queryParam("transactionId",transactionId)
-                .queryParam("paymentStatus",paymentStatus);
+                .queryParam("paymentStatus",PaymentStatus.SUCCESSFUL);
+
+        System.out.println(PaymentStatus.valueOf(paymentStatus));
 
         String paymentUrl = builder.build().encode().toUriString();
 

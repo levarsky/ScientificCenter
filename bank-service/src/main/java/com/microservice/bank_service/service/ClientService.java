@@ -2,9 +2,9 @@ package com.microservice.bank_service.service;
 
 import com.microservice.bank_service.model.Account;
 import com.microservice.bank_service.model.Client;
+import com.microservice.bank_service.model.MerchantDTO;
 import com.microservice.bank_service.model.RegistrationRequest;
 import com.microservice.bank_service.repository.ClientRepository;
-import com.microservice.bank_service.repository.RegistrationRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
@@ -47,6 +47,8 @@ public class ClientService {
 
     public Client registerNewClient(Account account,String tokenId){
 
+        System.out.println(account.getExpirationDate());
+
         String clientId = authService.getAuth().getPrincipal().toString();
 
         RegistrationRequest registrationRequest = registrationRequestService.getRegistrationRequest(clientId,tokenId);
@@ -66,14 +68,18 @@ public class ClientService {
 
         HttpEntity<?> requestEntity = new HttpEntity<>(account);
 
-        ResponseEntity<Client> exchange = restTemplate.exchange(bankUrl, HttpMethod.POST
-                , requestEntity, Client.class);
+        ResponseEntity<MerchantDTO> exchange = restTemplate.exchange(bankUrl, HttpMethod.POST
+                , requestEntity, MerchantDTO.class);
+
+        MerchantDTO merchantDTO = exchange.getBody();
+
+        client = new Client();
+        client.setMerchantId(merchantDTO.getMerchantId());
+        client.setMerchantPassword(merchantDTO.getMerchantPassword());
 
         if (mode.equals("EDIT")){
-            client = exchange.getBody();
             client.setId(optionalClient.get().getId());
         }else if (mode.equals("CREATE")){
-            client = exchange.getBody();
             client.setId(null);
             client.setClientId(registrationRequest.getClientId());
         }
