@@ -103,9 +103,9 @@ public class PaymentService {
         UriComponentsBuilder builder = UriComponentsBuilder
                 .fromHttpUrl(url)
                 .queryParam("transactionId",transactionId)
-                .queryParam("paymentStatus",PaymentStatus.SUCCESSFUL);
+                .queryParam("paymentStatus",paymentStatus);
 
-        System.out.println(PaymentStatus.valueOf(paymentStatus));
+        System.out.println(paymentStatus);
 
         String paymentUrl = builder.build().encode().toUriString();
 

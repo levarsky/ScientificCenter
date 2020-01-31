@@ -19,7 +19,7 @@ public class PaymentService {
     @Autowired
     private OAuth2RestOperations restTemplateNotBalanced;
 
-    public String paymentStatus(String transactionId, PaymentStatus paymentStatus) {
+    public String paymentStatus(String transactionId, String paymentStatus) {
 
         System.out.println("Dosao dovdee");
 
@@ -29,9 +29,9 @@ public class PaymentService {
         paymentRequest.setStatus(paymentStatus.toString());
         paymentRequestService.saveRequest(paymentRequest);
 
-        if(paymentStatus.equals(PaymentStatus.ERROR))
+        if(paymentStatus.equals("ERROR"))
             return uriBuilder(client.getErrorUrl(),paymentRequest.getToken());
-        if(paymentStatus.equals(PaymentStatus.FAILED))
+        if(paymentStatus.equals("FAILED"))
             return uriBuilder(client.getFailedUrl(),paymentRequest.getToken());
 
         //SUCCESS
