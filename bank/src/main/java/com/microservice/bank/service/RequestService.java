@@ -16,7 +16,7 @@ import java.util.*;
 public class RequestService {
 
     @Autowired
-    private AccountRepository accountRepository;
+    private AccountService accountService;
 
     @Autowired
     private RequestRepository requestRepository;
@@ -68,17 +68,17 @@ public class RequestService {
     public Object pay(Payment payment, String id){
 
         Account payerAccount = null;
-        Date date = new Date();
 
-        Optional<Account> optionalAccount = accountRepository.
-                                        findByCardNumberAndCvvAndCardHolderNameAndExpirationDateIsGreaterThanEqual(
-                                                payment.getPan(),
-                                                payment.getSecurityCode(),
-                                                payment.getCardHolderName(),
-                                                payment.getExpirationDate());
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(payment.getExpirationDate());
+        int month = calendar.get(Calendar.MONTH);
+        int year = calendar.get(Calendar.YEAR);
+
+        Account optionalAccount = accountService.getAccount(
+                payment.getPan(), payment.getSecurityCode(),payment.getCardHolderName(),payment.getExpirationDate());
 
 
-        payerAccount = optionalAccount.get();
+        payerAccount = optionalAccount;
 
         String redirectUrl;
 
@@ -111,7 +111,7 @@ public class RequestService {
         payerAccount.setAmount(payerAccount.getAmount() - request.getAmount());
 
         transactionService.saveNew(transactionDebit,"DEBIT");
-        accountRepository.save(payerAccount);
+        accountService.saveAccount(payerAccount);
 
 
         Transaction transactionCredit = new Transaction();
@@ -123,7 +123,7 @@ public class RequestService {
         clientAccount.setAmount(clientAccount.getAmount() + request.getAmount());
 
         transactionService.saveNew(transactionCredit,"CREDIT");
-        accountRepository.save(clientAccount);
+        accountService.saveAccount(clientAccount);
 
 
         HttpHeaders requestHeaders = new HttpHeaders();

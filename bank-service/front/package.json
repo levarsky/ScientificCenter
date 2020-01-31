@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
-    "start": "ng serve",
+    "start": "ng serve --proxy-config proxy.config.json --ssl --ssl-key ssl/server.key  --ssl-cert ssl/server.crt",
     "build": "ng build",
     "test": "ng test",
     "lint": "ng lint",
@@ -18,7 +18,13 @@
     "@angular/forms": "~8.2.14",
     "@angular/platform-browser": "~8.2.14",
     "@angular/platform-browser-dynamic": "~8.2.14",
+    "@angular/platform-server": "^8.2.14",
     "@angular/router": "~8.2.14",
+    "@nguniversal/express-engine": "^8.2.6",
+    "bootstrap": "^4.4.1",
+    "jquery": "^3.4.1",
+    "ngx-cookie": "^4.1.2",
+    "popper.js": "^1.16.1",
     "rxjs": "~6.4.0",
     "tslib": "^1.10.0",
     "zone.js": "~0.9.1"

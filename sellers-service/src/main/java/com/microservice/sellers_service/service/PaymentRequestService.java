@@ -7,6 +7,7 @@ import com.microservice.sellers_service.model.PaymentType;
 import com.microservice.sellers_service.repository.PaymentRequestRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
@@ -25,7 +26,7 @@ public class PaymentRequestService {
     @Autowired
     private PaymentTypeService paymentTypeService;
     @Autowired
-    private RestTemplate restTemplate;
+    private OAuth2RestOperations restTemplate;
     @Autowired
     private AuthService authService;
 

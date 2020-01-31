@@ -19,7 +19,7 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @RequestMapping(value= "/status",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> paymentSuccess(@RequestParam String transactionId,@RequestParam PaymentStatus paymentStatus) throws Exception {
+    public ResponseEntity<?> paymentSuccess(@RequestParam String transactionId,@RequestParam String paymentStatus) throws Exception {
         return new ResponseEntity<>(paymentService.paymentStatus(transactionId,paymentStatus), HttpStatus.OK);
     }
 
