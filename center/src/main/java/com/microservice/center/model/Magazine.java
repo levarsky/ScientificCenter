@@ -1,10 +1,17 @@
 package com.microservice.center.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Magazine {
@@ -41,9 +48,11 @@ public class Magazine {
     @OneToMany(mappedBy = "magazine")
     private List<Publication> publications;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "subscriptions")
     private List<User> readers;
 
+    @JsonIgnore
     @OneToMany(mappedBy = "magazine")
     private List<Transaction> transactions;
 

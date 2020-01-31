@@ -63,16 +63,16 @@ public class PaymentController {
         transaction.setUsername(userService.getCurrentUser().getUsername());
         transactionService.save(transaction);
 
-        //String requestToken = this.paymentService.getToken(amount);
-        //System.out.println(requestToken);
-        //String url = "https://localhost:8088/sellers/pay/request?token="+requestToken;
+        String requestToken = this.paymentService.getToken(amount);
+        System.out.println(requestToken);
+        String url = "https://localhost:8088/sellers/pay/request?token="+requestToken;
 
         //transaction.setToken(requestToken);
         //transactionService.save(transaction);
-        //Resp r = new Resp(url);
+        Resp r = new Resp(url);
         transactionService.addMagazine(id,transaction.getId());
         transactionService.save(transaction);
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>(r, HttpStatus.OK);
     }
 
     @RequestMapping(value= "/success",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
