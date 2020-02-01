@@ -1,4 +1,4 @@
-package com.microservice.paypal_service.dto;
+package com.microservice.sellers_service.model;
 
 import java.io.Serializable;
 
@@ -11,7 +11,7 @@ public class ProductDTO implements Serializable{
 	private String subscriberEmail;
 	private Double amount;
 	private String clientId;
-
+	
 	public ProductDTO() {
 		super();
 	}

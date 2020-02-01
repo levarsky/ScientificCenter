@@ -45,6 +45,7 @@ export class MagazineComponent implements OnInit {
 
   subscribe() {
     this.paymentService.subscribe(this.magazine.price, this.magazine.id).subscribe(data => {
+      console.log("data: " + data);
       window.location.href = data.url;
     });
   }

@@ -35,9 +35,8 @@ public class PayController {
     }
 
     @RequestMapping(value = "/request", method = RequestMethod.GET)
-    public void gePaymentTypes(@RequestParam(value = "token") String token, HttpServletResponse httpServletResponse) throws IOException {
-        httpServletResponse.sendRedirect(serverPath+"/request?token="+token);
-
+    public void gePaymentTypes(@RequestParam(value = "token") String token, @RequestParam(value = "magazineName") String magazineName, @RequestParam(value = "magazineType") Long magazineType, @RequestParam(value = "userGivenName") String userGivenName, @RequestParam(value = "userSurname") String userSurname, @RequestParam(value = "userEmail") String userEmail, HttpServletResponse httpServletResponse) throws IOException {
+        httpServletResponse.sendRedirect(serverPath+"/request?token="+token+"&magazineName=" + magazineName + "&magazineType=" + magazineType + "&userGivenName=" + userGivenName + "&userSurname=" + userSurname + "&userEmail=" + userEmail);
     }
 
     @RequestMapping(value = "/{price}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
@@ -69,8 +68,8 @@ public class PayController {
     }
 
     @RequestMapping(value="/paymentRequest",method = RequestMethod.GET)
-    public ResponseEntity<?> sendPaymentRequest(@RequestParam String token,@RequestParam Long id ){
-        return new ResponseEntity<>(paymentRequestService.sendPaymentRequest(token,id),HttpStatus.OK);
+    public ResponseEntity<?> sendPaymentRequest(@RequestParam String token,@RequestParam Long id, @RequestParam String magazineName, @RequestParam String magazineType, @RequestParam String userGivenName, @RequestParam String userSurname, @RequestParam String userEmail){
+        return new ResponseEntity<>(paymentRequestService.sendPaymentRequest(token,id, magazineName, magazineType, userGivenName, userSurname, userEmail),HttpStatus.OK);
     }
 
 }

@@ -1,20 +1,24 @@
 package com.microservice.sellers_service.service;
 
-import com.microservice.sellers_service.communication.BankPaymentServices;
-import com.microservice.sellers_service.model.Client;
-import com.microservice.sellers_service.model.PaymentRequest;
-import com.microservice.sellers_service.model.PaymentType;
-import com.microservice.sellers_service.repository.PaymentRequestRepository;
+import java.util.UUID;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collection;
-import java.util.Map;
-import java.util.UUID;
+import com.microservice.sellers_service.model.PaymentRequest;
+import com.microservice.sellers_service.model.PaymentType;
+import com.microservice.sellers_service.model.ProductDTO;
+import com.microservice.sellers_service.repository.PaymentRequestRepository;
 
 @Service
 public class PaymentRequestService {
@@ -62,7 +66,7 @@ public class PaymentRequestService {
 
     }
 
-    public Object sendPaymentRequest(String token, Long id){
+    public Object sendPaymentRequest(String token, Long id, String magazineName, String magazineType, String userGivenName, String userSurname, String userEmail){
 
         PaymentRequest paymentRequest = getRequest(token);
         PaymentType paymentType = paymentTypeService.getPaymentType(id);
@@ -76,17 +80,30 @@ public class PaymentRequestService {
         httpHeaders.add("amount",paymentRequest.getAmount().toString());
 
 
-
-
-        if(paymentType.getServiceName()!="paypal-service"){
+        HttpHeaders httpHeadersPaypal = new HttpHeaders();
+        httpHeadersPaypal.setContentType(MediaType.APPLICATION_JSON);
+        
+        ProductDTO productDto = new ProductDTO();
+        productDto.setName(magazineName);
+        productDto.setType(magazineType);
+        productDto.setDescription("/");
+        productDto.setSubscriberGivenName(userGivenName);
+        productDto.setSubscriberSurname(userSurname);
+        productDto.setSubscriberEmail(userEmail);
+        productDto.setAmount(paymentRequest.getAmount());
+        productDto.setClientId(paymentRequest.getClient().getClientId());
+        
+        String radi = "";
+        if(!paymentType.getServiceName().equals("paypal-service")){
             exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity, PaymentRequest.class);
         }else{
-            //exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay?amount="+paymentRequest.getAmount(), HttpMethod.POST, new HttpEntity<>(httpHeaders),PaymentRequest.class);
+            radi = restTemplate.exchange("https://"+paymentType.getServiceName()+"/subscription/create", HttpMethod.POST, new HttpEntity<>(productDto, httpHeadersPaypal),String.class).getBody();
         }
 
         //PaymentRequest paymentRequest1 = this.bankPaymentServices.create(paymentRequest);
-
-        System.out.println(exchange.getBody());
+        
+        //System.out.println(exchange.getBody());
+        System.out.println(radi);
 
         PaymentRequest paymentRequestReceived = (PaymentRequest) exchange.getBody();
 

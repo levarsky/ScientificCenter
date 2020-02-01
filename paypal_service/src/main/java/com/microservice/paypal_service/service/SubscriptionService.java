@@ -17,12 +17,12 @@ import com.google.gson.JsonParser;
 
 @Service
 public class SubscriptionService {
-	public String getToken() {
+	public String getToken(String username, String password) {
 		
 		String url = "https://api.sandbox.paypal.com/v1/oauth2/token";
 
-		String username = "AQ-JUhmxs9ZQU619meknUmn6hbJoafvclUDuzcgK51w3js8VHvFK_eQOWs_i-YiBxz_nwbztqj6w_sfX";
-		String password = "EKa_NIeCT-zhIbw_ZgQm8z-zEoQJUzPGD8AncNR1wuo9jzNKrt5sQBD58YglYNalV7cJKo3vCaCLoKEd";
+		//String username = "AQ-JUhmxs9ZQU619meknUmn6hbJoafvclUDuzcgK51w3js8VHvFK_eQOWs_i-YiBxz_nwbztqj6w_sfX";
+		//String password = "EKa_NIeCT-zhIbw_ZgQm8z-zEoQJUzPGD8AncNR1wuo9jzNKrt5sQBD58YglYNalV7cJKo3vCaCLoKEd";
 		String authStr = username + ":" + password;
 
 		String base64Creds = Base64.getEncoder().encodeToString(authStr.getBytes());
