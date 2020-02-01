@@ -17,7 +17,7 @@ public class PaymentService {
     private PaymentRequestService paymentRequestService;
 
     @Autowired
-    private OAuth2RestOperations restTemplateNotBalanced;
+    private RestTemplate restTemplateNotBalanced;
 
     public String paymentStatus(String transactionId, String paymentStatus) {
 

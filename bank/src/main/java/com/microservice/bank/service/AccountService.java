@@ -31,6 +31,8 @@ public class AccountService {
         if (optionalAccount.isPresent()){
             Account account = optionalAccount.get();
 
+            System.out.println("EXP"+ account.getExpirationDate());
+
             Calendar accountCall = getCalendar(account.getExpirationDate());
             Calendar calendarSent = getCalendar(date);
 

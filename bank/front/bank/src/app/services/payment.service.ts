@@ -17,4 +17,10 @@ export class PaymentService {
     param = param.append('paymentId',id)
     return this.http.post(this.baseUrl+"/pay", payment,{params:param});
   }
+
+  cancel(id):Observable<any>{
+    let param = new HttpParams();
+    param = param.append('paymentId',id)
+    return this.http.post(this.baseUrl+"/cancel",{params:param});
+  }
 }

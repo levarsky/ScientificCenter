@@ -1,6 +1,7 @@
 package com.microservice.bank_service.config;
 
 
+import feign.RequestInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.ResourceServerProperties;
 import org.springframework.boot.autoconfigure.security.oauth2.resource.UserInfoTokenServices;
@@ -42,8 +43,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
         return new ClientCredentialsResourceDetails();
     }
 
+    @Bean
+    public RequestInterceptor oauth2FeignRequestInterceptor() {
+        return new OAuth2FeignRequestInterceptor(oAuth2ClientContext, clientCredentialsResourceDetails());
+    }
 
-    @LoadBalanced
     @Bean
     public OAuth2RestOperations restTemplateBalanced(OAuth2ClientContext oauth2ClientContext) {
         return new OAuth2RestTemplate(clientCredentialsResourceDetails(), oauth2ClientContext);

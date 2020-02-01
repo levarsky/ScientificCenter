@@ -11,6 +11,7 @@
       <module fileurl="file://$PROJECT_DIR$/eureka/eureka.iml" filepath="$PROJECT_DIR$/eureka/eureka.iml" />
       <module fileurl="file://$PROJECT_DIR$/gateway/gateway.iml" filepath="$PROJECT_DIR$/gateway/gateway.iml" />
       <module fileurl="file://$PROJECT_DIR$/paypal_service/paypal_service.iml" filepath="$PROJECT_DIR$/paypal_service/paypal_service.iml" />
+      <module fileurl="file://$PROJECT_DIR$/pcc/pcc.iml" filepath="$PROJECT_DIR$/pcc/pcc.iml" />
       <module fileurl="file://$PROJECT_DIR$/registration-service/registration-service.iml" filepath="$PROJECT_DIR$/registration-service/registration-service.iml" />
       <module fileurl="file://$PROJECT_DIR$/bank-service/registry.iml" filepath="$PROJECT_DIR$/bank-service/registry.iml" />
       <module fileurl="file://$PROJECT_DIR$/sellers-service/sellers.iml" filepath="$PROJECT_DIR$/sellers-service/sellers.iml" />

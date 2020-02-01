@@ -99,7 +99,7 @@ public class UserService {
     }
 
     public void addFromTransactionToUser(Transaction transaction){
-        User user = getCurrentUser();
+        User user = getUser(transaction.getUsername());
         if(transaction.getMagazine() != null){
             user.getSubscriptions().add(transaction.getMagazine());
             transaction.getMagazine().getReaders().add(user);

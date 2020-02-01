@@ -23,8 +23,11 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     public void configure(final HttpSecurity http) throws Exception {
         // @formatter:off
         http
-                .anonymous().and()
-                .authorizeRequests()
+                .anonymous().and().authorizeRequests()
+                .antMatchers(HttpMethod.POST,"/pay/success*").permitAll()
+                .antMatchers(HttpMethod.POST,"/pay/error*").permitAll()
+                .antMatchers(HttpMethod.POST,"/pay/fail*").permitAll()
+                .antMatchers(HttpMethod.POST,"/pay/cancel*").permitAll()
                 .antMatchers(HttpMethod.POST,"/registration/**").permitAll()
                 .antMatchers(HttpMethod.GET,"/registration/**").permitAll()
                 .anyRequest().authenticated();

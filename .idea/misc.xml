@@ -18,6 +18,7 @@
         <option value="$PROJECT_DIR$/sellers-service/pom.xml" />
         <option value="$PROJECT_DIR$/bitcoin_service/pom.xml" />
         <option value="$PROJECT_DIR$/paypal_service/pom.xml" />
+        <option value="$PROJECT_DIR$/pcc/pom.xml" />
       </list>
     </option>
     <option name="ignoredFiles">
