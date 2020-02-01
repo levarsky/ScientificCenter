@@ -3,11 +3,18 @@ package com.microservice.paypal_service.dto;
 public class SubscriptionDto {
 	private String plan_id;
 	private SubscriberDto subscriber;
+	private ApplicationContext application_context;
 	
-	public SubscriptionDto(String plan_id, SubscriberDto subscriber) {
+
+	public SubscriptionDto(String plan_id, SubscriberDto subscriber, ApplicationContext application_context) {
 		super();
 		this.plan_id = plan_id;
 		this.subscriber = subscriber;
+		this.application_context = application_context;
+	}
+
+	public SubscriptionDto() {
+		super();
 	}
 
 	public String getPlan_id() {
@@ -25,4 +32,14 @@ public class SubscriptionDto {
 	public void setSubscriber(SubscriberDto subscriber) {
 		this.subscriber = subscriber;
 	}
+
+	public ApplicationContext getApplication_context() {
+		return application_context;
+	}
+
+	public void setApplication_context(ApplicationContext application_context) {
+		this.application_context = application_context;
+	}
+	
+	
 }

@@ -36,7 +36,7 @@ public class SellersServiceApplication {
         builder.withSystemSSLConfiguration();
         builder.withMaxTotalConnections(10);
         builder.withMaxConnectionsPerHost(10);
-        args.setEurekaJerseyClient(builder.build());
+        args.setEurekaJerseyClient(builder.build());	
         return args;
     }
 

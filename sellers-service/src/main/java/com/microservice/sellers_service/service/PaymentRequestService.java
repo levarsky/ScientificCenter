@@ -9,8 +9,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -18,6 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.microservice.sellers_service.model.PaymentRequest;
 import com.microservice.sellers_service.model.PaymentType;
 import com.microservice.sellers_service.model.ProductDTO;
+import com.microservice.sellers_service.model.Resp;
 import com.microservice.sellers_service.repository.PaymentRequestRepository;
 
 @Service
@@ -74,7 +73,7 @@ public class PaymentRequestService {
         paymentRequest.setPaymentType(paymentType);
 
         HttpEntity<PaymentRequest> requestEntity = new HttpEntity<>(paymentRequest);
-        ResponseEntity<PaymentRequest> exchange = null;
+        ResponseEntity<Object> exchange = null;
 
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.add("amount",paymentRequest.getAmount().toString());
@@ -93,17 +92,16 @@ public class PaymentRequestService {
         productDto.setAmount(paymentRequest.getAmount());
         productDto.setClientId(paymentRequest.getClient().getClientId());
         
-        String radi = "";
         if(!paymentType.getServiceName().equals("paypal-service")){
-            exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity, PaymentRequest.class);
+            exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity, Object.class);
         }else{
-            radi = restTemplate.exchange("https://"+paymentType.getServiceName()+"/subscription/create", HttpMethod.POST, new HttpEntity<>(productDto, httpHeadersPaypal),String.class).getBody();
+        	Resp res = restTemplate.exchange("https://"+paymentType.getServiceName()+"/subscription/create", HttpMethod.POST, new HttpEntity<>(productDto, httpHeadersPaypal),Resp.class).getBody();
+        	return res;
         }
 
         //PaymentRequest paymentRequest1 = this.bankPaymentServices.create(paymentRequest);
         
         //System.out.println(exchange.getBody());
-        System.out.println(radi);
 
         PaymentRequest paymentRequestReceived = (PaymentRequest) exchange.getBody();
 

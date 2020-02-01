@@ -15,10 +15,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.microservice.paypal_service.dto.ApplicationContext;
 import com.microservice.paypal_service.dto.BillingCycle;
 import com.microservice.paypal_service.dto.FixedPrice;
 import com.microservice.paypal_service.dto.Frequency;
@@ -28,11 +28,14 @@ import com.microservice.paypal_service.dto.PaypalProductDto;
 import com.microservice.paypal_service.dto.PlanDto;
 import com.microservice.paypal_service.dto.PricingScheme;
 import com.microservice.paypal_service.dto.ProductDTO;
+import com.microservice.paypal_service.dto.Resp;
 import com.microservice.paypal_service.dto.SubscriberDto;
 import com.microservice.paypal_service.dto.SubscriptionDto;
 import com.microservice.paypal_service.model.Client;
+import com.microservice.paypal_service.model.User;
 import com.microservice.paypal_service.service.ClientService;
 import com.microservice.paypal_service.service.SubscriptionService;
+import com.microservice.paypal_service.service.UserService;
 
 @RestController
 @RequestMapping(value = "/subscription")
@@ -44,13 +47,17 @@ public class SubscriptionController {
 	@Autowired
 	ClientService clientService;
 	
+	@Autowired
+	UserService userService;
+	
 	@RequestMapping(method = RequestMethod.POST, value = "/create")
-	public String createSubscription(@RequestBody ProductDTO productDto){
+	public Resp createSubscription(@RequestBody ProductDTO productDto){
 		
 		Client client = clientService.findByClientId(productDto.getClientId());
 		String token = service.getToken(client.getPaypalClientId(), client.getPaypalSecret());
 		PaypalProductDto product = new PaypalProductDto(productDto.getName(), "DIGITAL");
-		SubscriberDto subscriber = new SubscriberDto(new NameDto(productDto.getSubscriberGivenName(), productDto.getSubscriberSurname()), productDto.getSubscriberEmail());
+		User user = userService.findByUserEmail(productDto.getSubscriberEmail());
+		SubscriberDto subscriber = new SubscriberDto(new NameDto(productDto.getSubscriberGivenName(), productDto.getSubscriberSurname()), user.getPaypalUserEmail());
 		
 		String productUrl = "https://api.sandbox.paypal.com/v1/catalogs/products";
 		HttpHeaders productHeaders = new HttpHeaders();
@@ -82,7 +89,8 @@ public class SubscriptionController {
 		ResponseEntity<String> planResponse = new RestTemplate().exchange(planUrl, HttpMethod.POST, planEntity, String.class);
 		JsonObject planJson = new JsonParser().parse(planResponse.getBody()).getAsJsonObject();
 		
-		SubscriptionDto subscription = new SubscriptionDto(planJson.get("id").getAsString(), subscriber);
+		ApplicationContext appCon = new ApplicationContext("https://localhost:4200", "https://localhost:4200");
+		SubscriptionDto subscription = new SubscriptionDto(planJson.get("id").getAsString(), subscriber, appCon);
 		
 		String subscriptionUrl = "https://api.sandbox.paypal.com/v1/billing/subscriptions";
 		HttpHeaders subscriptionHeaders = new HttpHeaders();
@@ -92,14 +100,16 @@ public class SubscriptionController {
 		HttpEntity subscriptionEntity = new HttpEntity(subscription, subscriptionHeaders);
 		ResponseEntity<String> subscriptionResponse = new RestTemplate().exchange(subscriptionUrl, HttpMethod.POST, subscriptionEntity, String.class);
 		
+		Resp resp = new Resp("");
 		JsonObject jsonObject = new JsonParser().parse(subscriptionResponse.getBody()).getAsJsonObject();
 		for(JsonElement link : jsonObject.get("links").getAsJsonArray()) {
 			JsonObject json = link.getAsJsonObject();
 			if(json.get("rel").getAsString().equals("approve")) {
-				return "redirect:" + json.get("href").getAsString(); 
+				resp.setUrl(json.get("href").getAsString());
+				return resp;
 			}
 		}
 		
-		return "redirect:/";
+		return resp;
 	}
 }

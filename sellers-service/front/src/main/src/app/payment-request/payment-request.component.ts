@@ -51,7 +51,7 @@ export class PaymentRequestComponent implements OnInit {
     console.log(this.paymentForm.get("payment").value);
 
     this.paymentService.sendRequest(this.token, this.paymentForm.get("payment").value, this.parameters.magazineName, this.parameters.magazineType, this.parameters.userGivenName, this.parameters.userSurname, this.parameters.userEmail).subscribe(data => {
-      console.log(data);
+      console.log("stigao: " + data);
       window.location.href = data.url;
     }
     );
