@@ -1,5 +1,6 @@
 package com.microservice.bank_service.service;
 
+import com.microservice.bank_service.communication.SellersClient;
 import com.microservice.bank_service.model.*;
 import com.microservice.bank_service.repository.ClientRepository;
 import com.microservice.bank_service.repository.TransactionRepository;
@@ -19,6 +20,8 @@ import java.util.concurrent.ThreadLocalRandom;
 @Service
 public class PaymentService {
 
+    @Autowired
+    private SellersClient sellersClient;
 
     @Autowired
     private TransactionRepository transactionRepository;
@@ -32,7 +35,7 @@ public class PaymentService {
     @Autowired
     private OAuth2RestOperations restTemplateBalanced;
 
-    private String sellersService = "https://sellers-service/sellers/payment/status";
+    private String sellersService = "https://localhost:8679/sellers/payment/status";
 
     public Object pay(PaymentRequest paymentRequest){
 
@@ -107,16 +110,22 @@ public class PaymentService {
 
         System.out.println(paymentStatus);
 
+
+
         String paymentUrl = builder.build().encode().toUriString();
+
+        System.out.println(paymentUrl);
 
         HttpHeaders requestHeaders = new HttpHeaders();
         requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
         HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
 
-        ResponseEntity<String> exchange = restTemplateBalanced.exchange(paymentUrl, HttpMethod.GET, requestEntity, String.class);
+        sellersClient.paymentStatus(transactionId,paymentStatus);
 
-        return exchange.getBody();
+        //ResponseEntity<String> exchange = restTemplateBalanced.exchange(paymentUrl, HttpMethod.GET, requestEntity, String.class);
+
+        return sellersClient.paymentStatus(transactionId,paymentStatus);
 
     }
 

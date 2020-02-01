@@ -15,6 +15,9 @@ public class Bank {
     @Column(length = 10)
     private String pan;
 
+    @Column(length = 6)
+    private String code;
+
     @Column
     private String api;
 
@@ -51,5 +54,13 @@ public class Bank {
 
     public void setApi(String api) {
         this.api = api;
+    }
+
+    public String getCode() {
+        return code;
+    }
+
+    public void setCode(String code) {
+        this.code = code;
     }
 }

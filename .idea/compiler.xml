@@ -8,10 +8,9 @@
         <outputRelativeToContentRoot value="true" />
         <module name="auth-service" />
         <module name="config-server" />
-        <module name="pcc" />
         <module name="gateway" />
         <module name="bank_service" />
-        <module name="paypal_service" />
+        <module name="pcc" />
         <module name="sellers-service" />
         <module name="bitcoin_service" />
         <module name="center" />
@@ -21,6 +20,7 @@
         <module name="sellers_service" />
         <module name="bank-service" />
         <module name="registration-service" />
+        <module name="paypal_service" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

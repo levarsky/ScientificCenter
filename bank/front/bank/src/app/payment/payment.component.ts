@@ -41,4 +41,10 @@ export class PaymentComponent implements OnInit {
     })
   }
 
+  onCancel() {
+    this.paymentService.cancel(this.paymentId).subscribe(data => {
+      console.log(data);
+      window.location.href = data.redirectUrl;
+    })
+  }
 }

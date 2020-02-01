@@ -4,7 +4,7 @@
       <div class="card ">
         <div class="card-body">
           <h5 class="card-title text-center">Payment</h5>
-          <form class="form-signin"  (ngSubmit)="onSubmit()" [formGroup]="paymentForm">
+          <form class="form-signin"  [formGroup]="paymentForm">
             <div class="form-label-group">
               <label for="pan">PAN</label>
               <input type="text" id="pan" [formControlName]="'pan'" class="form-control" autofocus name="price" required/>
@@ -22,7 +22,13 @@
               <input type="date" id="date" [formControlName]="'expirationDate'" class="form-control" name="expirationDate" required/>
             </div>
             <hr class="my-4">
-            <button type="submit" class="form-control" >Pay</button>
+
+            <div class="btn-group">
+              <button (click)="onSubmit()" type="button" class="btn btn-default">Pay</button>
+              <button (click)="onCancel()" type="button" class="btn btn-warning">Cancel</button>
+            </div>
+
+
           </form>
         </div>
       </div>

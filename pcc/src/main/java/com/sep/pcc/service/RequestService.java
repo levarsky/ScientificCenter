@@ -2,6 +2,7 @@ package com.sep.pcc.service;
 
 import com.sep.pcc.model.Bank;
 import com.sep.pcc.model.RequestFromBank;
+import com.sep.pcc.model.RequestTest;
 import com.sep.pcc.model.ResponseFromBank;
 import com.sep.pcc.repository.BankRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,9 @@ import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.oauth2.client.OAuth2RestOperations;
+
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Date;
@@ -21,32 +23,43 @@ import java.util.regex.Pattern;
 public class RequestService {
 
     @Autowired
-    private OAuth2RestOperations restTemplateOauth;
+    private RestTemplate restTemplate;
 
     @Autowired
     private BankRepository bankRepository;
 
     public ResponseFromBank sendToBank(RequestFromBank requestFromBank){
-        checkRequest(requestFromBank);
-        Bank bank = bankRepository.findByPan(requestFromBank.getPAN());
+        System.out.println("USAOOOOO");
+
+        System.out.println(requestFromBank.getPan());
+        //checkRequest(requestFromBank);
+
+        System.out.println(requestFromBank.getPan().substring(0,6));
+
+        Bank bank = bankRepository.findByCode(requestFromBank.getPan().substring(0,6));
+
+        System.out.println(bank.getApi());
+
         if(bank == null)
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Brate mi tu banku ne podrzavamo!");
 
         HttpEntity<?> requestEntity = new HttpEntity<>(requestFromBank);
 
-        ResponseEntity<ResponseFromBank> exchange = restTemplateOauth.exchange(bank.getApi(), HttpMethod.POST, requestEntity, ResponseFromBank.class);
+
+
+        ResponseEntity<ResponseFromBank> exchange = restTemplate.exchange(bank.getApi(), HttpMethod.POST, requestEntity, ResponseFromBank.class);
 
         return exchange.getBody();
     }
 
     public void checkRequest(RequestFromBank requestFromBank){
-        if(!isPanCardValid(requestFromBank.getPAN()))
+        if(!isPanCardValid(requestFromBank.getPan()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Wrong pan number!");
 
-        if(requestFromBank.getACQUIRER_TIMESTAMP().before(new Date()))
+        if(requestFromBank.getAcquirerTimestamp().before(new Date()))
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Wrong timestamp!");
 
-        if(requestFromBank.getCARD_HOLDER_NAME().isEmpty())
+        if(requestFromBank.getCardHolderName().isEmpty())
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST,"Wrong name!");
 
     }
@@ -59,5 +72,10 @@ public class RequestService {
         } else {
             return false;
         }
+    }
+
+    public Object test() {
+
+        return "POGODIO";
     }
 }

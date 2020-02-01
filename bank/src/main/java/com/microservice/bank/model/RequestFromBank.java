@@ -10,23 +10,23 @@ public class RequestFromBank {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(length = 10)
-    private Long ACQUIRER_ORDER_ID;
+    @Column
+    private Long acquirerOrderId;
 
     @Column
-    private Date ACQUIRER_TIMESTAMP;
+    private Date acquirerTimestamp;
 
     @Column
-    private String PAN;
+    private String pan;
 
     @Column
-    private String SECURITY_CODE;
+    private String securityCode;
 
     @Column
-    private String CARD_HOLDER_NAME;
+    private String cardHolderName;
 
     @Column
-    private Date EXPIRATION_DATE;
+    private Date expirationDate;
 
     @Column
     private Double amount;
@@ -41,52 +41,52 @@ public class RequestFromBank {
         this.id = id;
     }
 
-    public Long getACQUIRER_ORDER_ID() {
-        return ACQUIRER_ORDER_ID;
+    public Long getAcquirerOrderId() {
+        return acquirerOrderId;
     }
 
-    public void setACQUIRER_ORDER_ID(Long ACQUIRER_ORDER_ID) {
-        this.ACQUIRER_ORDER_ID = ACQUIRER_ORDER_ID;
+    public void setAcquirerOrderId(Long acquirerOrderId) {
+        this.acquirerOrderId = acquirerOrderId;
     }
 
-    public Date getACQUIRER_TIMESTAMP() {
-        return ACQUIRER_TIMESTAMP;
+    public Date getAcquirerTimestamp() {
+        return acquirerTimestamp;
     }
 
-    public void setACQUIRER_TIMESTAMP(Date ACQUIRER_TIMESTAMP) {
-        this.ACQUIRER_TIMESTAMP = ACQUIRER_TIMESTAMP;
+    public void setAcquirerTimestamp(Date acquirerTimestamp) {
+        this.acquirerTimestamp = acquirerTimestamp;
     }
 
-    public String getPAN() {
-        return PAN;
+    public String getPan() {
+        return pan;
     }
 
-    public void setPAN(String PAN) {
-        this.PAN = PAN;
+    public void setPan(String pan) {
+        this.pan = pan;
     }
 
-    public String getSECURITY_CODE() {
-        return SECURITY_CODE;
+    public String getSecurityCode() {
+        return securityCode;
     }
 
-    public void setSECURITY_CODE(String SECURITY_CODE) {
-        this.SECURITY_CODE = SECURITY_CODE;
+    public void setSecurityCode(String securityCode) {
+        this.securityCode = securityCode;
     }
 
-    public String getCARD_HOLDER_NAME() {
-        return CARD_HOLDER_NAME;
+    public String getCardHolderName() {
+        return cardHolderName;
     }
 
-    public void setCARD_HOLDER_NAME(String CARD_HOLDER_NAME) {
-        this.CARD_HOLDER_NAME = CARD_HOLDER_NAME;
+    public void setCardHolderName(String cardHolderName) {
+        this.cardHolderName = cardHolderName;
     }
 
-    public Date getEXPIRATION_DATE() {
-        return EXPIRATION_DATE;
+    public Date getExpirationDate() {
+        return expirationDate;
     }
 
-    public void setEXPIRATION_DATE(Date EXPIRATION_DATE) {
-        this.EXPIRATION_DATE = EXPIRATION_DATE;
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
     }
 
     public Double getAmount() {
@@ -96,4 +96,5 @@ public class RequestFromBank {
     public void setAmount(Double amount) {
         this.amount = amount;
     }
+
 }

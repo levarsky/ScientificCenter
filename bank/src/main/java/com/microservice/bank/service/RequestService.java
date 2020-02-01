@@ -3,6 +3,7 @@ import com.microservice.bank.model.*;
 import com.microservice.bank.repository.AccountRepository;
 import com.microservice.bank.repository.RequestFromBankRepository;
 import com.microservice.bank.repository.RequestRepository;
+import com.microservice.bank.repository.ResponseFromBankRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
@@ -22,7 +23,12 @@ public class RequestService {
     private AccountRepository accountRepository;
 
     @Autowired
+    private AccountService accountService;
+
+    @Autowired
     private RequestRepository requestRepository;
+
+
 
     @Autowired
     private TransactionService transactionService;
@@ -32,6 +38,9 @@ public class RequestService {
 
     @Autowired
     private RequestFromBankRepository requestFromBankRepository;
+
+    @Autowired
+    private ResponseFromBankRepository responseFromBankRepository;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -85,15 +94,14 @@ public class RequestService {
         if(isRequestForMe(payment)) {
 
 
-            Optional<Account> optionalAccount = accountRepository.
-                    findByCardNumberAndCvvAndCardHolderNameAndExpirationDateIsGreaterThanEqual(
+            Account optionalAccount = accountService.getAccount(
                             payment.getPan(),
                             payment.getSecurityCode(),
                             payment.getCardHolderName(),
                             payment.getExpirationDate());
 
 
-            payerAccount = optionalAccount.get();
+            payerAccount = optionalAccount;
 
             String redirectUrl;
 
@@ -111,10 +119,6 @@ public class RequestService {
                 return Collections.singletonMap("redirectUrl", redirectUrl);
             }
 
-            Account clientAccount = merchantService.getAccountFromMerchant(
-                    request.getMerchantId(),
-                    request.getMerchantPassword());
-
 
             Transaction transactionDebit = new Transaction();
 
@@ -129,16 +133,7 @@ public class RequestService {
             accountRepository.save(payerAccount);
 
 
-            Transaction transactionCredit = new Transaction();
-            transactionCredit.setAmount(request.getAmount());
-            transactionCredit.setRequest(request);
-            transactionCredit.setTransactionDate(new Date());
-            transactionCredit.setAccount(clientAccount);
-
-            clientAccount.setAmount(clientAccount.getAmount() + request.getAmount());
-
-            transactionService.saveNew(transactionCredit, "CREDIT");
-            accountRepository.save(clientAccount);
+            addTo(request);
 
 
             HttpHeaders requestHeaders = new HttpHeaders();
@@ -154,12 +149,12 @@ public class RequestService {
         }else {
             //prebaci zahtev na pcc
             RequestFromBank requestFromBank = new RequestFromBank();
-            requestFromBank.setACQUIRER_TIMESTAMP(date);
-            requestFromBank.setCARD_HOLDER_NAME(payment.getCardHolderName());
-            requestFromBank.setEXPIRATION_DATE(payment.getExpirationDate());
-            requestFromBank.setSECURITY_CODE(payment.getSecurityCode());
-            requestFromBank.setPAN(payment.getPan());
-            requestFromBank.setACQUIRER_ORDER_ID(ThreadLocalRandom.current().nextLong(1000000000L, 10000000000L));
+            requestFromBank.setAcquirerTimestamp(date);
+            requestFromBank.setCardHolderName(payment.getCardHolderName());
+            requestFromBank.setExpirationDate(payment.getExpirationDate());
+            requestFromBank.setSecurityCode(payment.getSecurityCode());
+            requestFromBank.setPan(payment.getPan());
+            requestFromBank.setAcquirerOrderId(ThreadLocalRandom.current().nextLong(1000000000L, 10000000000L));
             requestFromBankRepository.save(requestFromBank);
 
             String redirectUrl;
@@ -173,42 +168,74 @@ public class RequestService {
             requestFromBank.setAmount(request.getAmount());
             requestFromBankRepository.save(requestFromBank);
 
-            HttpEntity<?> requestEntity = new HttpEntity<>(requestFromBank);
-            ResponseEntity<ResponseFromBank> exchange = restTemplate.exchange(pccUrl, HttpMethod.POST, requestEntity, ResponseFromBank.class);
-            if(exchange.getBody().getStatus().equals("Successful"))
-                return exchange.getBody();
-            else if(exchange.getBody().getStatus().equals("Error"))
-                return Collections.singletonMap("redirectUrl", request.getErrorUrl());
-            else if(exchange.getBody().getStatus().equals("Failed"))
-                return Collections.singletonMap("redirectUrl", request.getFailedUrl());
+            HttpHeaders requestHeaders = new HttpHeaders();
+            requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
-            return Collections.singletonMap("redirectUrl", request.getErrorUrl());
+
+            HttpEntity<?> requestEntity = new HttpEntity<>(requestFromBank,requestHeaders);
+
+            ResponseEntity<ResponseFromBank> exchange = restTemplate.exchange(pccUrl+"/request", HttpMethod.POST, requestEntity, ResponseFromBank.class);
+            String responseLink = "";
+            if(exchange.getBody().getStatus().equals("Successful")){
+                addTo(request);
+                responseLink = request.getSuccessUrl();
+
+            } else if(exchange.getBody().getStatus().equals("Error")){
+                responseLink = request.getErrorUrl();
+
+            } else if(exchange.getBody().getStatus().equals("Failed")){
+                responseLink = request.getFailedUrl();
+                return Collections.singletonMap("redirectUrl", request.getFailedUrl());
+            }else
+                responseLink = request.getErrorUrl();
+
+            responseFromBankRepository.save( exchange.getBody());
+            ResponseEntity<Object> excRed = restTemplate.exchange(responseLink, HttpMethod.POST, requestEntity, Object.class);
+
+            return excRed.getBody();
         }
 
+    }
+
+    private void addTo(Request request){
+
+        Account clientAccount = merchantService.getAccountFromMerchant(
+                request.getMerchantId(),
+                request.getMerchantPassword());
+
+        Transaction transactionCredit = new Transaction();
+        transactionCredit.setAmount(request.getAmount());
+        transactionCredit.setRequest(request);
+        transactionCredit.setTransactionDate(new Date());
+        transactionCredit.setAccount(clientAccount);
+
+        clientAccount.setAmount(clientAccount.getAmount() + request.getAmount());
+
+        transactionService.saveNew(transactionCredit, "CREDIT");
+        accountRepository.save(clientAccount);
     }
 
     public ResponseFromBank payFromPcc(RequestFromBank requestFromBank){
         Account payerAccount = null;
         Date date = new Date();
 
-        Optional<Account> optionalAccount = accountRepository.
-                findByCardNumberAndCvvAndCardHolderNameAndExpirationDateIsGreaterThanEqual(
-                        requestFromBank.getPAN(),
-                        requestFromBank.getSECURITY_CODE(),
-                        requestFromBank.getCARD_HOLDER_NAME(),
-                        requestFromBank.getEXPIRATION_DATE());
+        Account optionalAccount = accountService.getAccount(
+                        requestFromBank.getPan(),
+                        requestFromBank.getSecurityCode(),
+                        requestFromBank.getCardHolderName(),
+                        requestFromBank.getExpirationDate());
 
 
-        payerAccount = optionalAccount.get();
+        payerAccount = optionalAccount;
         ResponseFromBank response = new ResponseFromBank();
 
         if (payerAccount == null)
             response.setStatus("Error");
 
 
-        response.setACQUIRER_TIMESTAMP(requestFromBank.getACQUIRER_TIMESTAMP());
+        response.setACQUIRER_TIMESTAMP(requestFromBank.getAcquirerTimestamp());
         response.setISSUER_TIMESTAMP(new Date());
-        response.setACQUIRER_ORDER_ID(requestFromBank.getACQUIRER_ORDER_ID());
+        response.setACQUIRER_ORDER_ID(requestFromBank.getAcquirerOrderId());
         response.setISSUER_ORDER_ID(ThreadLocalRandom.current().nextLong(1000000000L, 10000000000L));
 
         if (payerAccount.getAmount() < requestFromBank.getAmount()) {
@@ -225,6 +252,8 @@ public class RequestService {
         payerAccount.setAmount(payerAccount.getAmount() - requestFromBank.getAmount());
         transactionService.saveNew(transactionDebit, "DEBIT");
         accountRepository.save(payerAccount);
+
+        requestFromBankRepository.save(requestFromBank);
 
         return response;
     }
