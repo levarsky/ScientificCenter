@@ -18,8 +18,8 @@ server:
     key-store: classpath:bitcoin.p12
     key-store-password: password
     client-auth: need
-    trust-store: classpath:eurekaTrust.jks
-    trust-store-password: password
+    #trust-store: classpath:eurekaTrust.jks
+    #trust-store-password: password
     key-alias: localhost
 
 eureka:
