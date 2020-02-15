@@ -4,11 +4,5 @@ spring:
   cloud:
     config:
       uri: https://localhost:8888
-  #thymeleaf:
-   #  cache: false
-
-#paypal:
- #  mode: sandbox
-  # client:
-   #   app: AQ-JUhmxs9ZQU619meknUmn6hbJoafvclUDuzcgK51w3js8VHvFK_eQOWs_i-YiBxz_nwbztqj6w_sfX
-    #  secret: EKa_NIeCT-zhIbw_ZgQm8z-zEoQJUzPGD8AncNR1wuo9jzNKrt5sQBD58YglYNalV7cJKo3vCaCLoKEd
+  main:
+    allow-bean-definition-overriding: true

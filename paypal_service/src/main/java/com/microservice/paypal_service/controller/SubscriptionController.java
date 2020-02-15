@@ -27,7 +27,7 @@ import com.microservice.paypal_service.dto.PaymentPreferences;
 import com.microservice.paypal_service.dto.PaypalProductDto;
 import com.microservice.paypal_service.dto.PlanDto;
 import com.microservice.paypal_service.dto.PricingScheme;
-import com.microservice.paypal_service.dto.ProductDTO;
+import com.microservice.paypal_service.dto.ProductDto;
 import com.microservice.paypal_service.dto.Resp;
 import com.microservice.paypal_service.dto.SubscriberDto;
 import com.microservice.paypal_service.dto.SubscriptionDto;
@@ -51,7 +51,7 @@ public class SubscriptionController {
 	UserService userService;
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/create")
-	public Resp createSubscription(@RequestBody ProductDTO productDto){
+	public Resp createSubscription(@RequestBody ProductDto productDto){
 		
 		Client client = clientService.findByClientId(productDto.getClientId());
 		String token = service.getToken(client.getPaypalClientId(), client.getPaypalSecret());
