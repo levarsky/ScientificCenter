@@ -14,6 +14,7 @@
         <module name="sellers-service" />
         <module name="bitcoin_service" />
         <module name="center" />
+        <module name="pay" />
         <module name="bank" />
         <module name="sellers" />
         <module name="eureka" />
@@ -38,6 +39,7 @@
       <module name="front" target="1.8" />
       <module name="gateway" target="1.8" />
       <module name="gateway-cloud" target="1.8" />
+      <module name="pay" target="1.8" />
       <module name="payment_system" target="1.8" />
       <module name="payment_system_sc" target="1.8" />
       <module name="paypal" target="1.8" />
@@ -66,6 +68,7 @@
       <module name="front" options="-parameters" />
       <module name="gateway" options="-parameters" />
       <module name="gateway-cloud" options="-parameters" />
+      <module name="pay" options="-parameters" />
       <module name="paypal" options="-parameters" />
       <module name="paypal_service" options="-parameters" />
       <module name="pcc" options="-parameters" />

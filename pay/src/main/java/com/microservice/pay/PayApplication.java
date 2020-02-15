@@ -26,14 +26,22 @@ public class PayApplication {
     @Bean
     public DiscoveryClient.DiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws NoSuchAlgorithmException {
         DiscoveryClient.DiscoveryClientOptionalArgs args = new DiscoveryClient.DiscoveryClientOptionalArgs();
+
         //System.setProperty("javax.net.ssl.keyStore", "C:/Users/PC/IdeaProjects/ScientificCenter/pay/src/main/resources/bank.p12");
         System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\Milica\\Documents\\FTN_Master\\SEP_UPP_UDD\\cloud branch\\ScientificCenter\\pay\\src\\main\\resources\\bank.p12");
         System.setProperty("javax.net.ssl.keyStorePassword", "password");
         //System.setProperty("javax.net.ssl.trustStore", "C:/Users/PC/IdeaProjects/ScientificCenter/pay/src/main/resources/eurekaTrust.jks");
         //System.setProperty("javax.net.ssl.trustStore", "C:\\Users\\Milica\\Documents\\FTN_Master\\SEP_UPP_UDD\\cloud branch\\ScientificCenter\\pay\\src\\main\\resources\\eurekaTrust.jks");
         //System.setProperty("javax.net.ssl.trustStorePassword", "password");
+
+        /*System.setProperty("javax.net.ssl.keyStore", "C:/Users/Veljko/IdeaProjects/ScientificCenter/pay/src/main/resources/bank.p12");
+        //System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\Milica\\Documents\\FTN_Master\\SEP_UPP_UDD\\cloud branch\\ScientificCenter\\sellers-service\\src\\main\\resources\\bank.p12");
+        System.setProperty("javax.net.ssl.keyStorePassword", "password");
+        System.setProperty("javax.net.ssl.trustStore", "C:/Users/Veljko/IdeaProjects/ScientificCenter/pay/src/main/resources/eurekaTrust.jks");
+        //System.setProperty("javax.net.ssl.trustStore", "C:\\Users\\Milica\\Documents\\FTN_Master\\SEP_UPP_UDD\\cloud branch\\ScientificCenter\\sellers-service\\src\\main\\resources\\configTrust.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "password");*/
         EurekaJerseyClientImpl.EurekaJerseyClientBuilder builder = new EurekaJerseyClientImpl.EurekaJerseyClientBuilder();
-        builder.withClientName("paypal-service");
+        builder.withClientName("pay-service");
         builder.withSystemSSLConfiguration();
         builder.withMaxTotalConnections(10);
         builder.withMaxConnectionsPerHost(10);

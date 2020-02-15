@@ -5,6 +5,7 @@ import com.microservice.sellers_service.service.ClientService;
 import com.microservice.sellers_service.service.RegistrationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,9 +31,15 @@ public class ClientController {
 
     @GetMapping(value="/registerPayment")
     public ResponseEntity<?> getRegistrationUrl(@RequestParam String serviceName,@RequestParam String mode){
-
         return new ResponseEntity<>(registrationService.registerNewPaymentType(serviceName,mode),HttpStatus.OK);
     }
+
+    @RequestMapping(value= "/status",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> clientSuccess(@RequestParam String clientId,@RequestParam String status,@RequestParam String paymentService) throws Exception {
+        return new ResponseEntity<>(registrationService.regStatus(clientId,status,paymentService), HttpStatus.OK);
+    }
+
+
 
 
 }
