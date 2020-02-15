@@ -25,76 +25,76 @@ import java.util.Date;
 @Controller
 @RequestMapping("/")
 public class PaypalController {
-//	public static final String PAYPAL_SUCCESS_URL = "pay/success";
-//	public static final String PAYPAL_CANCEL_URL = "pay/cancel";
-//
-//	private Logger log = LoggerFactory.getLogger(getClass());
-//
-//	private PaymentDetails paymentDetails;
-//
-//	@Autowired
-//	private PaypalService paypalService;
-//
-//	@Autowired
-//	private PaymentDetailsService paymentService;
-//
-//	@RequestMapping(method = RequestMethod.GET)
-//	public String index() {
-//		return "index";
-//	}
-//
-//	@RequestMapping(method = RequestMethod.POST, value = "pay")
-//	public String pay(HttpServletRequest request) {
-//		String cancelUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_CANCEL_URL;
-//		String successUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_SUCCESS_URL;
-//		try {
-//			Payment payment = paypalService.createPayment(Double.parseDouble(request.getParameter("amount")), "USD",
-//					PaypalPaymentMethod.paypal, PaypalPaymentIntent.sale, "payment description", cancelUrl, successUrl);
-//			paymentDetails = new PaymentDetails();
-//			paymentDetails.setPayeeEmail(request.getParameter("receiver"));
-//			paymentDetails.setPayerEmail(request.getParameter("sender"));
-//			paymentDetails.setAmount(request.getParameter("amount"));
-//			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
-//			Date date = new Date();
-//			paymentDetails.setDate(dateFormat.format(date));
-//			for (Links links : payment.getLinks()) {
-//				if (links.getRel().equals("approval_url")) {
-//					return "redirect:" + links.getHref();
-//				}
-//			}
-//		} catch (PayPalRESTException e) {
-//			log.error(e.getMessage());
-//		}
-//		return "redirect:/";
-//	}
-//
-//	@RequestMapping(method = RequestMethod.GET, value = PAYPAL_CANCEL_URL)
-//	public String cancelPay() {
-//		paymentDetails.setIsSuccessful(false);
-//		paymentService.save(paymentDetails);
-//		return "cancel";
-//	}
-//
-//	@RequestMapping(method = RequestMethod.GET, value = PAYPAL_SUCCESS_URL)
-//	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
-//		try {
-//			Payment payment = paypalService.executePayment(paymentId, payerId);
-//			paymentDetails.setAmount(payment.getTransactions().get(0).getAmount().getTotal());
-//
-//			paymentDetails.setIsSuccessful(true);
-//
-//			paymentService.save(paymentDetails);
-//
-//			if (payment.getState().equals("approved")) {
-//				return "success";
-//			}
-//		} catch (PayPalRESTException e) {
-//			log.error(e.getMessage());
-//			paymentDetails.setIsSuccessful(false);
-//			paymentService.save(paymentDetails);
-//		}
-//		paymentDetails.setIsSuccessful(false);
-//		paymentService.save(paymentDetails);
-//		return "redirect:/";
-//	}
+	public static final String PAYPAL_SUCCESS_URL = "pay/success";
+	public static final String PAYPAL_CANCEL_URL = "pay/cancel";
+
+	private Logger log = LoggerFactory.getLogger(getClass());
+
+	private PaymentDetails paymentDetails;
+
+	@Autowired
+	private PaypalService paypalService;
+
+	@Autowired
+	private PaymentDetailsService paymentService;
+
+	@RequestMapping(method = RequestMethod.GET)
+	public String index() {
+		return "index";
+	}
+
+	@RequestMapping(method = RequestMethod.POST, value = "pay")
+	public String pay(HttpServletRequest request) {
+		String cancelUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_CANCEL_URL;
+		String successUrl = URLUtils.getBaseURl(request) + "/" + PAYPAL_SUCCESS_URL;
+		try {
+			Payment payment = paypalService.createPayment(Double.parseDouble(request.getParameter("amount")), "USD",
+					PaypalPaymentMethod.paypal, PaypalPaymentIntent.sale, "payment description", cancelUrl, successUrl);
+			paymentDetails = new PaymentDetails();
+			paymentDetails.setPayeeEmail(request.getParameter("receiver"));
+			paymentDetails.setPayerEmail(request.getParameter("sender"));
+			paymentDetails.setAmount(request.getParameter("amount"));
+			DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+			Date date = new Date();
+			paymentDetails.setDate(dateFormat.format(date));
+			for (Links links : payment.getLinks()) {
+				if (links.getRel().equals("approval_url")) {
+					return "redirect:" + links.getHref();
+				}
+			}
+		} catch (PayPalRESTException e) {
+			log.error(e.getMessage());
+		}
+		return "redirect:/";
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = PAYPAL_CANCEL_URL)
+	public String cancelPay() {
+		paymentDetails.setIsSuccessful(false);
+		paymentService.save(paymentDetails);
+		return "cancel";
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = PAYPAL_SUCCESS_URL)
+	public String successPay(@RequestParam("paymentId") String paymentId, @RequestParam("PayerID") String payerId) {
+		try {
+			Payment payment = paypalService.executePayment(paymentId, payerId);
+			paymentDetails.setAmount(payment.getTransactions().get(0).getAmount().getTotal());
+
+			paymentDetails.setIsSuccessful(true);
+
+			paymentService.save(paymentDetails);
+
+			if (payment.getState().equals("approved")) {
+				return "success";
+			}
+		} catch (PayPalRESTException e) {
+			log.error(e.getMessage());
+			paymentDetails.setIsSuccessful(false);
+			paymentService.save(paymentDetails);
+		}
+		paymentDetails.setIsSuccessful(false);
+		paymentService.save(paymentDetails);
+		return "redirect:/";
+	}
 }
