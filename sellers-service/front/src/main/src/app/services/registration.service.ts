@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
 })
 export class RegistrationService {
 
-  private baseUrl = "https://localhost:8088/registration";
+  private baseUrl = "https://localhost:8088/uaa/";
   constructor(private http: HttpClient) { }
 
   signup(user):Observable<any>{

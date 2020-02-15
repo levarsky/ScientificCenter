@@ -4,6 +4,7 @@ import { RegisterClientService } from '../services/register-client.service'
 import {ActivatedRoute} from "@angular/router";
 import {FormBuilder, FormGroup} from "@angular/forms";
 import {PaymentServiceService} from "../services/payment-service.service";
+import {AuthService} from "../security/auth.service";
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -18,7 +19,7 @@ export class HomeComponent implements OnInit {
   token;
   constructor(private paymentService : PaymentServiceService,
               private route: ActivatedRoute,
-              private formBuilder: FormBuilder) { }
+              private authService:AuthService) { }
 
   ngOnInit() {
 
@@ -38,6 +39,7 @@ export class HomeComponent implements OnInit {
 
 
   logout() {
-
+    this.authService.logout();
+    window.location.href = '';
   }
 }

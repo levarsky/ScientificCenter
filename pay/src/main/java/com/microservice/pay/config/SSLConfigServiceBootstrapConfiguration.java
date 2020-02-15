@@ -25,11 +25,11 @@ public class SSLConfigServiceBootstrapConfiguration {
     public ConfigServicePropertySourceLocator configServicePropertySourceLocator() throws Exception {
         final char[] password = "password".toCharArray();
         final ClassPathResource resource = new ClassPathResource("bank.p12");
-        final ClassPathResource resourceTrust = new ClassPathResource("eurekaTrust.jks");
+        //final ClassPathResource resourceTrust = new ClassPathResource("eurekaTrust.jks");
 
         SSLContext sslContext = SSLContexts.custom()
-                .loadKeyMaterial(resource.getFile(), password, password)
-                .loadTrustMaterial(resourceTrust.getFile(), password, new TrustSelfSignedStrategy()).build();
+                .loadKeyMaterial(resource.getFile(), password, password).build();
+                //.loadTrustMaterial(resourceTrust.getFile(), password, new TrustSelfSignedStrategy()).build();
         CloseableHttpClient httpClient = HttpClients.custom()
                 .setSSLContext(sslContext)
                 .setSSLHostnameVerifier((s, sslSession) -> true)
