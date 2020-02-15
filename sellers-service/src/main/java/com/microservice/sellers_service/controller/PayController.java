@@ -39,6 +39,7 @@ public class PayController {
         httpServletResponse.sendRedirect(serverPath+"/request?token="+token+"&magazineName=" + magazineName + "&magazineType=" + magazineType + "&userGivenName=" + userGivenName + "&userSurname=" + userSurname + "&userEmail=" + userEmail);
     }
 
+
     @RequestMapping(value = "/{price}", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public String createCommunication(@PathVariable(value = "price") Double price) {
         System.out.println("Treba da se plati: " + price);

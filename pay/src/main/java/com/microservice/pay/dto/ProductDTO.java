@@ -2,7 +2,7 @@ package com.microservice.pay.dto;
 
 import java.io.Serializable;
 
-public class ProductDto implements Serializable{
+public class ProductDTO implements Serializable{
     private String name;
     private String description;
     private String type;
@@ -12,7 +12,7 @@ public class ProductDto implements Serializable{
     private Double amount;
     private String clientId;
 
-    public ProductDto() {
+    public ProductDTO() {
         super();
     }
 
