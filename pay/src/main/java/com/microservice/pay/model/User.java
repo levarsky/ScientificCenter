@@ -1,0 +1,38 @@
+package com.microservice.pay.model;
+
+import javax.persistence.*;
+
+@Entity
+public class User {
+	@Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column
+	private String userEmail;
+	@Column
+	private String paypalUserEmail;
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getUserEmail() {
+		return userEmail;
+	}
+
+	public void setUserEmail(String userEmail) {
+		this.userEmail = userEmail;
+	}
+
+	public String getPaypalUserEmail() {
+		return paypalUserEmail;
+	}
+
+	public void setPaypalUserEmail(String paypalUserEmail) {
+		this.paypalUserEmail = paypalUserEmail;
+	}
+}

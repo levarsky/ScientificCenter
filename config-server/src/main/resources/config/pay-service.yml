@@ -7,7 +7,8 @@ spring:
     hibernate.ddl-auto: update
     properties:
       hibernate:
-        dialect: org.hibernate.dialect.MySQL8Dialect
+        dialect: org.hibernate.dialect.MySQL5Dialect
+
 
 server:
   port: 8769
@@ -19,7 +20,9 @@ server:
     client-auth: need
     trust-store: classpath:eurekaTrust.jks
     trust-store-password: password
-    #key-alias: localhost
+    key-alias: localhost
+
+
 
 eureka:
   client:
