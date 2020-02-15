@@ -10,7 +10,7 @@ spring:
         dialect: org.hibernate.dialect.MySQL5Dialect
 
 server:
-  port: 8769
+  port: 8069
   ssl:
     enabled: true
     key-store-type: PKCS12
@@ -19,7 +19,7 @@ server:
     client-auth: need
     trust-store: classpath:eurekaTrust.jks
     trust-store-password: password
-    #key-alias: localhost
+    key-alias: localhost
 
 eureka:
   client:
