@@ -9,13 +9,19 @@ import {DashboardComponent} from "./dashboard/dashboard.component";
 
 
 const routes: Routes = [
+  {path: '', redirectTo: 'login', pathMatch: 'full'},
   {path: 'request', component: PaymentRequestComponent},
-  {path: 'dashboard', component: DashboardComponent},
-  {path: 'register-client', component: RegisterComponentComponent },
   {path: 'signup', component: RegistrationComponent },
   {path: 'login', component: LoginComponent},
-  {path: 'home', component: HomeComponent},
-];
+  {path: 'home', component: HomeComponent,
+    children:[
+      {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
+      {path: 'dashboard', component: DashboardComponent},
+      {path: 'client', component: RegisterComponentComponent },
+      ]
+  }
+  ]
+;
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],

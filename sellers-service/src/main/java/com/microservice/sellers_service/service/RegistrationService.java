@@ -13,6 +13,8 @@ import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import java.util.Collections;
+
 @Service
 public class RegistrationService {
 
@@ -27,6 +29,9 @@ public class RegistrationService {
 
     @Autowired
     private OAuth2RestOperations restTemplate;
+
+    @Autowired
+    private PaymentTypeService paymentTypeService;
 
 
     public void createUser(User user) {
@@ -101,4 +106,13 @@ public class RegistrationService {
 
     }
 
+    public Object regStatus(String clientId, String status , String paymentService) {
+
+        if(status.equals("SUCCESSFUL")){
+            clientService.findByClientId(clientId).getPaymentTypes().add(paymentTypeService.getByServiceName(paymentService));
+        }
+
+
+        return Collections.singletonMap("redirectUrl","https://localhost:4201/home/dashboard");
+    }
 }

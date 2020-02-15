@@ -21,7 +21,7 @@ export class AuthInterceptor implements HttpInterceptor
 
       console.log("Token postoji")
 
-      request = request.clone({headers: request.headers.set('Authorization', 'Bearer ' + token)});
+      request = request.clone({headers: request.headers.set('Authorization', 'Bearer ' + JSON.parse(token))});
 
     }
 

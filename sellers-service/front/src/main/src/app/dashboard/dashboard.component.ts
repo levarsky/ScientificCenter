@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {FormGroup} from "@angular/forms";
 import {AuthService} from "../security/auth.service";
+import {RegisterClientService} from "../services/register-client.service";
 
 @Component({
   selector: 'app-dashboard',
@@ -11,7 +12,7 @@ export class DashboardComponent implements OnInit {
 
   navBarForm: FormGroup;
 
-  buttonName = 'Sign up';
+
   loginDiv = true;
   signupDiv = false;
 
@@ -22,17 +23,27 @@ export class DashboardComponent implements OnInit {
 
   isLoggedIn = false;
 
-  roles: string[] = [];
-  adminRoles: string[] = ['camunda-admin'];
+
+  payments = []
+
+  isAdd:boolean;
+  isView:boolean;
 
   name = 'Log in';
 
   username = '';
+  title: any;
 
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService,
+              private registerService:RegisterClientService) {
   }
 
   ngOnInit() {
+
+    this.isView  = true;
+    this.isAdd = false;
+
+    this.initView()
 
 
       // this.authService.getGroups().subscribe(data=>{
@@ -50,9 +61,49 @@ export class DashboardComponent implements OnInit {
 
   }
 
-  logout() {
-    this.authService.logout()
-    window.location.href = "home";
+  initView(){
+
+    this.isView  = true;
+    this.isAdd = false;
+
+    this.title = 'Client payment types'
+
+    this.registerService.getClientPayments().subscribe(data=>{
+
+      this.payments = data;
+
+    })
   }
 
+  initAdd(){
+
+    this.isView  = false;
+    this.isAdd = true;
+
+    this.title = 'Add payment type'
+
+    this.registerService.getAllPayments().subscribe(data=>{
+
+      this.payments = data;
+
+    })
+
+  }
+
+  onChange(event) {
+
+    if (event.target.value == 'all') {
+      this.initAdd();
+    } else {
+      this.initView();
+    }
+
+  }
+  addPaymentType(paymentType) {
+
+    this.registerService.registerPayment(paymentType.serviceName,'ADD').subscribe(data=>{
+      window.location.href=data.redirectUrl;
+    })
+
+  }
 }

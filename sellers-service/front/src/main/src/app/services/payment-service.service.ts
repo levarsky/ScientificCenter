@@ -7,7 +7,7 @@ import { Observable } from "rxjs";
 })
 export class PaymentServiceService {
 
-  private baseUrl = "https://localhost:8769/sellers";
+  private baseUrl = "https://localhost:8088/sellers";
   constructor(private http: HttpClient) { }
 
   getPaymentTypes(token): Observable<any> {

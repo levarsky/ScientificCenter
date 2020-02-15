@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface PaymentTypeRepository extends JpaRepository<PaymentType, Long> {
-
+        PaymentType findByServiceName(String serviceName);
 }
