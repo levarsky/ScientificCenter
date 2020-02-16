@@ -46,6 +46,7 @@ public class PaymentService {
         String urlBank  = "https://localhost:8768";
 
         System.out.println("PAYMENT BANK");
+        System.out.println(authService.getAuth().getPrincipal().toString());
 
         String clientId = authService.getAuth().getPrincipal().toString();
 

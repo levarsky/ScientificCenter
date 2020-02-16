@@ -20,7 +20,7 @@ public class Publication {
     private String description;
 
     @Column
-    private Float price;
+    private Double price;
 
     @ManyToOne
     private Magazine magazine;
@@ -76,11 +76,11 @@ public class Publication {
         this.magazine = magazine;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 

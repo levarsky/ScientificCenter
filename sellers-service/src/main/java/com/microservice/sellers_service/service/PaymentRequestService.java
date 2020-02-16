@@ -1,9 +1,11 @@
 package com.microservice.sellers_service.service;
 
+import java.util.ArrayList;
 import java.util.UUID;
 
 import com.microservice.sellers_service.model.*;
 import com.microservice.sellers_service.repository.PaymentRepository;
+import com.microservice.sellers_service.repository.ProductRepository;
 import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -28,6 +30,9 @@ public class PaymentRequestService {
     private PaymentRepository paymentRepository;
 
     @Autowired
+    private ProductRepository productRepository;
+
+    @Autowired
     private ClientService clientService;
     @Autowired
     private PaymentTypeService paymentTypeService;
@@ -42,19 +47,23 @@ public class PaymentRequestService {
 
     public PaymentRequest createRequest(PaymentDTO paymentDTO){
 
+
         Payment payment = new Payment();
         payment.setFirstName(paymentDTO.getFirstName());
         payment.setLastName(paymentDTO.getLastName());
         payment.setEmail(paymentDTO.getEmail());
         payment.setType(paymentDTO.getType());
 
-        String temp = "";
-
-        for (String s:paymentDTO.getProducts()){
-            temp += s+",";
+        ArrayList<Product> products = new ArrayList<>();
+        for(ProductDTO p:paymentDTO.getProducts()){
+            Product product = new Product();
+            product.setAmount(p.getAmount());
+            product.setName(p.getName());
+            product.setPayment(payment);
+            products.add(product);
         }
 
-        payment.setProducts(temp);
+        payment.setProducts(products);
 
         String token = UUID.randomUUID().toString();
         PaymentRequest request = new PaymentRequest();

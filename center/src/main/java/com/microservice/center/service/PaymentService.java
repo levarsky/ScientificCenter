@@ -89,19 +89,16 @@ public class PaymentService {
         paymentDTO.setEmail(user.getEmail());
         paymentDTO.setType("payment");
 
-        List<String> products= new ArrayList<String>();
-        for(Long l:longList){
-            products.add(l.toString());
-        }
 
-        paymentDTO.setProducts(products);
+        List<ProductDTO> productDTOS = transactionService.addPublications(longList,transaction.getId());
+        paymentDTO.setProducts(productDTOS);
 
         String requestToken = getToken(paymentDTO);
         System.out.println(requestToken);
         String url = sellersUrl + "/request?token="+requestToken;
 
         transaction.setToken(requestToken);
-        transactionService.addPublications(longList,transaction.getId());
+
         transactionService.save(transaction);
 
         Resp r = new Resp(url);
@@ -122,15 +119,18 @@ public class PaymentService {
         Magazine magazine = magazineService.findById(id);
         User user = userService.getCurrentUser();
 
-        List<String> products= new ArrayList<String>();
-        products.add(magazine.getId().toString());
+        ProductDTO productDTO = new ProductDTO();
+        productDTO.setName(id.toString());
+        productDTO.setAmount(magazine.getPrice());
+        ArrayList<ProductDTO> productDTOS = new ArrayList<>();
+        productDTOS.add(productDTO);
 
         paymentDTO.setAmount(amount);
         paymentDTO.setFirstName(user.getFirstName());
         paymentDTO.setLastName(user.getLastName());
         paymentDTO.setEmail(user.getEmail());
         paymentDTO.setType("subscription");
-        paymentDTO.setProducts(products);
+        paymentDTO.setProducts(productDTOS);
 
         String requestToken = getToken(paymentDTO);
         System.out.println(requestToken);

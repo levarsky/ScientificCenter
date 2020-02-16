@@ -11,7 +11,6 @@ public class Payment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private String products;
     private String type;
     private String firstName;
     private String lastName;
@@ -20,6 +19,11 @@ public class Payment {
     @OneToOne
     private PaymentRequest paymentRequest;
 
+   @OneToMany(mappedBy="payment", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<Product> products = new ArrayList<>();
+
+    public Payment() {
+    }
 
     public PaymentRequest getPaymentRequest() {
         return paymentRequest;
@@ -29,11 +33,11 @@ public class Payment {
         this.paymentRequest = paymentRequest;
     }
 
-    public String getProducts() {
+    public List<Product> getProducts() {
         return products;
     }
 
-    public void setProducts(String products) {
+    public void setProducts(List<Product> products) {
         this.products = products;
     }
 

@@ -7,7 +7,7 @@ public class PaymentDTO {
 
     private String token;
     private String type;
-    private List<String> products;
+    private List<ProductDTO> products;
     private Double amount;
     private String firstName;
     private String lastName;
@@ -51,11 +51,11 @@ public class PaymentDTO {
         this.amount = amount;
     }
 
-    public List<String> getProducts() {
+    public List<ProductDTO> getProducts() {
         return products;
     }
 
-    public void setProducts(List<String> products) {
+    public void setProducts(List<ProductDTO> products) {
         this.products = products;
     }
 

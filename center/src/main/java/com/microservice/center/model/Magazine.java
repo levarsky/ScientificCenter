@@ -27,7 +27,7 @@ public class Magazine {
     private String issn;
 
     @Column
-    private Float price;
+    private Double price;
 
     @JsonIgnore
     @ManyToMany
@@ -121,11 +121,11 @@ public class Magazine {
         this.readerPays = readerPays;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
