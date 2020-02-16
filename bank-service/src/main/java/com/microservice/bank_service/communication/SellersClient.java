@@ -15,4 +15,7 @@ public interface SellersClient {
     String paymentStatus(@RequestParam String transactionId,@RequestParam String paymentStatus );
 
 
+    @GetMapping(value = "/sellers/client/status")
+    String clientSuccess(@RequestParam String clientId,@RequestParam String status,@RequestParam String paymentService);
+
 }

@@ -33,32 +33,40 @@ public class PaymentService {
     private RestTemplate restTemplate;
 
     @Autowired
+    private AuthService authService;
+
+    @Autowired
     private OAuth2RestOperations restTemplateBalanced;
 
     private String sellersService = "https://localhost:8679/sellers/payment/status";
 
-    public Object pay(PaymentRequest paymentRequest){
+    public Object pay(PaymentDTO paymentDTO){
 
         String url  = "https://localhost:8765/pay";
         String urlBank  = "https://localhost:8768";
 
-        System.out.println(paymentRequest.getClient().getClientId());
+        System.out.println("PAYMENT BANK");
+        System.out.println(authService.getAuth().getPrincipal().toString());
 
-        Client client = clientService.getClientById(paymentRequest.getClient().getClientId());
+        String clientId = authService.getAuth().getPrincipal().toString();
 
-        System.out.println(paymentRequest.toString());
+        System.out.println(clientId);
+
+        Client client = clientService.getClientById(clientId);
+
+        System.out.println(paymentDTO.toString());
 
         Transaction transaction = new Transaction();
         transaction.setMerchantOrderId(ThreadLocalRandom.current().nextLong(1000000000L, 10000000000L));
-        transaction.setAmount(paymentRequest.getAmount());
+        transaction.setAmount(paymentDTO.getAmount());
         transaction.setClientId(client.getClientId());
         transaction.setTimestamp(new Date());
         transactionRepository.save(transaction);
 
-        paymentRequest.setTransactionId(transaction.getMerchantOrderId().toString());
+        paymentDTO.setTransactionId(transaction.getMerchantOrderId().toString());
 
         Request request = new Request();
-        request.setAmount(paymentRequest.getAmount());
+        request.setAmount(paymentDTO.getAmount());
         request.setMerchantId(client.getMerchantId());
         request.setMerchantPassword(client.getMerchantPassword());
         request.setMerchantOrderId(transaction.getMerchantOrderId());
@@ -73,15 +81,15 @@ public class PaymentService {
         HttpEntity<Request> requestEntity = new HttpEntity<Request>(request);
         ResponseEntity<Object> exchange = restTemplate.exchange(urlBank+"/request", HttpMethod.POST, requestEntity, Object.class);
 
-        paymentRequest.setTransactionId(transaction.getMerchantOrderId().toString());
+        paymentDTO.setTransactionId(transaction.getMerchantOrderId().toString());
 
         System.out.println(exchange.getBody());
 
         Map map =(Map) exchange.getBody();
 
-        paymentRequest.setUrl(map.get("redirectUrl").toString());
+        paymentDTO.setUrl(map.get("redirectUrl").toString());
 
-        return paymentRequest;
+        return paymentDTO;
 
     }
 

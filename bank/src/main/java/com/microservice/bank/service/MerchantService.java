@@ -35,7 +35,6 @@ public class MerchantService {
         Account optionalAccount = accountService.getAccount(account.getCardNumber(),account.getCvv(),account.getCardHolderName(),account.getExpirationDate());
 
 
-
         if (optionalAccount==null){
             //PROVERA U DRUGOJ BANCI
         }
@@ -51,7 +50,7 @@ public class MerchantService {
         String merchantPassword = null;
 
         try {
-            SecureRandom secureRandom = SecureRandom.getInstance("NativePRNG");
+            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
 
             byte clientBt[] = new byte[20];
             byte secretBt[] = new byte[60];

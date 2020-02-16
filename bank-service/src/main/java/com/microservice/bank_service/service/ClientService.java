@@ -1,5 +1,6 @@
 package com.microservice.bank_service.service;
 
+import com.microservice.bank_service.communication.SellersClient;
 import com.microservice.bank_service.model.Account;
 import com.microservice.bank_service.model.Client;
 import com.microservice.bank_service.model.MerchantDTO;
@@ -34,6 +35,9 @@ public class ClientService {
     @Autowired
     private AuthService authService;
 
+    @Autowired
+    private SellersClient sellersClient;
+
     private String registrationForm = "http://localhost:4206/registrationRequest";
 
     private String bankUrl = "https://localhost:8768/merchant";
@@ -45,7 +49,7 @@ public class ClientService {
         return clientOptional.get();
     }
 
-    public Client registerNewClient(Account account,String tokenId){
+    public Object registerNewClient(Account account,String tokenId){
 
         System.out.println(account.getExpirationDate());
 
@@ -59,8 +63,11 @@ public class ClientService {
 
         if (mode.equals("CREATE")){
 
-            if(optionalClient.isPresent())
-                throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Client registered!");
+            if(optionalClient.isPresent()){
+
+                return sellersClient.clientSuccess(clientId,"ERROR","bank-service");
+            }
+
 
         }
 
@@ -85,7 +92,10 @@ public class ClientService {
         }
 
 
-        return clientRepository.save(client);
+        clientRepository.save(client);
+
+        return sellersClient.clientSuccess(clientId,"SUCCESSFUL","bank-service");
+
     }
 
 
@@ -104,7 +114,7 @@ public class ClientService {
                 .fromHttpUrl(registrationForm)
                 .queryParam("tokenId",token);
 
-        registrationRequest.setTokenId(generateRandomPaymentId());
+        registrationRequest.setTokenId(token);
 
         registrationRequestService.save(registrationRequest);
 

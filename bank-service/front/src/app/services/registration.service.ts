@@ -7,7 +7,7 @@ import {Observable} from "rxjs";
 })
 export class RegistrationService {
 
-  private baseUrl = "/client";
+  private baseUrl = "https://localhost:8088/bank-service/client";
 
   constructor(private http: HttpClient) { }
 

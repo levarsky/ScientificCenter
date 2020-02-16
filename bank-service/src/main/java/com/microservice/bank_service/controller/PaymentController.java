@@ -1,5 +1,6 @@
 package com.microservice.bank_service.controller;
 
+import com.microservice.bank_service.model.PaymentDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,19 +25,19 @@ public class PaymentController {
     private PaymentService paymentService;
 
     @RequestMapping(method = RequestMethod.POST)
-    public ResponseEntity<?> create(@RequestBody PaymentRequest paymentRequest) {
-        return new ResponseEntity<>(paymentService.pay(paymentRequest), HttpStatus.OK);
+    public ResponseEntity<?> create(@RequestBody PaymentDTO paymentDTO) {
+        return new ResponseEntity<>(paymentService.pay(paymentDTO), HttpStatus.OK);
     }
 
-    @RequestMapping(value="/proba/{clientId}/{amount}", method = RequestMethod.GET)
-    public PaymentRequest proba(@PathVariable(value = "clientId") String clientId, @PathVariable(value = "amount") Double amount) {
-        PaymentRequest pr = new PaymentRequest();
-        Client client = new Client();
-        client.setClientId(clientId);
-        pr.setClient(client);
-        pr.setAmount(amount);
-    	return (PaymentRequest)paymentService.pay(pr);
-    }
+//    @RequestMapping(value="/proba/{clientId}/{amount}", method = RequestMethod.GET)
+//    public PaymentRequest proba(@PathVariable(value = "clientId") String clientId, @PathVariable(value = "amount") Double amount) {
+//        PaymentRequest pr = new PaymentRequest();
+//        Client client = new Client();
+//        client.setClientId(clientId);
+//        pr.setClient(client);
+//        pr.setAmount(amount);
+//    	return (PaymentRequest)paymentService.pay(pr);
+//    }
     
     @RequestMapping(value="/successful/{id}", method = RequestMethod.POST)
     public ResponseEntity<?> successful(@PathVariable(value = "id") Long id) {

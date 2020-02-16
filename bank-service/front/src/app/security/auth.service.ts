@@ -51,7 +51,7 @@ export class AuthService {
   }
 
   getToken(){
-    return this.cookie.get("access_token");
+    return this.cookie.get("sellers_token");
   }
 
   isValid():boolean{
@@ -62,7 +62,7 @@ export class AuthService {
   }
 
   logout(){
-    this.cookie.remove('access_token');
+    this.cookie.remove('sellers_token');
   }
 
 

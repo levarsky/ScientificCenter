@@ -1,17 +1,29 @@
 package com.microservice.pay.service;
 
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import org.springframework.http.*;
+import java.util.Base64;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.Base64;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.microservice.pay.dto.SellerDataDto;
+import com.microservice.pay.model.Client;
 
 @Service
 public class PaymentService {
+	
+	@Autowired
+	ClientService clientService;
+	
 	public String getToken(String username, String password) {
 		
 		String url = "https://api.sandbox.paypal.com/v1/oauth2/token";
@@ -37,6 +49,12 @@ public class PaymentService {
 		String token = jsonObject.get("access_token").getAsString();
 		
 		return token;
+	}
+	
+	public String pay(SellerDataDto sellerData) {
+		Client client = clientService.findByClientId(sellerData.getProducts().get(0).getClientId());
+		String token = this.getToken(client.getPaypalClientId(), client.getPaypalSecret());
+		return null;
 	}
 	
 }
