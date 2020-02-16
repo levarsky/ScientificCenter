@@ -1,26 +1,29 @@
 package com.microservice.bank_service.model;
 
-public class ProductDTO {
+import java.io.Serializable;
 
-    private String name;
-    private Double amount;
+public class ProductDTO implements Serializable{
+	private String name;
+	private Double amount;
+	
+	public ProductDTO() {
+		super();
+	}
 
-    public ProductDTO() {
-    }
+	public String getName() {
+		return name;
+	}
 
-    public String getName() {
-        return name;
-    }
+	public void setName(String name) {
+		this.name = name;
+	}
 
-    public void setName(String name) {
-        this.name = name;
-    }
+	public Double getAmount() {
+		return amount;
+	}
 
-    public Double getAmount() {
-        return amount;
-    }
+	public void setAmount(Double amount) {
+		this.amount = amount;
+	}
 
-    public void setAmount(Double amount) {
-        this.amount = amount;
-    }
 }
