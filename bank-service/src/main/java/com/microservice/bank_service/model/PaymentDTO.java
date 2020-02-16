@@ -1,19 +1,19 @@
 package com.microservice.bank_service.model;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentDTO {
 
     private String token;
     private String type;
-    private List<String> products=new ArrayList<>();
+    private List<ProductDTO> products;
     private Double amount;
     private String firstName;
     private String lastName;
     private String email;
     private String transactionId;
     private String url;
+    private String clientId;
 
     public PaymentDTO() {
 
@@ -51,11 +51,11 @@ public class PaymentDTO {
         this.amount = amount;
     }
 
-    public List<String> getProducts() {
+    public List<ProductDTO> getProducts() {
         return products;
     }
 
-    public void setProducts(List<String> products) {
+    public void setProducts(List<ProductDTO> products) {
         this.products = products;
     }
 
@@ -85,6 +85,14 @@ public class PaymentDTO {
 
     public String getTransactionId() {
         return transactionId;
+    }
+
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
     }
 
     public void setTransactionId(String transactionId) {

@@ -13,6 +13,7 @@ public class PaymentDTO {
     private String email;
     private String transactionId;
     private String url;
+    private String clientId;
 
     public PaymentDTO() {
 
@@ -91,4 +92,11 @@ public class PaymentDTO {
     }
 
 
+    public String getClientId() {
+        return clientId;
+    }
+
+    public void setClientId(String clientId) {
+        this.clientId = clientId;
+    }
 }

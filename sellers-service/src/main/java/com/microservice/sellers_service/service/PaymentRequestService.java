@@ -15,6 +15,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
+import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
@@ -70,6 +71,8 @@ public class PaymentRequestService {
 
         String clientId = authService.getAuth().getPrincipal().toString();
 
+        System.out.println( authService.getAuth().getCredentials());
+
         request.setAmount(paymentDTO.getAmount());
         request.setClient(clientService.findByClientId(clientId));
         request.setToken(token);
@@ -114,6 +117,7 @@ public class PaymentRequestService {
         paymentDTO.setFirstName(payment.getFirstName());
         paymentDTO.setLastName(payment.getLastName());
         paymentDTO.setEmail(payment.getEmail());
+        paymentDTO.setClientId(paymentRequest.getClient().getClientId());
 
         paymentRequest.setPaymentType(paymentType);
 
@@ -136,6 +140,8 @@ public class PaymentRequestService {
 //        productDto.setSubscriberEmail(userEmail);
 //        productDto.setAmount(paymentRequest.getAmount());
 //        productDto.setClientId(paymentRequest.getClient().getClientId());
+
+
         
         if(!paymentType.getServiceName().equals("paypal-service")){
             exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity, Object.class);
