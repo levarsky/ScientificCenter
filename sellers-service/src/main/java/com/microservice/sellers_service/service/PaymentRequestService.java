@@ -1,6 +1,7 @@
 package com.microservice.sellers_service.service;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.microservice.sellers_service.model.*;
@@ -119,6 +120,14 @@ public class PaymentRequestService {
         paymentDTO.setEmail(payment.getEmail());
         paymentDTO.setClientId(paymentRequest.getClient().getClientId());
 
+        List<Product> products = payment.getProducts();
+        for (Product p : products){
+            ProductDTO productDTO = new ProductDTO();
+            productDTO.setAmount(p.getAmount());
+            productDTO.setName(p.getName());
+            paymentDTO.getProducts().add(productDTO);
+        }
+
         paymentRequest.setPaymentType(paymentType);
 
         HttpEntity<PaymentDTO> requestEntity = new HttpEntity<>(paymentDTO);
@@ -153,6 +162,7 @@ public class PaymentRequestService {
         //PaymentRequest paymentRequest1 = this.bankPaymentServices.create(paymentRequest);
         
         //System.out.println(exchange.getBody());
+        System.out.println(exchange.getBody());
 
         PaymentDTO paymentDTOReceived = (PaymentDTO) exchange.getBody();
 
