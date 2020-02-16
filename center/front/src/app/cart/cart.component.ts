@@ -31,7 +31,7 @@ export class CartComponent implements OnInit {
   }
 
   remove(id : number) {
-      this.cart.products = this.cart.products.filter(magazine => magazine.id != id );
+      this.cart.products = this.cart.products.filter(product => product.id != id );
       localStorage.setItem("cart",JSON.stringify(this.cart));
   }
 

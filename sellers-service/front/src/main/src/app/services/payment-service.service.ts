@@ -29,11 +29,11 @@ export class PaymentServiceService {
     let param = new HttpParams();
     param = param.append('token', token);
     param = param.append('id', id);
-    param = param.append('magazineName', magazineName);
-    param = param.append('magazineType', magazineType);
-    param = param.append('userGivenName', userGivenName);
-    param = param.append('userSurname', userSurname);
-    param = param.append('userEmail', userEmail);
+    // param = param.append('magazineName', magazineName);
+    // param = param.append('magazineType', magazineType);
+    // param = param.append('userGivenName', userGivenName);
+    // param = param.append('userSurname', userSurname);
+    // param = param.append('userEmail', userEmail);
 
     return this.http.get(this.baseUrl + "/pay/paymentRequest", { params: param });
   }

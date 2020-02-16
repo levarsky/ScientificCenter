@@ -1,10 +1,12 @@
 package com.microservice.center.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import com.microservice.center.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,10 +18,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.microservice.center.model.Magazine;
-import com.microservice.center.model.Resp;
-import com.microservice.center.model.Transaction;
-import com.microservice.center.model.User;
 import com.microservice.center.service.MagazineService;
 import com.microservice.center.service.PaymentService;
 import com.microservice.center.service.TransactionService;
@@ -42,50 +40,14 @@ public class PaymentController {
     MagazineService magazineService;
 
     @RequestMapping(value= "/{amount}",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Resp> testController(@PathVariable(value="amount") Double amount, @RequestBody List<Long> ids, HttpServletRequest hr) throws Exception {
-
-        Transaction transaction = new Transaction();
-        transaction.setAmount(amount);
-        transaction.setTimestamp(new Date());
-        transaction.setIpAddress(hr.getRemoteAddr());
-        transaction.setUsername(userService.getCurrentUser().getUsername());
-        transactionService.save(transaction);
-
-        String requestToken = this.paymentService.getToken(amount);
-        System.out.println(requestToken);
-        String url = "https://localhost:8088/sellers/pay/request?token="+requestToken;
-
-        transaction.setToken(requestToken);
-        transactionService.addPublications(ids,transaction.getId());
-        transactionService.save(transaction);
-
-        Resp r = new Resp(url);
-        return new ResponseEntity<>(r ,HttpStatus.OK);
+    public ResponseEntity<?> pay(@PathVariable(value="amount") Double amount, @RequestBody List<Long> ids, HttpServletRequest hr) throws Exception {
+        return new ResponseEntity<>(paymentService.pay(amount, ids, hr) ,HttpStatus.OK);
     }
 
     @RequestMapping(value= "/subscribe/{amount}/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Resp> subscribe(@PathVariable(value="amount") Double amount,@PathVariable(value="id") Long id, HttpServletRequest hr) throws Exception {
+    public ResponseEntity<?> subscribe(@PathVariable(value="amount") Double amount,@PathVariable(value="id") Long id, HttpServletRequest hr) throws Exception {
 
-        Transaction transaction = new Transaction();
-        transaction.setAmount(amount);
-        transaction.setTimestamp(new Date());
-        transaction.setIpAddress(hr.getRemoteAddr());
-        transaction.setUsername(userService.getCurrentUser().getUsername());
-        transactionService.save(transaction);
-
-        Magazine magazine = magazineService.findById(id);
-        User user = userService.getCurrentUser();
-        
-        String requestToken = this.paymentService.getToken(amount);	
-        System.out.println(requestToken);
-        String url = "https://localhost:8088/sellers/pay/request?token="+requestToken + "&magazineName=" + magazine.getName() + "&magazineType=1&userGivenName=" + user.getFirstName() + "&userSurname=" + user.getLastName() + "&userEmail=" + user.getEmail();
-
-        //transaction.setToken(requestToken);
-        //transactionService.save(transaction);
-        Resp r = new Resp(url);
-        transactionService.addMagazine(id,transaction.getId());
-        transactionService.save(transaction);
-        return new ResponseEntity<>(r, HttpStatus.OK);
+        return new ResponseEntity<>(paymentService.subscribe(amount,id,hr), HttpStatus.OK);
     }
 
     @RequestMapping(value= "/success",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)

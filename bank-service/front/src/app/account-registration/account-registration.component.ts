@@ -26,6 +26,7 @@ export class AccountRegistrationComponent implements OnInit {
 
       },error=>{
         console.log(error.error.message);
+        window.location.href = 'https://localhost:4201/home'
       });
 
       ;},error => {
@@ -50,4 +51,7 @@ export class AccountRegistrationComponent implements OnInit {
     });
   }
 
+  onCancel() {
+    window.location.href = 'https://localhost:4201/home'
+  }
 }

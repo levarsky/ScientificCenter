@@ -39,6 +39,7 @@ public class SubscriptionController {
 		Client client = clientService.findByClientId(productDto.getClientId());
 		String token = service.getToken(client.getPaypalClientId(), client.getPaypalSecret());
 		PaypalProductDto product = new PaypalProductDto(productDto.getName(), "DIGITAL");
+		System.out.println(productDto.getSubscriberEmail());
 		User user = userService.findByUserEmail(productDto.getSubscriberEmail());
 		SubscriberDto subscriber = new SubscriberDto(new NameDto(productDto.getSubscriberGivenName(), productDto.getSubscriberSurname()), user.getPaypalUserEmail());
 		
