@@ -27,8 +27,9 @@ public class PaypalController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/pay")
 	public Resp pay(@RequestBody SellerDataDto sellerData) {
+		String token = null;
 		if(sellerData.getType().equals("payment")) {
-			String token = service.pay(sellerData);
+			token = service.pay(sellerData);
 		}
 		else {
 			

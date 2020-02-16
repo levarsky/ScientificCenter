@@ -52,7 +52,7 @@ public class PaymentService {
 	}
 	
 	public String pay(SellerDataDto sellerData) {
-		Client client = clientService.findByClientId(sellerData.getProducts().get(0).getClientId());
+		Client client = clientService.findByClientId(sellerData.getClientId());
 		String token = this.getToken(client.getPaypalClientId(), client.getPaypalSecret());
 		return null;
 	}

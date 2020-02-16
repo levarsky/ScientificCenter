@@ -12,23 +12,7 @@ public class SellerDataDto {
     private String email;
     private String transactionId;
     private String url;
-    
-    public SellerDataDto(String token, String type, List<ProductDTO> products, Double amount, String firstName,
-			String lastName, String email, String transactionId, String url) {
-		super();
-		this.token = token;
-		this.type = type;
-		this.products = products;
-		this.amount = amount;
-		this.firstName = firstName;
-		this.lastName = lastName;
-		this.email = email;
-		this.transactionId = transactionId;
-		this.url = url;
-	}
-	public SellerDataDto() {
-		super();
-	}
+    private String clientId;
 	public String getToken() {
 		return token;
 	}
@@ -82,5 +66,11 @@ public class SellerDataDto {
 	}
 	public void setUrl(String url) {
 		this.url = url;
+	}
+	public String getClientId() {
+		return clientId;
+	}
+	public void setClientId(String clientId) {
+		this.clientId = clientId;
 	}
 }
