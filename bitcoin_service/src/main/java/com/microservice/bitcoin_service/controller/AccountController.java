@@ -12,10 +12,12 @@ import org.knowm.xchange.gdax.dto.account.GDAXAccount;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.microservice.bitcoin_service.dto.FundsTransferDto;
 import com.microservice.bitcoin_service.service.AccountService;
 
 @RestController
@@ -26,5 +28,10 @@ public class AccountController {
 	@RequestMapping(method = RequestMethod.GET, value = "/accountInfo")
 	public ResponseEntity<List<GDAXAccount>> getAccountInfo() throws NotAvailableFromExchangeException, NotYetImplementedForExchangeException, ExchangeException, IOException, InvalidKeyException, NoSuchAlgorithmException{
 		return new ResponseEntity<List<GDAXAccount>>(accountService.getAccounts(), HttpStatus.OK);
+	}
+	
+	@RequestMapping(method = RequestMethod.POST, value = "/transferFunds")
+	public void transferFUnds(@RequestBody FundsTransferDto dto) throws InvalidKeyException, NoSuchAlgorithmException {
+		accountService.transferFunds(dto);
 	}
 }

@@ -11,7 +11,7 @@ import org.springframework.web.client.RestTemplate;
 import java.util.Base64;
 
 @Service
-public class SubscriptionService {
+public class PaymentService {
 	public String getToken(String username, String password) {
 		
 		String url = "https://api.sandbox.paypal.com/v1/oauth2/token";

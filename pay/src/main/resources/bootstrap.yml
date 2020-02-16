@@ -1,6 +1,6 @@
 spring:
   application:
-    name: pay-service
+    name: paypal-service
   cloud:
     config:
       uri: https://localhost:8888

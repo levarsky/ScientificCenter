@@ -41,7 +41,7 @@ public class PayApplication {
         //System.setProperty("javax.net.ssl.trustStore", "C:\\Users\\Milica\\Documents\\FTN_Master\\SEP_UPP_UDD\\cloud branch\\ScientificCenter\\sellers-service\\src\\main\\resources\\configTrust.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "password");*/
         EurekaJerseyClientImpl.EurekaJerseyClientBuilder builder = new EurekaJerseyClientImpl.EurekaJerseyClientBuilder();
-        builder.withClientName("pay-service");
+        builder.withClientName("paypal-service");
         builder.withSystemSSLConfiguration();
         builder.withMaxTotalConnections(10);
         builder.withMaxConnectionsPerHost(10);
