@@ -1,12 +1,13 @@
 package com.microservice.bank_service.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class PaymentDTO {
 
     private String token;
     private String type;
-    private List<ProductDTO> products;
+    private List<ProductDTO> products = new ArrayList<>();
     private Double amount;
     private String firstName;
     private String lastName;
@@ -87,15 +88,16 @@ public class PaymentDTO {
         return transactionId;
     }
 
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+
     public String getClientId() {
         return clientId;
     }
 
     public void setClientId(String clientId) {
         this.clientId = clientId;
-    }
-
-    public void setTransactionId(String transactionId) {
-        this.transactionId = transactionId;
     }
 }

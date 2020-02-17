@@ -15,6 +15,7 @@ import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microservice.sellers_service.model.Payment;
 import com.microservice.sellers_service.model.PaymentDTO;
 import com.microservice.sellers_service.model.PaymentRequest;
@@ -109,7 +110,7 @@ public class PaymentRequestService {
 
     }
 
-    public Object sendPaymentRequest(String token,Long id){
+    public Object sendPaymentRequest(String token,Long id)  {
 
         PaymentRequest paymentRequest = getRequest(token);
         PaymentType paymentType = paymentTypeService.getPaymentType(id);
@@ -169,7 +170,9 @@ public class PaymentRequestService {
         //System.out.println(exchange.getBody());
         System.out.println(exchange.getBody());
 
-        PaymentDTO paymentDTOReceived = (PaymentDTO) exchange.getBody();
+
+        ObjectMapper mapper = new ObjectMapper();
+        PaymentDTO paymentDTOReceived = mapper.convertValue(exchange.getBody(), PaymentDTO.class);
 
         paymentRequest.setTransactionId(paymentDTOReceived.getTransactionId());
         paymentRequestRepository.save(paymentRequest);
