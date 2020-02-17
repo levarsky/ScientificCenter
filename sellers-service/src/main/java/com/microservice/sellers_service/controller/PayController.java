@@ -1,22 +1,30 @@
 package com.microservice.sellers_service.controller;
 
-import com.microservice.sellers_service.model.PaymentDTO;
-import com.microservice.sellers_service.model.PaymentRequest;
-import com.microservice.sellers_service.model.PaymentType;
-import com.microservice.sellers_service.model.ProductDTO;
-import com.microservice.sellers_service.service.PaymentRequestService;
-import com.microservice.sellers_service.service.PaymentTypeService;
+import java.io.IOException;
+import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
-import java.util.List;
+import com.microservice.sellers_service.model.PaymentDTO;
+import com.microservice.sellers_service.model.PaymentRequest;
+import com.microservice.sellers_service.model.PaymentType;
+import com.microservice.sellers_service.model.Resp;
+import com.microservice.sellers_service.service.PaymentRequestService;
+import com.microservice.sellers_service.service.PaymentTypeService;
 
 @RestController
 @RequestMapping(value = "/pay")
@@ -80,8 +88,8 @@ public class PayController {
     }
 
     @RequestMapping(value="/paymentRequest",method = RequestMethod.GET)
-    public ResponseEntity<?> sendPaymentRequest(@RequestParam String token,@RequestParam Long id){
-        return new ResponseEntity<>(paymentRequestService.sendPaymentRequest(token,id),HttpStatus.OK);
+    public ResponseEntity<PaymentDTO> sendPaymentRequest(@RequestParam String token,@RequestParam Long id){
+        return new ResponseEntity<PaymentDTO>((PaymentDTO)paymentRequestService.sendPaymentRequest(token,id),HttpStatus.OK);
     }
 
 }

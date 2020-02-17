@@ -7,7 +7,7 @@ import com.microservice.pay.dto.*;
 import com.microservice.pay.model.Client;
 import com.microservice.pay.model.User;
 import com.microservice.pay.service.ClientService;
-import com.microservice.pay.service.SubscriptionService;
+import com.microservice.pay.service.PaymentService;
 import com.microservice.pay.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.*;
@@ -25,7 +25,7 @@ import java.util.List;
 public class SubscriptionController {
 
 	@Autowired
-	SubscriptionService service;
+	PaymentService service;
 	
 	@Autowired
 	ClientService clientService;
@@ -35,13 +35,13 @@ public class SubscriptionController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/create")
 	public Resp createSubscription(@RequestBody ProductDTO productDto){
-		
-		Client client = clientService.findByClientId(productDto.getClientId());
+		return null;
+		/*Client client = clientService.findByClientId(productDto.getClientId());
 		String token = service.getToken(client.getPaypalClientId(), client.getPaypalSecret());
 		PaypalProductDto product = new PaypalProductDto(productDto.getName(), "DIGITAL");
 		System.out.println(productDto.getSubscriberEmail());
 		User user = userService.findByUserEmail(productDto.getSubscriberEmail());
-		SubscriberDto subscriber = new SubscriberDto(new NameDto(productDto.getSubscriberGivenName(), productDto.getSubscriberSurname()), user.getPaypalUserEmail());
+		SubscriberDto subscriber = new SubscriberDto(new NameDto(productDto.getSubscriberGivenName(), productDto.getSubscriberSurname()), productDto.getSubscriberEmail());
 		
 		String productUrl = "https://api.sandbox.paypal.com/v1/catalogs/products";
 		HttpHeaders productHeaders = new HttpHeaders();
@@ -94,6 +94,6 @@ public class SubscriptionController {
 			}
 		}
 		
-		return resp;
+		return resp;*/
 	}
 }
