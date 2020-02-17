@@ -27,6 +27,11 @@ public class RequestController {
         return new ResponseEntity<>(requestService.pay(payment,paymentId),HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/cancel",method = RequestMethod.GET)
+    public ResponseEntity<?> cancel(@RequestParam String paymentId) {
+        return new ResponseEntity<>(requestService.cancel(paymentId),HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/pay_from_pcc",method = RequestMethod.POST)
     public ResponseEntity<ResponseFromBank> pay(@RequestBody RequestFromBank requestFromBank) {
         return new ResponseEntity<>(requestService.payFromPcc(requestFromBank),HttpStatus.OK);

@@ -60,8 +60,18 @@ public class PayController {
     }
 
     @RequestMapping(value = "/paymentTypes", method = RequestMethod.GET)
-    public ResponseEntity<List<PaymentType>> gePaymentTypes(@RequestParam(value ="token" ) String token) {
+    public ResponseEntity<List<PaymentType>> getPaymentTypes(@RequestParam(value ="token" ) String token) {
         return new ResponseEntity<>(paymentTypeService.getPaymentTypes(token), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/clientPaymentTypes", method = RequestMethod.GET)
+    public ResponseEntity<List<PaymentType>> getClientPaymentTypes() {
+        return new ResponseEntity<>(paymentTypeService.getPaymentByClient(), HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/allPaymentTypes", method = RequestMethod.GET)
+    public ResponseEntity<List<PaymentType>> allPaymentTypes() {
+        return new ResponseEntity<>(paymentTypeService.getNotAdded(), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/token", method = RequestMethod.GET)
