@@ -11,27 +11,27 @@
         <a class="nav-link" href="#">Home <span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link"  [routerLink]="['/magazines']">Magazines<span class="sr-only"></span></a>
+        <a class="nav-link" *ngIf="loggedIn"  [routerLink]="['/magazines']">Magazines<span class="sr-only"></span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link"  [routerLink]="['/purchased']">Purchased<span class="sr-only"></span></a>
+        <a class="nav-link" *ngIf="loggedIn"  [routerLink]="['/purchased']">Purchased<span class="sr-only"></span></a>
       </li>
       <li class="nav-item active">
-        <a class="nav-link" s [routerLink]="['/subscriptions']">Subscriptions<span class="sr-only"></span></a>
+        <a class="nav-link" *ngIf="loggedIn" [routerLink]="['/subscriptions']">Subscriptions<span class="sr-only"></span></a>
       </li>
 
     </ul>
     <div class="nav-item">
-      <a class = "nav-link" [routerLink]="['/cart']"><img style="width: 30px; height:30px" src="https://img.icons8.com/carbon-copy/100/000000/shopping-cart.png"></a>
+      <a class = "nav-link" *ngIf="loggedIn"  [routerLink]="['/cart']"><img style="width: 30px; height:30px" src="https://img.icons8.com/carbon-copy/100/000000/shopping-cart.png"></a>
     </div>
     <div class="nav-item">
-      <a  class="nav-link" [routerLink]="['/signin']">Sign in</a>
+      <a  class="nav-link" *ngIf="!loggedIn" [routerLink]="['/signin']">Sign in</a>
     </div>
     <div class="nav-item">
-      <a  class="nav-link" [routerLink]="['/signup']">Sign up</a>
+      <a  class="nav-link" *ngIf="!loggedIn" [routerLink]="['/signup']">Sign up</a>
     </div>
     <div class="nav-item">
-      <a  class="nav-link" [routerLink]="['']"  (click)="logOut()">Log out</a>
+      <a  class="nav-link" *ngIf="loggedIn" [routerLink]="['']"  (click)="logOut()">Log out</a>
     </div>
   </div>
 </nav>
