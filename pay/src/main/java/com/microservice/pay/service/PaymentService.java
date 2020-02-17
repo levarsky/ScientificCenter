@@ -47,6 +47,9 @@ public class PaymentService {
 
 	private String success_url = "https://localhost:8069/success";
 	private String cancel_url = "https://localhost:8069/cancel";
+
+	private String successSubscribe_url = "https://127.0.0.1:8069/subscribeSuccess";
+	private String cancelSubscribe_url = "https://127.0.0.1:8069/subscribeCancel";
 	
 	@Autowired
 	ClientService clientService;
@@ -155,7 +158,7 @@ public class PaymentService {
 		ResponseEntity<String> planResponse = new RestTemplate().exchange(planUrl, HttpMethod.POST, planEntity, String.class);
 		JsonObject planJson = new JsonParser().parse(planResponse.getBody()).getAsJsonObject();
 		
-		ApplicationContext appCon = new ApplicationContext("https://www.google.com", "https://www.google.com");
+		ApplicationContext appCon = new ApplicationContext(successSubscribe_url,cancelSubscribe_url);
 		SubscriptionDto subscription = new SubscriptionDto(planJson.get("id").getAsString(), subscriber, appCon);
 		
 		String subscriptionUrl = "https://api.sandbox.paypal.com/v1/billing/subscriptions";
@@ -164,6 +167,7 @@ public class PaymentService {
 		subscriptionHeaders.add("Authorization", "Bearer " + token);
 		
 		HttpEntity subscriptionEntity = new HttpEntity(subscription, subscriptionHeaders);
+
 		ResponseEntity<String> subscriptionResponse = new RestTemplate().exchange(subscriptionUrl, HttpMethod.POST, subscriptionEntity, String.class);
 		System.out.println(PAYMENT_URL+" " + subscriptionResponse.getBody());
 

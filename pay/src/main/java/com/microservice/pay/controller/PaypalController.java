@@ -33,13 +33,23 @@ public class PaypalController {
 		}
 	}
 
+	@RequestMapping(method = RequestMethod.GET, value = "subscribeSuccess")
+	public void subscribeSuccess(@RequestParam String subscription_id,HttpServletResponse httpServletResponse) throws IOException {
+		httpServletResponse.sendRedirect(service.success(subscription_id));
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value = "success")
 	public void success(@RequestParam String paymentId,HttpServletResponse httpServletResponse) throws IOException {
-		httpServletResponse.sendRedirect(service.success(paymentId));
+			httpServletResponse.sendRedirect(service.success(paymentId));
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "subscribeCancel")
+	public void subscribeCancel(@RequestParam String subscription_id,HttpServletResponse httpServletResponse) throws IOException {
+		httpServletResponse.sendRedirect(service.cancel(subscription_id));
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "cancel")
 	public void cancel(@RequestParam String paymentId,HttpServletResponse httpServletResponse) throws IOException {
-		httpServletResponse.sendRedirect(service.cancel(paymentId));
+			httpServletResponse.sendRedirect(service.cancel(paymentId));
 	}
 }
