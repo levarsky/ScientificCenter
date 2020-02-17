@@ -43,14 +43,13 @@ public class TransactionService {
 
         for(Long id : ids){
             Publication publication = publicationService.findById(id);
-
+            System.out.println("DODAJEM: " + id + " u " + transId);
             ProductDTO productDTO = new ProductDTO();
             productDTO.setAmount(publication.getPrice());
             productDTO.setName(id.toString());
             productDTOS.add(productDTO);
 
             transaction.get().getPublicationList().add(publication);
-            publicationService.save(publication);
         }
 
         transactionRepository.save(transaction.get());

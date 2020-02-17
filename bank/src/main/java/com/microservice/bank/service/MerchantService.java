@@ -24,7 +24,8 @@ public class MerchantService {
     private MerchantRepository merchantRepository;
 
     public Account getAccountFromMerchant(String merchantId,String merchantPassword){
-       Optional<Merchant> merchant = merchantRepository.findByMerchantIdAndMerchantPassword(merchantId,merchantPassword);
+       Optional<Merchant> merchant = merchantRepository.findByMerchantIdAndMerchantPassword(merchantId.trim(),merchantPassword.trim());
+       System.out.println(merchantId + " " + merchantPassword);
        if (!merchant.isPresent())
            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid details !");
        return merchant.get().getAccount();

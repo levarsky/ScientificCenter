@@ -1,6 +1,9 @@
 package com.microservice.center.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -33,10 +36,14 @@ public class Transaction {
     @ManyToOne
     private Magazine magazine;
 
-    @ManyToMany(mappedBy = "transactions")
-    private List<Publication> publicationList = new ArrayList<>();
+    @JsonIgnore
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(joinColumns = @JoinColumn(name = "transaction_id"), inverseJoinColumns = @JoinColumn(name = "publication_id"))
+    private List<Publication> publicationList;
 
-    public Transaction() {}
+    public Transaction() {
+        publicationList = new ArrayList<>();
+    }
 
     public Long getId() {
         return id;

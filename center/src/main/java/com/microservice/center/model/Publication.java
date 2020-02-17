@@ -1,4 +1,6 @@
 package com.microservice.center.model;
+import org.codehaus.jackson.annotate.JsonIgnore;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,18 +24,16 @@ public class Publication {
     @Column
     private Double price;
 
+    @JsonIgnore
     @ManyToOne
     private Magazine magazine;
 
+    @JsonIgnore
     @ManyToMany
     private List<User> readers;
 
-    @ManyToMany
-    private List<Transaction> transactions;
-
     public Publication() {
         readers = new ArrayList<>();
-        transactions = new ArrayList<>();
     }
 
     public Long getId() {
@@ -90,13 +90,5 @@ public class Publication {
 
     public void setReaders(List<User> readers) {
         this.readers = readers;
-    }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
     }
 }

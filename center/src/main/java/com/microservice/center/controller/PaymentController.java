@@ -53,7 +53,9 @@ public class PaymentController {
     @RequestMapping(value= "/success",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> paymentSuccess(@RequestParam String requestId) throws Exception {
         Transaction transaction = transactionService.getByToken(requestId);
+        System.out.println("DOSO U SUCCESS!");
         if(transaction != null){
+            System.out.println("NISAM NULL!");
             transaction.setSuccess("successful");
             transactionService.save(transaction);
             userService.addFromTransactionToUser(transaction);
