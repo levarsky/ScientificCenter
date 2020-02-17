@@ -40,7 +40,7 @@ public class PaymentService {
 
     private String sellersService = "https://localhost:8679/sellers/payment/status";
 
-    public Object pay(PaymentDTO paymentDTO){
+    public PaymentDTO pay(PaymentDTO paymentDTO){
 
         String url  = "https://localhost:8765/pay";
         String urlBank  = "https://localhost:8768";

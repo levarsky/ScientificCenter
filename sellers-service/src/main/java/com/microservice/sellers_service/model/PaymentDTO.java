@@ -7,7 +7,7 @@ public class PaymentDTO {
 
     private String token;
     private String type;
-    private List<ProductDTO> products;
+    private List<ProductDTO> products = new ArrayList<>();
     private Double amount;
     private String firstName;
     private String lastName;

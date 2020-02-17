@@ -32,12 +32,6 @@ public class Account {
     @Digits(integer = 10 /*precision*/, fraction = 2 /*scale*/)
     private Double amount;
 
-    @Column(length = 30,unique = true)
-    private String merchantId;
-
-    @Column(length = 100)
-    private String merchantPassword;
-
     @OneToMany(mappedBy="account",cascade = CascadeType.ALL)
     private List<Transaction> transactions = new ArrayList<>();
 
@@ -90,22 +84,6 @@ public class Account {
 
     public void setAmount(Double amount) {
         this.amount = amount;
-    }
-
-    public String getMerchantId() {
-        return merchantId;
-    }
-
-    public void setMerchantId(String merchantId) {
-        this.merchantId = merchantId;
-    }
-
-    public String getMerchantPassword() {
-        return merchantPassword;
-    }
-
-    public void setMerchantPassword(String merchantPassword) {
-        this.merchantPassword = merchantPassword;
     }
 
     public String getCardHolderName() {

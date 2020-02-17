@@ -48,6 +48,9 @@ public class RequestService {
     @Value("${bank.pan}")
     private String myPan;
 
+    @Value("${bank.bin}")
+    private String bin;
+
     @Value("${pcc.url}")
     private String pccUrl;
 
@@ -93,6 +96,7 @@ public class RequestService {
 
         if(isRequestForMe(payment)) {
 
+            System.out.println("FOR THIS BANK " + myPan);
 
             Account optionalAccount = accountService.getAccount(
                             payment.getPan(),
@@ -155,7 +159,7 @@ public class RequestService {
             requestFromBank.setSecurityCode(payment.getSecurityCode());
             requestFromBank.setPan(payment.getPan());
             requestFromBank.setAcquirerOrderId(ThreadLocalRandom.current().nextLong(1000000000L, 10000000000L));
-            requestFromBankRepository.save(requestFromBank);
+            //requestFromBankRepository.save(requestFromBank);
 
             String redirectUrl;
 
@@ -166,7 +170,7 @@ public class RequestService {
             }
 
             requestFromBank.setAmount(request.getAmount());
-            requestFromBankRepository.save(requestFromBank);
+            //requestFromBankRepository.save(requestFromBank);
 
             HttpHeaders requestHeaders = new HttpHeaders();
             requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
@@ -189,6 +193,7 @@ public class RequestService {
             }else
                 responseLink = request.getErrorUrl();
 
+            System.out.println("Link na koji treba red " + responseLink);
             responseFromBankRepository.save( exchange.getBody());
             ResponseEntity<Object> excRed = restTemplate.exchange(responseLink, HttpMethod.POST, requestEntity, Object.class);
 
@@ -264,7 +269,7 @@ public class RequestService {
     }
 
     private Boolean isRequestForMe(Payment payment) {
-        if(payment.getPan().equals(myPan))
+        if(payment.getPan().substring(0,6).equals(bin))
             return true;
         return false;
     }

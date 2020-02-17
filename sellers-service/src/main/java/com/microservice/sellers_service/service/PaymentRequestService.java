@@ -4,10 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import com.microservice.sellers_service.model.*;
-import com.microservice.sellers_service.repository.PaymentRepository;
-import com.microservice.sellers_service.repository.ProductRepository;
-import com.netflix.discovery.converters.Auto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -16,11 +12,20 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
-import org.springframework.security.oauth2.client.OAuth2RestTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.microservice.sellers_service.model.Payment;
+import com.microservice.sellers_service.model.PaymentDTO;
+import com.microservice.sellers_service.model.PaymentRequest;
+import com.microservice.sellers_service.model.PaymentType;
+import com.microservice.sellers_service.model.Product;
+import com.microservice.sellers_service.model.ProductDTO;
+import com.microservice.sellers_service.model.Resp;
+import com.microservice.sellers_service.repository.PaymentRepository;
 import com.microservice.sellers_service.repository.PaymentRequestRepository;
+import com.microservice.sellers_service.repository.ProductRepository;
 
 @Service
 public class PaymentRequestService {
@@ -105,7 +110,7 @@ public class PaymentRequestService {
 
     }
 
-    public Object sendPaymentRequest(String token,Long id){
+    public Object sendPaymentRequest(String token,Long id)  {
 
         PaymentRequest paymentRequest = getRequest(token);
         PaymentType paymentType = paymentTypeService.getPaymentType(id);
@@ -113,6 +118,7 @@ public class PaymentRequestService {
         Payment payment = getPayment(paymentRequest.getId());
 
         PaymentDTO paymentDTO = new PaymentDTO();
+        paymentDTO.setProducts(new ArrayList<ProductDTO>());
         paymentDTO.setAmount(paymentRequest.getAmount());
         paymentDTO.setType(payment.getType());
         paymentDTO.setFirstName(payment.getFirstName());
@@ -155,7 +161,7 @@ public class PaymentRequestService {
         if(!paymentType.getServiceName().equals("paypal-service")){
             exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity, Object.class);
         }else{
-        	Resp res = restTemplate.exchange("https://"+paymentType.getServiceName()+"/subscription/create", HttpMethod.POST, new HttpEntity<>(productDto, httpHeadersPaypal),Resp.class).getBody();
+        	Resp res = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, new HttpEntity<>(paymentDTO, httpHeadersPaypal),Resp.class).getBody();
         	return res;
         }
 
@@ -164,7 +170,9 @@ public class PaymentRequestService {
         //System.out.println(exchange.getBody());
         System.out.println(exchange.getBody());
 
-        PaymentDTO paymentDTOReceived = (PaymentDTO) exchange.getBody();
+
+        ObjectMapper mapper = new ObjectMapper();
+        PaymentDTO paymentDTOReceived = mapper.convertValue(exchange.getBody(), PaymentDTO.class);
 
         paymentRequest.setTransactionId(paymentDTOReceived.getTransactionId());
         paymentRequestRepository.save(paymentRequest);
