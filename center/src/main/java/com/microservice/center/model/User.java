@@ -49,19 +49,24 @@ public class User implements UserDetails {
     @Column
     private Boolean isVerified ;
 
+    @JsonIgnore
     @ManyToMany(mappedBy = "interestedUsers")
     private List<ScentificArea> scentificAreaList;
 
+    @JsonIgnore
     @ManyToMany
     private List<Magazine> magazineRedactor;
 
+    @JsonIgnore
     @ManyToMany
     private List<Magazine> magazineReviewer;
 
+    @JsonIgnore
     @ManyToMany
     private List<Magazine> subscriptions;
 
-    @ManyToMany
+    @JsonIgnore
+    @ManyToMany(mappedBy = "readers")
     private List<Publication> purchased;
 
     @JsonIgnore

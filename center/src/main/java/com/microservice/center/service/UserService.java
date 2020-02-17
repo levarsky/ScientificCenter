@@ -100,15 +100,23 @@ public class UserService {
 
     public void addFromTransactionToUser(Transaction transaction){
         User user = getUser(transaction.getUsername());
+        System.out.println("AAAA");
         if(transaction.getMagazine() != null){
-            user.getSubscriptions().add(transaction.getMagazine());
-            transaction.getMagazine().getReaders().add(user);
-            userRepository.save(user);
-            magazineService.save(transaction.getMagazine());
+            System.out.println("AAAA1");
+            if(!user.getSubscriptions().contains(transaction.getMagazine())) {
+                user.getSubscriptions().add(transaction.getMagazine());
+                transaction.getMagazine().getReaders().add(user);
+                userRepository.save(user);
+                magazineService.save(transaction.getMagazine());
+            }
         }
 
         if(!transaction.getPublicationList().isEmpty()){
+            System.out.println("BBBB1");
             for(Publication p : transaction.getPublicationList()){
+                System.out.println("BBB2");
+                if(user.getPurchased().contains(p))
+                    continue;
                 user.getPurchased().add(p);
                 p.getReaders().add(user);
                 publicationService.save(p);
@@ -144,12 +152,14 @@ public class UserService {
     }
 
     public List<Publication> getPurchased(){
-        User user = new User();
-        return user.getPurchased();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findByUsername(auth.getName());
+        return user.get().getPurchased();
     }
 
     public List<Magazine> getSubscriptions(){
-        User user = new User();
-        return user.getSubscriptions();
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        Optional<User> user = userRepository.findByUsername(auth.getName());
+        return user.get().getSubscriptions();
     }
 }

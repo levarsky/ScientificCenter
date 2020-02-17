@@ -28,8 +28,6 @@ public class RequestService {
     @Autowired
     private RequestRepository requestRepository;
 
-
-
     @Autowired
     private TransactionService transactionService;
 
@@ -93,6 +91,10 @@ public class RequestService {
 
         Account payerAccount = null;
         Date date = new Date();
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
 
         if(isRequestForMe(payment)) {
 
@@ -104,25 +106,20 @@ public class RequestService {
                             payment.getCardHolderName(),
                             payment.getExpirationDate());
 
-
             payerAccount = optionalAccount;
 
             String redirectUrl;
 
             Request request = requestRepository.findRequestByPaymentId(id);
-            if (request == null) {
-                redirectUrl = request.getErrorUrl();
-                return Collections.singletonMap("redirectUrl", redirectUrl);
-            }
 
             if (payerAccount == null)
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Invalid data!");
 
             if (payerAccount.getAmount() < request.getAmount()) {
                 redirectUrl = request.getFailedUrl();
-                return Collections.singletonMap("redirectUrl", redirectUrl);
+                ResponseEntity<Object> exchange = restTemplate.exchange(redirectUrl, HttpMethod.POST, requestEntity, Object.class);
+                return exchange.getBody();
             }
-
 
             Transaction transactionDebit = new Transaction();
 
@@ -136,14 +133,7 @@ public class RequestService {
             transactionService.saveNew(transactionDebit, "DEBIT");
             accountRepository.save(payerAccount);
 
-
             addTo(request);
-
-
-            HttpHeaders requestHeaders = new HttpHeaders();
-            requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-
-            HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
 
             System.out.println(request.getSuccessUrl());
 
@@ -161,22 +151,10 @@ public class RequestService {
             requestFromBank.setAcquirerOrderId(ThreadLocalRandom.current().nextLong(1000000000L, 10000000000L));
             //requestFromBankRepository.save(requestFromBank);
 
-            String redirectUrl;
-
             Request request = requestRepository.findRequestByPaymentId(id);
-            if (request == null) {
-                redirectUrl = request.getErrorUrl();
-                return Collections.singletonMap("redirectUrl", redirectUrl);
-            }
 
             requestFromBank.setAmount(request.getAmount());
             //requestFromBankRepository.save(requestFromBank);
-
-            HttpHeaders requestHeaders = new HttpHeaders();
-            requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
-
-
-            HttpEntity<?> requestEntity = new HttpEntity<>(requestFromBank,requestHeaders);
 
             ResponseEntity<ResponseFromBank> exchange = restTemplate.exchange(pccUrl+"/request", HttpMethod.POST, requestEntity, ResponseFromBank.class);
             String responseLink = "";
@@ -280,15 +258,24 @@ public class RequestService {
 
         HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
 
-
         Request request = requestRepository.findRequestByPaymentId(paymentId);
 
         String redirectUrl;
 
-        if (request == null) {
-            redirectUrl = request.getErrorUrl();
-        }else
-            redirectUrl = request.getFailedUrl();
+        redirectUrl = request.getFailedUrl();
+
+        ResponseEntity<Object> excRed = restTemplate.exchange(redirectUrl, HttpMethod.POST, requestEntity, Object.class);
+
+        return excRed.getBody();
+    }
+
+    public Object nemaNovacaBato(String paymentId){
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+        HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
+        Request request = requestRepository.findRequestByPaymentId(paymentId);
+        String redirectUrl = "";
+        redirectUrl = request.getErrorUrl();
 
         ResponseEntity<Object> excRed = restTemplate.exchange(redirectUrl, HttpMethod.POST, requestEntity, Object.class);
 

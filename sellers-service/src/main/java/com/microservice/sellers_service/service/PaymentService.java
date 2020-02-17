@@ -33,6 +33,8 @@ public class PaymentService {
             return uriBuilder(client.getErrorUrl(),paymentRequest.getToken());
         if(paymentStatus.equals("FAILED"))
             return uriBuilder(client.getFailedUrl(),paymentRequest.getToken());
+        if(paymentStatus.equals("CANCEL"))
+            return uriBuilder(client.getFailedUrl(),paymentRequest.getToken());
 
         //SUCCESS
         return uriBuilder(client.getSuccessUrl(),paymentRequest.getToken());

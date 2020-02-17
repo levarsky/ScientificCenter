@@ -14,6 +14,8 @@ export class PurchasedComponent implements OnInit {
   constructor(private userService : UserService) {
     this.userService.purchased().subscribe(data => {
       this.publications = data;
+      console.log("DOBIO")
+      console.log(data);
     })
   }
 
