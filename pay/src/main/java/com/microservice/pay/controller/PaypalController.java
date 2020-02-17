@@ -3,14 +3,13 @@ package com.microservice.pay.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.microservice.pay.dto.SellerDataDto;
 import com.microservice.pay.service.PaymentService;
+
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @RestController
 @RequestMapping("/")
@@ -32,5 +31,15 @@ public class PaypalController {
 		else {
 			return service.subscribe(sellerData);
 		}
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "success")
+	public void success(@RequestParam String paymentId,HttpServletResponse httpServletResponse) throws IOException {
+		httpServletResponse.sendRedirect(service.success(paymentId));
+	}
+
+	@RequestMapping(method = RequestMethod.GET, value = "cancel")
+	public void cancel(@RequestParam String paymentId,HttpServletResponse httpServletResponse) throws IOException {
+		httpServletResponse.sendRedirect(service.cancel(paymentId));
 	}
 }

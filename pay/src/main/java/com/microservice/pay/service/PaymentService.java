@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -37,14 +38,21 @@ import com.microservice.pay.dto.SubscriberDto;
 import com.microservice.pay.dto.SubscriptionDto;
 import com.microservice.pay.dto.TransactionDto;
 import com.microservice.pay.model.Client;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class PaymentService {
 	
 	private static String PAYMENT_URL = "https://api.sandbox.paypal.com/v1/payments/payment";
+
+	private String success_url = "https://localhost:8069/success";
+	private String cancel_url = "https://localhost:8069/cancel";
 	
 	@Autowired
 	ClientService clientService;
+
+	@Autowired
+	private OAuth2RestOperations restTemplate;
 	
 	public String getToken(String username, String password) {
 		
@@ -88,13 +96,18 @@ public class PaymentService {
 		}
 		transactions.add(new TransactionDto(new ItemListDto(items)));
 		
-		ApplicationContext redirect_urls = new ApplicationContext("https://www.google.com", "https://www.google.com");
+		ApplicationContext redirect_urls = new ApplicationContext(success_url, cancel_url);
 		
 		PaymentDto paymentDto = new PaymentDto(transactions, redirect_urls);
 		
 		ResponseEntity<String> response = new RestTemplate().exchange(PAYMENT_URL, HttpMethod.POST, new HttpEntity(paymentDto, httpHeaders), String.class);
 		Resp resp = new Resp("");
+		System.out.println(PAYMENT_URL+" " + response.getBody());
+
 		JsonObject jsonObject = new JsonParser().parse(response.getBody()).getAsJsonObject();
+		String transactionId  = jsonObject.get("id").getAsString();
+		sellerData.setTransactionId(transactionId);
+
 		for(JsonElement link : jsonObject.get("links").getAsJsonArray()) {
 			JsonObject json = link.getAsJsonObject();
 			if(json.get("rel").getAsString().equals("approval_url")) {
@@ -152,8 +165,12 @@ public class PaymentService {
 		
 		HttpEntity subscriptionEntity = new HttpEntity(subscription, subscriptionHeaders);
 		ResponseEntity<String> subscriptionResponse = new RestTemplate().exchange(subscriptionUrl, HttpMethod.POST, subscriptionEntity, String.class);
-		
+		System.out.println(PAYMENT_URL+" " + subscriptionResponse.getBody());
+
 		JsonObject jsonObject = new JsonParser().parse(subscriptionResponse.getBody()).getAsJsonObject();
+		String transactionId  = jsonObject.get("id").getAsString();
+		sellerData.setTransactionId(transactionId);
+
 		for(JsonElement link : jsonObject.get("links").getAsJsonArray()) {
 			JsonObject json = link.getAsJsonObject();
 			if(json.get("rel").getAsString().equals("approve")) {
@@ -163,5 +180,43 @@ public class PaymentService {
 		
 		return sellerData;
 	}
-	
+
+	public String success(String paymentId) {
+		return sendStatus(paymentId,"SUCCESSFUL");
+	}
+
+	public String cancel(String paymentId) {
+
+		return sendStatus(paymentId,"CANCEL");
+
+	}
+
+	public String sendStatus(String transactionId,String paymentStatus){
+
+		String url = "https://sellers-service/sellers/payment/status";
+
+		UriComponentsBuilder builder = UriComponentsBuilder
+				.fromHttpUrl(url)
+				.queryParam("transactionId",transactionId)
+				.queryParam("paymentStatus",paymentStatus);
+
+		System.out.println(paymentStatus);
+
+
+		String paymentUrl = builder.build().encode().toUriString();
+
+		System.out.println(paymentUrl);
+
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+		HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
+
+		ResponseEntity<String> exchange = restTemplate.exchange(paymentUrl, HttpMethod.GET, requestEntity, String.class);
+
+		return exchange.getBody();
+
+
+	}
+
 }

@@ -88,8 +88,8 @@ public class PayController {
     }
 
     @RequestMapping(value="/paymentRequest",method = RequestMethod.GET)
-    public ResponseEntity<PaymentDTO> sendPaymentRequest(@RequestParam String token,@RequestParam Long id){
-        return new ResponseEntity<PaymentDTO>((PaymentDTO)paymentRequestService.sendPaymentRequest(token,id),HttpStatus.OK);
+    public ResponseEntity<Object> sendPaymentRequest(@RequestParam String token,@RequestParam Long id){
+        return new ResponseEntity<>(paymentRequestService.sendPaymentRequest(token,id),HttpStatus.OK);
     }
 
 }
