@@ -18,10 +18,20 @@ export class RegisterClientService {
     return this.http.post(this.baseUrl+"/client",client);
   }
 
-  reg(name):Observable<any>{
-    let param = new HttpParams();
-    param = param.append('name',name);
-    return this.http.post(this.baseUrl+"/client",{params:param});
+  getClient():Observable<any>{
+    return this.http.get(this.baseUrl+"/client");
+  }
+
+  edit(client):Observable<any>{
+    return this.http.post(this.baseUrl+"/client/editClient",client);
+  }
+
+  generate():Observable<any>{
+    return this.http.get(this.baseUrl+"/client/genClient");
+  }
+
+  reg(client):Observable<any>{
+    return this.http.post(this.baseUrl+"/client",client);
   }
 
   registerPayment(serviceName,mode):Observable<any>{

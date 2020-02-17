@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label for="clientId">Client Id</label>
+          <input type="text" class="form-control" id="clientId" [formControlName]="'clientId'">
+          <label for="secret">Secret</label>
+          <input type="text" class="form-control" id="secret" [formControlName]="'clientSecret'">
+        </div>
+
+        <button type="submit" class="form-control" (click)="onSubmit()">Submit</button>
+      </form>
+    </div>
+  </div>
+</div>

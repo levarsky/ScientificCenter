@@ -48,6 +48,8 @@ public class RegistrationService {
 
     public OauthClientDetails registerClient(Client client) {
 
+        System.out.println(client.getClientName());
+
         OauthClientDetails oauthClientDetails = authServiceClient.registerClient();
 
 //        ResponseEntity<OauthClientDetails> exchange =
@@ -114,5 +116,19 @@ public class RegistrationService {
 
 
         return Collections.singletonMap("redirectUrl","https://localhost:4201/home/dashboard");
+    }
+
+    public Object genClient() {
+
+        OauthClientDetails oauthClientDetails = authServiceClient.registerClient();
+
+        Client client = clientService.getClient();
+
+        client.setClientId(oauthClientDetails.getClientId());
+
+        clientService.saveClientDB(client);
+
+        return oauthClientDetails;
+
     }
 }

@@ -24,6 +24,18 @@ public class ClientController {
         return new ResponseEntity<>(this.registrationService.registerClient(client), HttpStatus.OK);
     }
 
+    @GetMapping(value="/genClient")
+    public ResponseEntity<?> genClient() {
+        return new ResponseEntity<>(this.registrationService.genClient(), HttpStatus.OK);
+    }
+
+    @PostMapping(value="/editClient")
+    public ResponseEntity<?> editClient(@RequestBody Client client) {
+        return new ResponseEntity<>(this.clientService.edit(client), HttpStatus.OK);
+    }
+
+
+
     @GetMapping
     public ResponseEntity<?> getClient() {
         return new ResponseEntity<>(clientService.getClient(), HttpStatus.OK);
