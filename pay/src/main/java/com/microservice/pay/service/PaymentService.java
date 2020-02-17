@@ -139,7 +139,7 @@ public class PaymentService {
 		
 		PlanDto plan = new PlanDto();
 		Frequency frequency = new Frequency("MONTH", 1);
-		BillingCycle billingCycleTrial = new BillingCycle(frequency, "TRIAL", 1, 1, new PricingScheme(new FixedPrice("10", "USD")));
+		BillingCycle billingCycleTrial = new BillingCycle(frequency, "TRIAL", 1, 1, new PricingScheme(new FixedPrice(String.valueOf(sellerData.getProducts().get(0).getAmount()), "USD")));
 		BillingCycle billingCycleRegular = new BillingCycle(frequency, "REGULAR", 2, 12, new PricingScheme(new FixedPrice("100", "USD")));
 		List<BillingCycle> billingCycles = new ArrayList<>();
 		billingCycles.add(billingCycleTrial);
