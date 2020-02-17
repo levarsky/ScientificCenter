@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.microservice.pay.dto.Resp;
 import com.microservice.pay.dto.SellerDataDto;
 import com.microservice.pay.service.PaymentService;
 
@@ -31,7 +30,7 @@ public class PaypalController {
 			return service.pay(sellerData);
 		}
 		else {
-			return null;
+			return service.subscribe(sellerData);
 		}
 	}
 }
