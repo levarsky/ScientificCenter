@@ -271,4 +271,25 @@ public class RequestService {
             return true;
         return false;
     }
+
+    public Object cancel(String paymentId) {
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
+
+
+        Request request = requestRepository.findRequestByPaymentId(paymentId);
+
+        String redirectUrl;
+
+        if (request == null) {
+            redirectUrl = request.getErrorUrl();
+        }else
+            redirectUrl = request.getFailedUrl();
+
+        ResponseEntity<Object> excRed = restTemplate.exchange(redirectUrl, HttpMethod.POST, requestEntity, Object.class);
+
+        return excRed.getBody();
+    }
 }

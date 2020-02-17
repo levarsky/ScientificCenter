@@ -42,6 +42,7 @@ export class PaymentComponent implements OnInit {
   }
 
   onCancel() {
+    console.log(this.paymentId)
     this.paymentService.cancel(this.paymentId).subscribe(data => {
       console.log(data);
       window.location.href = data.redirectUrl;
