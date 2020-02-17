@@ -15,6 +15,7 @@ public class Client {
 	private String clientId;
 	@Column
 	private String bitcoinToken;
+	
 	public Long getId() {
 		return id;
 	}
