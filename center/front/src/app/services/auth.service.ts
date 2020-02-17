@@ -33,7 +33,7 @@ export class AuthService {
     return this.http.post(this.baseUrl+'center/oauth/token', body, options).subscribe(data=>{
       console.log(data);
       this.saveToken(data);
-
+      //window.location.reload();
     },err=>{
       console.log(err);
     });
@@ -46,7 +46,8 @@ export class AuthService {
     console.log(token)
     this.cookie.putObject("access_token", token.access_token, {expires:expireDate.toString()});
     console.log('Obtained Access token');
-    this.router.navigate(['home'])
+    //this.router.reload(['home'])
+    window.location.href="/"
   }
 
   getToken(){
@@ -60,7 +61,15 @@ export class AuthService {
     }
   }
 
+  isLoggedIn(){
+    if(this.cookie.getObject("access_token") == null)
+      return false;
+
+    return true;
+  }
+
   logout(){
     this.cookie.remove('access_token');
+    window.location.href="/"
   }
 }
