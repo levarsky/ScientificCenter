@@ -30,8 +30,8 @@ public class AccountController {
 		return new ResponseEntity<List<GDAXAccount>>(accountService.getAccounts(), HttpStatus.OK);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST, value = "/transferFunds")
-	public void transferFUnds(@RequestBody FundsTransferDto dto) throws InvalidKeyException, NoSuchAlgorithmException {
-		accountService.transferFunds(dto);
+	@RequestMapping(method = RequestMethod.GET, value = "/profiles")
+	public String transferFUnds() throws InvalidKeyException, NoSuchAlgorithmException {
+		return accountService.getProfiles();
 	}
 }

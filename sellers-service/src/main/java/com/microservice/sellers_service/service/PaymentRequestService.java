@@ -161,15 +161,14 @@ public class PaymentRequestService {
         if(!paymentType.getServiceName().equals("paypal-service")){
             exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, requestEntity, Object.class);
         }else{
-        	Resp res = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, new HttpEntity<>(paymentDTO, httpHeadersPaypal),Resp.class).getBody();
-        	return res;
+        	exchange = restTemplate.exchange("https://"+paymentType.getServiceName()+"/pay", HttpMethod.POST, new HttpEntity<>(paymentDTO, httpHeadersPaypal),Object.class);
+
         }
 
         //PaymentRequest paymentRequest1 = this.bankPaymentServices.create(paymentRequest);
         
         //System.out.println(exchange.getBody());
         System.out.println(exchange.getBody());
-
 
         ObjectMapper mapper = new ObjectMapper();
         PaymentDTO paymentDTOReceived = mapper.convertValue(exchange.getBody(), PaymentDTO.class);

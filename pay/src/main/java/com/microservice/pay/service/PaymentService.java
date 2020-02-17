@@ -10,6 +10,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -19,22 +20,39 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.microservice.pay.dto.ApplicationContext;
+import com.microservice.pay.dto.BillingCycle;
+import com.microservice.pay.dto.FixedPrice;
+import com.microservice.pay.dto.Frequency;
 import com.microservice.pay.dto.ItemDto;
 import com.microservice.pay.dto.ItemListDto;
+import com.microservice.pay.dto.NameDto;
 import com.microservice.pay.dto.PaymentDto;
+import com.microservice.pay.dto.PaymentPreferences;
+import com.microservice.pay.dto.PaypalProductDto;
+import com.microservice.pay.dto.PlanDto;
+import com.microservice.pay.dto.PricingScheme;
 import com.microservice.pay.dto.ProductDTO;
 import com.microservice.pay.dto.Resp;
 import com.microservice.pay.dto.SellerDataDto;
+import com.microservice.pay.dto.SubscriberDto;
+import com.microservice.pay.dto.SubscriptionDto;
 import com.microservice.pay.dto.TransactionDto;
 import com.microservice.pay.model.Client;
+import org.springframework.web.util.UriComponentsBuilder;
 
 @Service
 public class PaymentService {
 	
 	private static String PAYMENT_URL = "https://api.sandbox.paypal.com/v1/payments/payment";
+
+	private String success_url = "https://localhost:8069/success";
+	private String cancel_url = "https://localhost:8069/cancel";
 	
 	@Autowired
 	ClientService clientService;
+
+	@Autowired
+	private OAuth2RestOperations restTemplate;
 	
 	public String getToken(String username, String password) {
 		
@@ -78,13 +96,18 @@ public class PaymentService {
 		}
 		transactions.add(new TransactionDto(new ItemListDto(items)));
 		
-		ApplicationContext redirect_urls = new ApplicationContext("https://www.google.com", "https://www.google.com");
+		ApplicationContext redirect_urls = new ApplicationContext(success_url, cancel_url);
 		
 		PaymentDto paymentDto = new PaymentDto(transactions, redirect_urls);
 		
 		ResponseEntity<String> response = new RestTemplate().exchange(PAYMENT_URL, HttpMethod.POST, new HttpEntity(paymentDto, httpHeaders), String.class);
 		Resp resp = new Resp("");
+		System.out.println(PAYMENT_URL+" " + response.getBody());
+
 		JsonObject jsonObject = new JsonParser().parse(response.getBody()).getAsJsonObject();
+		String transactionId  = jsonObject.get("id").getAsString();
+		sellerData.setTransactionId(transactionId);
+
 		for(JsonElement link : jsonObject.get("links").getAsJsonArray()) {
 			JsonObject json = link.getAsJsonObject();
 			if(json.get("rel").getAsString().equals("approval_url")) {
@@ -95,4 +118,105 @@ public class PaymentService {
 		return sellerData;
 	}
 	
+	public SellerDataDto subscribe(SellerDataDto sellerData) {
+		Client client = clientService.findByClientId(sellerData.getClientId());
+		String token = this.getToken(client.getPaypalClientId(), client.getPaypalSecret());
+		
+		PaypalProductDto product = new PaypalProductDto(sellerData.getProducts().get(0).getName(), "DIGITAL");
+		SubscriberDto subscriber = new SubscriberDto(new NameDto(sellerData.getFirstName(), sellerData.getLastName()), sellerData.getEmail());
+		
+		String productUrl = "https://api.sandbox.paypal.com/v1/catalogs/products";
+		HttpHeaders productHeaders = new HttpHeaders();
+		productHeaders.setContentType(MediaType.APPLICATION_JSON);
+		productHeaders.add("Authorization", "Bearer " + token);
+		HttpEntity productEntity = new HttpEntity(product, productHeaders);
+		
+		ResponseEntity<String> productResponse = new RestTemplate().exchange(productUrl, HttpMethod.POST, productEntity, String.class);
+		JsonObject productJson = new JsonParser().parse(productResponse.getBody()).getAsJsonObject();
+		
+		PlanDto plan = new PlanDto();
+		Frequency frequency = new Frequency("MONTH", 1);
+		BillingCycle billingCycleTrial = new BillingCycle(frequency, "TRIAL", 1, 1, new PricingScheme(new FixedPrice("10", "USD")));
+		BillingCycle billingCycleRegular = new BillingCycle(frequency, "REGULAR", 2, 12, new PricingScheme(new FixedPrice("100", "USD")));
+		List<BillingCycle> billingCycles = new ArrayList<>();
+		billingCycles.add(billingCycleTrial);
+		billingCycles.add(billingCycleRegular);
+		plan.setName(sellerData.getProducts().get(0).getName() + "_Plan");
+		plan.setProduct_id(productJson.get("id").getAsString());
+		plan.setBilling_cycles(billingCycles);
+		plan.setPayment_preferences(new PaymentPreferences(true));
+		
+		String planUrl = "https://api.sandbox.paypal.com/v1/billing/plans";
+		HttpHeaders planHeaders = new HttpHeaders();
+		planHeaders.setContentType(MediaType.APPLICATION_JSON);
+		planHeaders.add("Authorization", "Bearer " + token);
+		HttpEntity planEntity = new HttpEntity(plan, planHeaders);
+		
+		ResponseEntity<String> planResponse = new RestTemplate().exchange(planUrl, HttpMethod.POST, planEntity, String.class);
+		JsonObject planJson = new JsonParser().parse(planResponse.getBody()).getAsJsonObject();
+		
+		ApplicationContext appCon = new ApplicationContext("https://www.google.com", "https://www.google.com");
+		SubscriptionDto subscription = new SubscriptionDto(planJson.get("id").getAsString(), subscriber, appCon);
+		
+		String subscriptionUrl = "https://api.sandbox.paypal.com/v1/billing/subscriptions";
+		HttpHeaders subscriptionHeaders = new HttpHeaders();
+		subscriptionHeaders.setContentType(MediaType.APPLICATION_JSON);
+		subscriptionHeaders.add("Authorization", "Bearer " + token);
+		
+		HttpEntity subscriptionEntity = new HttpEntity(subscription, subscriptionHeaders);
+		ResponseEntity<String> subscriptionResponse = new RestTemplate().exchange(subscriptionUrl, HttpMethod.POST, subscriptionEntity, String.class);
+		System.out.println(PAYMENT_URL+" " + subscriptionResponse.getBody());
+
+		JsonObject jsonObject = new JsonParser().parse(subscriptionResponse.getBody()).getAsJsonObject();
+		String transactionId  = jsonObject.get("id").getAsString();
+		sellerData.setTransactionId(transactionId);
+
+		for(JsonElement link : jsonObject.get("links").getAsJsonArray()) {
+			JsonObject json = link.getAsJsonObject();
+			if(json.get("rel").getAsString().equals("approve")) {
+				sellerData.setUrl(json.get("href").getAsString());
+			}
+		}
+		
+		return sellerData;
+	}
+
+	public String success(String paymentId) {
+		return sendStatus(paymentId,"SUCCESSFUL");
+	}
+
+	public String cancel(String paymentId) {
+
+		return sendStatus(paymentId,"CANCEL");
+
+	}
+
+	public String sendStatus(String transactionId,String paymentStatus){
+
+		String url = "https://sellers-service/sellers/payment/status";
+
+		UriComponentsBuilder builder = UriComponentsBuilder
+				.fromHttpUrl(url)
+				.queryParam("transactionId",transactionId)
+				.queryParam("paymentStatus",paymentStatus);
+
+		System.out.println(paymentStatus);
+
+
+		String paymentUrl = builder.build().encode().toUriString();
+
+		System.out.println(paymentUrl);
+
+		HttpHeaders requestHeaders = new HttpHeaders();
+		requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+		HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
+
+		ResponseEntity<String> exchange = restTemplate.exchange(paymentUrl, HttpMethod.GET, requestEntity, String.class);
+
+		return exchange.getBody();
+
+
+	}
+
 }

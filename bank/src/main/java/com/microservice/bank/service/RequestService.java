@@ -262,10 +262,7 @@ public class RequestService {
 
         String redirectUrl;
 
-        if (request == null) {
-            redirectUrl = request.getErrorUrl();
-        }else
-            redirectUrl = request.getFailedUrl();
+        redirectUrl = request.getFailedUrl();
 
         ResponseEntity<Object> excRed = restTemplate.exchange(redirectUrl, HttpMethod.POST, requestEntity, Object.class);
 
