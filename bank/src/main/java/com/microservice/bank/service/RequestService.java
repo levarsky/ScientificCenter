@@ -28,8 +28,6 @@ public class RequestService {
     @Autowired
     private RequestRepository requestRepository;
 
-
-
     @Autowired
     private TransactionService transactionService;
 
