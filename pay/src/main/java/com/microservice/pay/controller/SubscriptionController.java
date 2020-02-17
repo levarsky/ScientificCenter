@@ -35,8 +35,8 @@ public class SubscriptionController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/create")
 	public Resp createSubscription(@RequestBody ProductDTO productDto){
-		
-		Client client = clientService.findByClientId(productDto.getClientId());
+		return null;
+		/*Client client = clientService.findByClientId(productDto.getClientId());
 		String token = service.getToken(client.getPaypalClientId(), client.getPaypalSecret());
 		PaypalProductDto product = new PaypalProductDto(productDto.getName(), "DIGITAL");
 		System.out.println(productDto.getSubscriberEmail());
@@ -94,6 +94,6 @@ public class SubscriptionController {
 			}
 		}
 		
-		return resp;
+		return resp;*/
 	}
 }

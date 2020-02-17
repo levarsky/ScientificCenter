@@ -20,7 +20,7 @@ import com.microservice.bitcoin_service.dto.FundsTransferDto;
 import com.microservice.bitcoin_service.dto.TimeDto;
 
 @Service
-public class AccountService {
+public class PaymentService {
 	
 	public static final String REST_API_URL = "https://api-public.sandbox.pro.coinbase.com";
 	

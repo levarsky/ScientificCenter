@@ -18,12 +18,12 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.microservice.bitcoin_service.dto.FundsTransferDto;
-import com.microservice.bitcoin_service.service.AccountService;
+import com.microservice.bitcoin_service.service.PaymentService;
 
 @RestController
 public class AccountController {
 	@Autowired
-	AccountService accountService;
+	PaymentService accountService;
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/accountInfo")
 	public ResponseEntity<List<GDAXAccount>> getAccountInfo() throws NotAvailableFromExchangeException, NotYetImplementedForExchangeException, ExchangeException, IOException, InvalidKeyException, NoSuchAlgorithmException{

@@ -1,6 +1,8 @@
 package com.microservice.pay.service;
 
+import java.util.ArrayList;
 import java.util.Base64;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -13,13 +15,23 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
 
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.microservice.pay.dto.ApplicationContext;
+import com.microservice.pay.dto.ItemDto;
+import com.microservice.pay.dto.ItemListDto;
+import com.microservice.pay.dto.PaymentDto;
+import com.microservice.pay.dto.ProductDTO;
+import com.microservice.pay.dto.Resp;
 import com.microservice.pay.dto.SellerDataDto;
+import com.microservice.pay.dto.TransactionDto;
 import com.microservice.pay.model.Client;
 
 @Service
 public class PaymentService {
+	
+	private static String PAYMENT_URL = "https://api.sandbox.paypal.com/v1/payments/payment";
 	
 	@Autowired
 	ClientService clientService;
@@ -51,10 +63,36 @@ public class PaymentService {
 		return token;
 	}
 	
-	public String pay(SellerDataDto sellerData) {
+	public SellerDataDto pay(SellerDataDto sellerData) {
 		Client client = clientService.findByClientId(sellerData.getClientId());
 		String token = this.getToken(client.getPaypalClientId(), client.getPaypalSecret());
-		return null;
+		
+		HttpHeaders httpHeaders = new HttpHeaders();
+		httpHeaders.setContentType(MediaType.APPLICATION_JSON);
+		httpHeaders.add("Authorization", "Bearer " + token);
+		
+		List<TransactionDto> transactions = new ArrayList<TransactionDto>();
+		List<ItemDto> items = new ArrayList<ItemDto>();
+		for(ProductDTO product : sellerData.getProducts()) {
+			items.add(new ItemDto(product.getName(), String.valueOf(product.getAmount())));
+		}
+		transactions.add(new TransactionDto(new ItemListDto(items)));
+		
+		ApplicationContext redirect_urls = new ApplicationContext("https://www.google.com", "https://www.google.com");
+		
+		PaymentDto paymentDto = new PaymentDto(transactions, redirect_urls);
+		
+		ResponseEntity<String> response = new RestTemplate().exchange(PAYMENT_URL, HttpMethod.POST, new HttpEntity(paymentDto, httpHeaders), String.class);
+		Resp resp = new Resp("");
+		JsonObject jsonObject = new JsonParser().parse(response.getBody()).getAsJsonObject();
+		for(JsonElement link : jsonObject.get("links").getAsJsonArray()) {
+			JsonObject json = link.getAsJsonObject();
+			if(json.get("rel").getAsString().equals("approval_url")) {
+				resp.setUrl(json.get("href").getAsString());
+			}
+		}
+		sellerData.setUrl(resp.getUrl());
+		return sellerData;
 	}
 	
 }

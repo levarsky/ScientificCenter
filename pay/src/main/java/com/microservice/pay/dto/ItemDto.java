@@ -7,13 +7,13 @@ public class ItemDto {
 	private String tax;
 	private String currency;
 	
-	public ItemDto(String name, String quantity, String price, String tax, String currency) {
+	public ItemDto(String name, String price) {
 		super();
 		this.name = name;
-		this.quantity = quantity;
+		this.quantity = "1";
 		this.price = price;
-		this.tax = tax;
-		this.currency = currency;
+		this.tax = "0.00";
+		this.currency = "USD";
 	}
 	public ItemDto() {
 		super();
