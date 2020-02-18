@@ -21,7 +21,7 @@ public class BitcoinServiceApplication {
     @Bean
     public DiscoveryClient.DiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws NoSuchAlgorithmException {
         DiscoveryClient.DiscoveryClientOptionalArgs args = new DiscoveryClient.DiscoveryClientOptionalArgs();
-        System.setProperty("javax.net.ssl.keyStore", "src/main/resources/bitcoin.p12");
+        System.setProperty("javax.net.ssl.keyStore", "C:/Users/PC/IdeaProjects/ScientificCenter/bitcoin_service/src/main/resources/bitcoin.p12");
         System.setProperty("javax.net.ssl.keyStorePassword", "password");
         //System.setProperty("javax.net.ssl.trustStore", "src/main/resources/eurekaTrust.jks");
         //System.setProperty("javax.net.ssl.trustStorePassword", "password");

@@ -1,0 +1,8 @@
+{
+  "/center": {
+    "target": "https://localhost:8085",
+    "secure": false,
+    "logLevel": "debug",
+    "changeOrigin": true
+  }
+}

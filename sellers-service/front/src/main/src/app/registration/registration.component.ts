@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup, Validators} from "@angular/forms";
 import {ConfirmPasswordValidator} from "../validation/confirm-pass.validator";
 import {RegistrationService} from "../services/registration.service";
+import {RegisterClientService} from "../services/register-client.service";
 
 @Component({
   selector: 'app-registration',
@@ -18,6 +19,7 @@ export class RegistrationComponent implements OnInit {
   submitted = false;
 
   constructor(private formBuilder: FormBuilder,
+              private registerClientService:RegisterClientService,
               private registrationService:RegistrationService) {
   }
 
@@ -39,7 +41,7 @@ export class RegistrationComponent implements OnInit {
 
     console.log(this.signUpForm.value);
 
-    this.registrationService.signup(this.signUpForm.value).subscribe(data=>{
+    this.registerClientService.signup(this.signUpForm.value).subscribe(data=>{
       console.log(data);
     });
 

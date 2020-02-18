@@ -11,7 +11,7 @@ export class RegisterClientService {
   constructor(private http: HttpClient) { }
 
   signup(user):Observable<any>{
-    return this.http.post(this.baseUrl+"/user",user)
+    return this.http.post(this.baseUrl+"/registration/user",user)
   }
 
   register(client):Observable<any>{
