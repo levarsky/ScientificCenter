@@ -33,9 +33,17 @@ export class CartComponent implements OnInit {
   remove(id : number) {
       this.cart.products = this.cart.products.filter(product => product.id != id );
       localStorage.setItem("cart",JSON.stringify(this.cart));
+       this.sum = 0;
+       this.cart = JSON.parse(localStorage.getItem("cart"));
+            let list = [];
+            for (let product of this.cart.products) {
+                    this.sum += product.price;
+       }
   }
 
   checkout(){
+    if(this.sum == 0)
+      return;
     if(localStorage.getItem("cart") == null){
       alert("Cart is empty!");
     }else{
@@ -47,6 +55,9 @@ export class CartComponent implements OnInit {
       this.paymentService.pay(this.sum, list).subscribe(data=>{
           window.location.href=data.url;
       });
+       this.cart.products = [];
+       this.sum = 0;
+       localStorage.setItem("cart",JSON.stringify(this.cart));
     }
 
   }

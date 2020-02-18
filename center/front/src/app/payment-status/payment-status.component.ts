@@ -16,9 +16,13 @@ export class PaymentStatusComponent implements OnInit {
 
     this.route.queryParams.subscribe(data=>{
       this.transactionId = data.success;
+      if(data.success)
+        alert("Successful!");
+      else if(data.fail)
+        alert("Failed!");
+      else if(data.error)
+        alert("Error!");
+
     })
-
-
   }
-
 }
