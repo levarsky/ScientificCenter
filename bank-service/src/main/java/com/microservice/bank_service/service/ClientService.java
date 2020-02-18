@@ -7,16 +7,15 @@ import com.microservice.bank_service.model.MerchantDTO;
 import com.microservice.bank_service.model.RegistrationRequest;
 import com.microservice.bank_service.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
+import org.springframework.security.oauth2.client.OAuth2RestOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -27,7 +26,10 @@ public class ClientService {
     private ClientRepository clientRepository;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RestTemplate restTemplateNotBalanced;
+
+    @Autowired
+    private OAuth2RestOperations restTemplate;
 
     @Autowired
     private RegistrationRequestService registrationRequestService;
@@ -57,17 +59,16 @@ public class ClientService {
 
         RegistrationRequest registrationRequest = registrationRequestService.getRegistrationRequest(clientId,tokenId);
 
-        Optional<Client> optionalClient = clientRepository.findByClientId(clientId);
+        Optional<Client> optionalClient = clientRepository.findByClientId(registrationRequest.getClientId());
 
         String mode = registrationRequest.getMode();
 
-        if (mode.equals("CREATE")){
+        if (mode.equals("ADD")){
 
             if(optionalClient.isPresent()){
 
-                return sellersClient.clientSuccess(clientId,"ERROR","bank-service");
+                sellersClient.clientSuccess(registrationRequest.getClientId(),"ERROR","bank-service");
             }
-
 
         }
 
@@ -75,10 +76,12 @@ public class ClientService {
 
         HttpEntity<?> requestEntity = new HttpEntity<>(account);
 
-        ResponseEntity<MerchantDTO> exchange = restTemplate.exchange(bankUrl, HttpMethod.POST
+        ResponseEntity<MerchantDTO> exchange = restTemplateNotBalanced.exchange(bankUrl, HttpMethod.POST
                 , requestEntity, MerchantDTO.class);
 
         MerchantDTO merchantDTO = exchange.getBody();
+
+        System.out.println(mode);
 
         client = new Client();
         client.setMerchantId(merchantDTO.getMerchantId());
@@ -86,7 +89,7 @@ public class ClientService {
 
         if (mode.equals("EDIT")){
             client.setId(optionalClient.get().getId());
-        }else if (mode.equals("CREATE")){
+        }else if (mode.equals("ADD")){
             client.setId(null);
             client.setClientId(registrationRequest.getClientId());
         }
@@ -94,7 +97,14 @@ public class ClientService {
 
         clientRepository.save(client);
 
-        return sellersClient.clientSuccess(clientId,"SUCCESSFUL","bank-service");
+        HashMap<String,Object> map = new HashMap<>();
+
+        map.put("client",client);
+        map.put("redirectUrl","https://localhost:4201/home/dashboard");
+
+        sellersClient.clientSuccess(registrationRequest.getClientId(),"SUCCESSFUL","bank-service");
+
+        return map;
 
     }
 
@@ -114,6 +124,11 @@ public class ClientService {
                 .fromHttpUrl(registrationForm)
                 .queryParam("tokenId",token);
 
+        if(mode.equals("SHOW"))
+            builder.queryParam("show",true);
+        else if(mode.equals("EDIT"))
+            builder.queryParam("edit",true);
+
         registrationRequest.setTokenId(token);
 
         registrationRequestService.save(registrationRequest);
@@ -126,7 +141,7 @@ public class ClientService {
         return generatedString;
     }
 
-    public void checkUrl(String tokenId) {
+    public Object checkUrl(String tokenId) {
 
         String clientId = authService.getAuth().getPrincipal().toString();
 
@@ -140,6 +155,39 @@ public class ClientService {
 
         registrationRequest.setAccessed(true);
         registrationRequestService.save(registrationRequest);
+
+        Optional<Client> optionalClient = clientRepository.findByClientId(registrationRequest.getClientId());
+
+        if(registrationRequest.getMode().equals("SHOW") || registrationRequest.getMode().equals("EDIT")){
+            return optionalClient.get();
+        }
+
+        return null;
+    }
+
+    public Object sendStatus(String clientId,String status,String paymentService){
+
+        String url = "https://localhost:8769/sellers/client/status";
+
+        UriComponentsBuilder builder = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .queryParam("clientId",clientId)
+                .queryParam("status",status)
+                .queryParam("paymentService",paymentService);
+
+
+        String paymentUrl = builder.build().encode().toUriString();
+
+        System.out.println(paymentUrl);
+
+        HttpHeaders requestHeaders = new HttpHeaders();
+        requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
+
+        HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
+
+        ResponseEntity<Object> exchange = restTemplate.exchange(paymentUrl, HttpMethod.GET, requestEntity, Object.class);
+
+        return exchange.getBody();
 
     }
 }

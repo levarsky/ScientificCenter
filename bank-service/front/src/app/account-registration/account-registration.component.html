@@ -1,5 +1,5 @@
 <div class="container">
-  <div class="row">
+  <div *ngIf="add" class="row">
     <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
       <div class="card ">
         <div class="card-body">
@@ -22,7 +22,7 @@
               <input type="date" id="date" [formControlName]="'expirationDate'" class="form-control" name="expirationDate" required/>
             </div>
             <hr class="my-4">
-
+            <div class="alert alert-danger" *ngIf="failed==true">{{error}}</div>
             <div class="btn-group">
               <button (click)="onSubmit()" type="button" class="btn btn-default">Add</button>
               <button (click)="onCancel()" type="button" class="btn btn-warning">Cancel</button>
@@ -31,8 +31,34 @@
           </form>
 
 
+
+
         </div>
       </div>
     </div>
   </div>
+
+  <div *ngIf="viewMerch" class="row">
+    <div class="col">
+
+      <form class="form" [formGroup]="merchantForm" >
+
+        <div class="form-label-group">
+          <label for="mid">Merchant id</label>
+          <input type="text" id="mid" [formControlName]="'merchantId'" class="form-control" autofocus name="mid" required/>
+        </div>
+        <div class="form-label-group">
+          <label for="mps">Merchant password</label>
+          <input type="text" id="mps" [formControlName]="'merchantPassword'" class="form-control" name="mps" required/>
+        </div>
+
+        <br>
+
+
+        <button (click)="back()" type="button" class="btn">Back</button>
+      </form>
+
+    </div>
+  </div>
+
 </div>

@@ -46,8 +46,9 @@ public class ClientController {
         return new ResponseEntity<>(registrationService.registerNewPaymentType(serviceName,mode),HttpStatus.OK);
     }
 
+
     @RequestMapping(value= "/status",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> clientSuccess(@RequestParam String clientId,@RequestParam String status,@RequestParam String paymentService) throws Exception {
+    public ResponseEntity<?> clientSuccess(@RequestParam String clientId,@RequestParam String status,@RequestParam String paymentService) {
         return new ResponseEntity<>(registrationService.regStatus(clientId,status,paymentService), HttpStatus.OK);
     }
 

@@ -30,13 +30,10 @@ public class PaymentService {
     private ClientService clientService;
 
     @Autowired
-    private RestTemplate restTemplate;
+    private RestTemplate restTemplateNotBalanced;
 
     @Autowired
     private AuthService authService;
-
-    @Autowired
-    private OAuth2RestOperations restTemplateBalanced;
 
     private String sellersService = "https://localhost:8679/sellers/payment/status";
 
@@ -76,7 +73,7 @@ public class PaymentService {
 
 
         HttpEntity<Request> requestEntity = new HttpEntity<Request>(request);
-        ResponseEntity<Object> exchange = restTemplate.exchange(urlBank+"/request", HttpMethod.POST, requestEntity, Object.class);
+        ResponseEntity<Object> exchange = restTemplateNotBalanced.exchange(urlBank+"/request", HttpMethod.POST, requestEntity, Object.class);
 
         paymentDTO.setTransactionId(transaction.getMerchantOrderId().toString());
 
@@ -115,8 +112,6 @@ public class PaymentService {
 
         System.out.println(paymentStatus);
 
-
-
         String paymentUrl = builder.build().encode().toUriString();
 
         System.out.println(paymentUrl);
@@ -125,8 +120,6 @@ public class PaymentService {
         requestHeaders.add("Accept", MediaType.APPLICATION_JSON_VALUE);
 
         HttpEntity<?> requestEntity = new HttpEntity<>(requestHeaders);
-
-        sellersClient.paymentStatus(transactionId,paymentStatus);
 
         //ResponseEntity<String> exchange = restTemplateBalanced.exchange(paymentUrl, HttpMethod.GET, requestEntity, String.class);
 

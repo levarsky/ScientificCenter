@@ -2,10 +2,7 @@ package com.microservice.sellers_service.service;
 
 
 import com.microservice.sellers_service.communication.AuthServiceClient;
-import com.microservice.sellers_service.model.Client;
-import com.microservice.sellers_service.model.OauthClientDetails;
-import com.microservice.sellers_service.model.RegistrationRequest;
-import com.microservice.sellers_service.model.User;
+import com.microservice.sellers_service.model.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.security.oauth2.client.OAuth2ClientProperties;
 import org.springframework.http.*;
@@ -110,12 +107,19 @@ public class RegistrationService {
 
     public Object regStatus(String clientId, String status , String paymentService) {
 
+        System.out.println("CLIENT " +clientId);
+
         if(status.equals("SUCCESSFUL")){
           Client client = clientService.findByClientId(clientId);
-          client.getPaymentTypes().add(paymentTypeService.getByServiceName(paymentService));
+          PaymentType paymentType = paymentTypeService.getByServiceName(paymentService);
+          if (!client.getPaymentTypes().contains(paymentType)){
+              System.out.println("NE SADRZI");
+              client.getPaymentTypes().add(paymentType);
+          }
+
+
           clientService.saveClientDB(client);
         }
-
 
         return Collections.singletonMap("redirectUrl","https://localhost:4201/home/dashboard");
     }

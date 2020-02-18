@@ -17,8 +17,7 @@ public class ClientController {
 
     @GetMapping(value="/checkUrl")
     public ResponseEntity<?> checkUrl(@RequestParam String tokenId){
-        clientService.checkUrl(tokenId);
-        return new ResponseEntity<>( HttpStatus.OK);
+        return new ResponseEntity<>( clientService.checkUrl(tokenId), HttpStatus.OK);
     }
 
     @PostMapping
