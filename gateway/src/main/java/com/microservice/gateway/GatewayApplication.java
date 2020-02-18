@@ -45,8 +45,6 @@ public class GatewayApplication {
 
     @Bean
     public DiscoveryClient.DiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws NoSuchAlgorithmException {
-
-
         System.out.println(System.getProperty("gateway.jks"));
 
         DiscoveryClient.DiscoveryClientOptionalArgs args = new DiscoveryClient.DiscoveryClientOptionalArgs();

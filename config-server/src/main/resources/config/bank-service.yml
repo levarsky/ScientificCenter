@@ -53,3 +53,6 @@ feign:
       default:
         connectTimeout: 160000000
         readTimeout: 160000000
+
+logging:
+  file: D:/logs/bank-service/myLog.log

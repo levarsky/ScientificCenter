@@ -7,6 +7,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import com.microservice.center.model.*;
+import com.microservice.center.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -18,14 +19,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.microservice.center.service.MagazineService;
-import com.microservice.center.service.PaymentService;
-import com.microservice.center.service.TransactionService;
-import com.microservice.center.service.UserService;
-
 @RestController
 @RequestMapping("/pay")
 public class PaymentController {
+
+    private Logging logging = new Logging(getClass());
 
     @Autowired
     private PaymentService paymentService;
@@ -37,21 +35,26 @@ public class PaymentController {
     private UserService userService;
     
     @Autowired
-    MagazineService magazineService;
+    private MagazineService magazineService;
 
     @RequestMapping(value= "/{amount}",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> pay(@PathVariable(value="amount") Double amount, @RequestBody List<Long> ids, HttpServletRequest hr) throws Exception {
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+                hr.getRemoteAddr() + " PARAMETERS: " + amount + " " + ids);
         return new ResponseEntity<>(paymentService.pay(amount, ids, hr) ,HttpStatus.OK);
     }
 
     @RequestMapping(value= "/subscribe/{amount}/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> subscribe(@PathVariable(value="amount") Double amount,@PathVariable(value="id") Long id, HttpServletRequest hr) throws Exception {
-
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+                hr.getRemoteAddr() + " PARAMETERS: " + amount + " " + id);
         return new ResponseEntity<>(paymentService.subscribe(amount,id,hr), HttpStatus.OK);
     }
 
     @RequestMapping(value= "/success",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> paymentSuccess(@RequestParam String requestId) throws Exception {
+    public ResponseEntity<?> paymentSuccess(@RequestParam String requestId, HttpServletRequest hr) throws Exception {
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+                hr.getRemoteAddr() + " PARAMETERS: " + requestId);
         Transaction transaction = transactionService.getByToken(requestId);
         System.out.println("DOSO U SUCCESS!");
         if(transaction != null){
@@ -64,7 +67,9 @@ public class PaymentController {
     }
 
     @RequestMapping(value= "/fail",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> paymentFail(@RequestParam String requestId) throws Exception {
+    public ResponseEntity<?> paymentFail(@RequestParam String requestId, HttpServletRequest hr) throws Exception {
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+                hr.getRemoteAddr() + " PARAMETERS: ");
         Transaction transaction = transactionService.getByToken(requestId);
         if(transaction != null){
             transaction.setSuccess("failed");
@@ -74,7 +79,9 @@ public class PaymentController {
     }
 
     @RequestMapping(value= "/error",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> paymentError(@RequestParam String requestId) throws Exception {
+    public ResponseEntity<?> paymentError(@RequestParam String requestId, HttpServletRequest hr) throws Exception {
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+                hr.getRemoteAddr() + " PARAMETERS: ");
         Transaction transaction = transactionService.getByToken(requestId);
         if(transaction != null){
             transaction.setSuccess("error");
@@ -84,7 +91,9 @@ public class PaymentController {
     }
 
     @RequestMapping(value= "/cancel",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> paymentCancel(@RequestParam String requestId) throws Exception {
+    public ResponseEntity<?> paymentCancel(@RequestParam String requestId, HttpServletRequest hr) throws Exception {
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+                hr.getRemoteAddr() + " PARAMETERS: ");
         Transaction transaction = transactionService.getByToken(requestId);
         if(transaction != null){
             transaction.setSuccess("canceled");
