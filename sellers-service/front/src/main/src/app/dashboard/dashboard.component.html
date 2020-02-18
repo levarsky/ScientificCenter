@@ -39,10 +39,13 @@
               <td>{{i + 1}}</td>
               <td>{{paymentType.name}}</td>
               <td>
-                <button class="btn" type="button" (click)="addPaymentType(paymentType);"><i
+                <button *ngIf="isAdd" class="btn" type="button" (click)="addPaymentType(paymentType);"><i
                   class="fas fa-check"></i></button>
+                <button *ngIf="isView" class="btn" type="button" (click)="editPaymentType(paymentType);"><i class="far fa-edit"></i></button>
               </td>
-
+              <td>
+              <button *ngIf="isView" class="btn" type="button" (click)="showDetails(paymentType);"><i class="fas fa-eye"></i></button>
+              </td>
 
             </tr>
             </tbody>

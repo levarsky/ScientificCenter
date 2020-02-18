@@ -49,7 +49,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
     }
 
     @Bean
-    public OAuth2RestOperations restTemplateBalanced(OAuth2ClientContext oauth2ClientContext) {
+    public OAuth2RestOperations restTemplate(OAuth2ClientContext oauth2ClientContext) {
         return new OAuth2RestTemplate(clientCredentialsResourceDetails(), oauth2ClientContext);
     }
 

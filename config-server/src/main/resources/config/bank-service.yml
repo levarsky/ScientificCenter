@@ -4,7 +4,7 @@ spring:
     username: root
     password: admin
   jpa:
-    hibernate.ddl-auto: create-drop
+    hibernate.ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
@@ -45,3 +45,11 @@ security:
     resource:
       userInfoUri: https://localhost:8081/uaa/user/current
       tokenInfoUri: https://localhost:8081/uaa/oauth/check_token
+
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 160000000
+        readTimeout: 160000000

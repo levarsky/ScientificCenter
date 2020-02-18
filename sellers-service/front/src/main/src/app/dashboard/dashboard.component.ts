@@ -122,6 +122,18 @@ export class DashboardComponent implements OnInit {
     this.registerService.registerPayment(paymentType.serviceName,'ADD').subscribe(data=>{
       window.location.href=data.redirectUrl;
     })
-
   }
+
+  editPaymentType(paymentType){
+    this.registerService.registerPayment(paymentType.serviceName,'EDIT').subscribe(data=>{
+      window.location.href=data.redirectUrl;
+    })
+  }
+
+  showDetails(paymentType){
+    this.registerService.registerPayment(paymentType.serviceName,'SHOW').subscribe(data=>{
+      window.location.href=data.redirectUrl;
+    })
+  }
+
 }

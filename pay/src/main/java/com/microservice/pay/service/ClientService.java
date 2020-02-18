@@ -29,6 +29,9 @@ public class ClientService {
 	@Autowired
 	private AuthService authService;
 
+	@Autowired
+	private PaymentService paymentService;
+
 	private String registrationForm = "http://localhost:4207/registrationRequest";
 
 	public Client findByClientId(String clientId){
@@ -37,6 +40,8 @@ public class ClientService {
 			throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Client doesn't exist!");
 		return clientOptional.get();
 	}
+
+
 
 	public Object registerNewClient(Client client,String tokenId){
 
@@ -48,14 +53,13 @@ public class ClientService {
 
 		RegistrationRequest registrationRequest = registrationRequestService.getRegistrationRequest(clientId,tokenId);
 
-		Optional<Client> optionalClient = clientRepository.findByClientId(clientId);
+		Optional<Client> optionalClient = clientRepository.findByClientId(registrationRequest.getClientId());
 
 		String mode = registrationRequest.getMode();
 
 		if (mode.equals("CREATE")){
 
 			if(optionalClient.isPresent()){
-
 				return sendStatus(registrationRequest.getClientId(),"FAILED","paypal-service");
 			}
 
@@ -63,12 +67,15 @@ public class ClientService {
 
 		if (mode.equals("EDIT")){
 			client.setId(optionalClient.get().getId());
+			client.setClientId(optionalClient.get().getClientId());
 		}else if (mode.equals("CREATE")){
 			client.setId(null);
 			client.setClientId(registrationRequest.getClientId());
 		}
 
-		client.setClientId(registrationRequest.getClientId());
+		paymentService.getToken(client.getPaypalClientId(),client.getPaypalSecret());
+
+
 		clientRepository.save(client);
 
 		return sendStatus(registrationRequest.getClientId(),"SUCCESSFUL","paypal-service");
@@ -91,6 +98,12 @@ public class ClientService {
 				.fromHttpUrl(registrationForm)
 				.queryParam("tokenId",token);
 
+
+		if(mode.equals("SHOW"))
+			builder.queryParam("show",true);
+		else if(mode.equals("EDIT"))
+			builder.queryParam("edit",true);
+
 		registrationRequest.setTokenId(token);
 
 		registrationRequestService.save(registrationRequest);
@@ -103,7 +116,7 @@ public class ClientService {
 		return generatedString;
 	}
 
-	public void checkUrl(String tokenId) {
+	public Object checkUrl(String tokenId) {
 
 		String clientId = authService.getAuth().getPrincipal().toString();
 
@@ -118,6 +131,13 @@ public class ClientService {
 		registrationRequest.setAccessed(true);
 		registrationRequestService.save(registrationRequest);
 
+		Optional<Client> optionalClient = clientRepository.findByClientId(registrationRequest.getClientId());
+
+		if(registrationRequest.getMode().equals("SHOW") || registrationRequest.getMode().equals("EDIT")){
+			return optionalClient.get();
+		}
+
+		return null;
 	}
 
 	public String sendStatus(String clientId,String status,String paymentService){

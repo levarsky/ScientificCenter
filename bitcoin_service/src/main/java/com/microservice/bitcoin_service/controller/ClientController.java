@@ -1,12 +1,18 @@
-package com.microservice.pay.controller;
+package com.microservice.bitcoin_service.controller;
 
 
-import com.microservice.pay.model.Client;
-import com.microservice.pay.service.ClientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.microservice.bitcoin_service.model.Client;
+import com.microservice.bitcoin_service.service.ClientService;
 
 @RestController
 @RequestMapping("/client")
@@ -29,8 +35,4 @@ public class ClientController {
     public ResponseEntity<?> registerRedirect(@RequestParam String clientId,@RequestParam String username,@RequestParam String mode){
         return new ResponseEntity<>(clientService.registerUrl(clientId,username,mode), HttpStatus.OK);
     }
-
-
-
-
 }
