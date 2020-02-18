@@ -111,7 +111,9 @@ public class RegistrationService {
     public Object regStatus(String clientId, String status , String paymentService) {
 
         if(status.equals("SUCCESSFUL")){
-            clientService.findByClientId(clientId).getPaymentTypes().add(paymentTypeService.getByServiceName(paymentService));
+          Client client = clientService.findByClientId(clientId);
+          client.getPaymentTypes().add(paymentTypeService.getByServiceName(paymentService));
+          clientService.saveClientDB(client);
         }
 
 

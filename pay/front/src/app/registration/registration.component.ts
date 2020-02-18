@@ -34,14 +34,15 @@ export class RegistrationComponent implements OnInit {
     });
 
     this.form = this.formBuilder.group({
-      clientId:[''],
-      clientSecret:['']
+      paypalClientId:[''],
+      paypalSecret:['']
     });
   }
 
   onSubmit(){
     this.registrationService.register(this.form.value,this.tokenId).subscribe(data=>{
       console.log(data);
+      window.location.href = data.redirectUrl
     },error=>{
       console.log(error.erros.message);
     });

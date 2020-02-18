@@ -44,6 +44,8 @@ public class ClientService {
 
 		String clientId = authService.getAuth().getPrincipal().toString();
 
+		System.out.println(clientId);
+
 		RegistrationRequest registrationRequest = registrationRequestService.getRegistrationRequest(clientId,tokenId);
 
 		Optional<Client> optionalClient = clientRepository.findByClientId(clientId);
@@ -54,9 +56,8 @@ public class ClientService {
 
 			if(optionalClient.isPresent()){
 
-				return sendStatus(clientId,"SUCCESSFUL","paypal-service");
+				return sendStatus(registrationRequest.getClientId(),"FAILED","paypal-service");
 			}
-
 
 		}
 
@@ -67,9 +68,10 @@ public class ClientService {
 			client.setClientId(registrationRequest.getClientId());
 		}
 
+		client.setClientId(registrationRequest.getClientId());
 		clientRepository.save(client);
 
-		return sendStatus(clientId,"SUCCESSFUL","paypal-service");
+		return sendStatus(registrationRequest.getClientId(),"SUCCESSFUL","paypal-service");
 
 	}
 
@@ -141,7 +143,6 @@ public class ClientService {
 		ResponseEntity<String> exchange = restTemplate.exchange(paymentUrl, HttpMethod.GET, requestEntity, String.class);
 
 		return exchange.getBody();
-
 
 	}
 }
