@@ -48,6 +48,8 @@ public class RegistrationService {
 
     public OauthClientDetails registerClient(Client client) {
 
+        System.out.println(client.getClientName());
+
         OauthClientDetails oauthClientDetails = authServiceClient.registerClient();
 
 //        ResponseEntity<OauthClientDetails> exchange =
@@ -109,10 +111,26 @@ public class RegistrationService {
     public Object regStatus(String clientId, String status , String paymentService) {
 
         if(status.equals("SUCCESSFUL")){
-            clientService.findByClientId(clientId).getPaymentTypes().add(paymentTypeService.getByServiceName(paymentService));
+          Client client = clientService.findByClientId(clientId);
+          client.getPaymentTypes().add(paymentTypeService.getByServiceName(paymentService));
+          clientService.saveClientDB(client);
         }
 
 
         return Collections.singletonMap("redirectUrl","https://localhost:4201/home/dashboard");
+    }
+
+    public Object genClient() {
+
+        OauthClientDetails oauthClientDetails = authServiceClient.registerClient();
+
+        Client client = clientService.getClient();
+
+        client.setClientId(oauthClientDetails.getClientId());
+
+        clientService.saveClientDB(client);
+
+        return oauthClientDetails;
+
     }
 }

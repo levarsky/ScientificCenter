@@ -25,11 +25,13 @@ public class SellersServiceApplication {
     @Bean
     public DiscoveryClient.DiscoveryClientOptionalArgs discoveryClientOptionalArgs() throws NoSuchAlgorithmException {
         DiscoveryClient.DiscoveryClientOptionalArgs args = new DiscoveryClient.DiscoveryClientOptionalArgs();
+        System.setProperty("javax.net.ssl.keyStore", "C:/Users/PC/IdeaProjects/ScientificCenter/sellers-service/src/main/resources/bank.p12");
         //System.setProperty("javax.net.ssl.keyStore", "C:/Users/Veljko/IdeaProjects/ScientificCenter/sellers-service/src/main/resources/bank.p12");
-        System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\Milica\\Documents\\FTN_Master\\SEP_UPP_UDD\\cloud branch\\ScientificCenter\\sellers-service\\src\\main\\resources\\bank.p12");
+        //System.setProperty("javax.net.ssl.keyStore", "C:\\Users\\Milica\\Documents\\FTN_Master\\SEP_UPP_UDD\\cloud branch\\ScientificCenter\\sellers-service\\src\\main\\resources\\bank.p12");
         System.setProperty("javax.net.ssl.keyStorePassword", "password");
+        System.setProperty("javax.net.ssl.trustStore", "C:/Users/PC/IdeaProjects/ScientificCenter/sellers-service/src/main/resources/configTrust.jks");
         //System.setProperty("javax.net.ssl.trustStore", "C:/Users/Veljko/IdeaProjects/ScientificCenter/sellers-service/src/main/resources/configTrust.jks");
-        System.setProperty("javax.net.ssl.trustStore", "C:\\Users\\Milica\\Documents\\FTN_Master\\SEP_UPP_UDD\\cloud branch\\ScientificCenter\\sellers-service\\src\\main\\resources\\configTrust.jks");
+        //System.setProperty("javax.net.ssl.trustStore", "C:\\Users\\Milica\\Documents\\FTN_Master\\SEP_UPP_UDD\\cloud branch\\ScientificCenter\\sellers-service\\src\\main\\resources\\configTrust.jks");
         System.setProperty("javax.net.ssl.trustStorePassword", "password");
         EurekaJerseyClientImpl.EurekaJerseyClientBuilder builder = new EurekaJerseyClientImpl.EurekaJerseyClientBuilder();
         builder.withClientName("sellers-service");
