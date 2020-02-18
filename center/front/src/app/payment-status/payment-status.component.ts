@@ -24,8 +24,5 @@ export class PaymentStatusComponent implements OnInit {
         alert("Error!");
 
     })
-
-
   }
-
 }
