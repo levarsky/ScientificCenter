@@ -39,6 +39,12 @@ zuul:
       serviceId: sellers-service
       stripPrefix: false
       sensitiveHeaders:
+    paypal-service:
+      url: https://localhost:8069
+      path: /paypal/**
+      serviceId: paypal-service
+      stripPrefix: true
+      sensitiveHeaders:
   ribbon:
     ReadTimeout: 1000000
     ConnectTimeout: 1000000

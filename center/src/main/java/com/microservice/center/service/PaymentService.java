@@ -125,6 +125,8 @@ public class PaymentService {
         ArrayList<ProductDTO> productDTOS = new ArrayList<>();
         productDTOS.add(productDTO);
 
+        System.out.println("Subs  "+ amount);
+
         paymentDTO.setAmount(amount);
         paymentDTO.setFirstName(user.getFirstName());
         paymentDTO.setLastName(user.getLastName());

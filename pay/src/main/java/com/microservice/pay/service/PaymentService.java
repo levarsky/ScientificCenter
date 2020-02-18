@@ -1,8 +1,11 @@
 package com.microservice.pay.service;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
@@ -15,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
@@ -38,7 +42,7 @@ import com.microservice.pay.dto.SubscriberDto;
 import com.microservice.pay.dto.SubscriptionDto;
 import com.microservice.pay.dto.TransactionDto;
 import com.microservice.pay.model.Client;
-import org.springframework.web.util.UriComponentsBuilder;
+import com.microservice.pay.model.Transaction;
 
 @Service
 public class PaymentService {
@@ -47,12 +51,18 @@ public class PaymentService {
 
 	private String success_url = "https://localhost:8069/success";
 	private String cancel_url = "https://localhost:8069/cancel";
+
+	private String successSubscribe_url = "https://127.0.0.1:8069/subscribeSuccess";
+	private String cancelSubscribe_url = "https://127.0.0.1:8069/subscribeCancel";
 	
 	@Autowired
 	ClientService clientService;
 
 	@Autowired
 	private OAuth2RestOperations restTemplate;
+	
+	@Autowired
+	TransactionService transactionService;
 	
 	public String getToken(String username, String password) {
 		
@@ -96,7 +106,8 @@ public class PaymentService {
 		}
 		transactions.add(new TransactionDto(new ItemListDto(items)));
 		
-		ApplicationContext redirect_urls = new ApplicationContext(success_url, cancel_url);
+		String uuid = UUID.randomUUID().toString();
+		ApplicationContext redirect_urls = new ApplicationContext(success_url, cancel_url + "?custom_token=" + uuid);
 		
 		PaymentDto paymentDto = new PaymentDto(transactions, redirect_urls);
 		
@@ -115,6 +126,7 @@ public class PaymentService {
 			}
 		}
 		sellerData.setUrl(resp.getUrl());
+		transactionService.save(new Transaction(sellerData.getTransactionId(), uuid, sellerData.getClientId(), sellerData.getAmount(), new Date(), null));
 		return sellerData;
 	}
 	
@@ -136,7 +148,7 @@ public class PaymentService {
 		
 		PlanDto plan = new PlanDto();
 		Frequency frequency = new Frequency("MONTH", 1);
-		BillingCycle billingCycleTrial = new BillingCycle(frequency, "TRIAL", 1, 1, new PricingScheme(new FixedPrice("10", "USD")));
+		BillingCycle billingCycleTrial = new BillingCycle(frequency, "TRIAL", 1, 1, new PricingScheme(new FixedPrice(String.valueOf(sellerData.getProducts().get(0).getAmount()), "USD")));
 		BillingCycle billingCycleRegular = new BillingCycle(frequency, "REGULAR", 2, 12, new PricingScheme(new FixedPrice("100", "USD")));
 		List<BillingCycle> billingCycles = new ArrayList<>();
 		billingCycles.add(billingCycleTrial);
@@ -155,7 +167,7 @@ public class PaymentService {
 		ResponseEntity<String> planResponse = new RestTemplate().exchange(planUrl, HttpMethod.POST, planEntity, String.class);
 		JsonObject planJson = new JsonParser().parse(planResponse.getBody()).getAsJsonObject();
 		
-		ApplicationContext appCon = new ApplicationContext("https://www.google.com", "https://www.google.com");
+		ApplicationContext appCon = new ApplicationContext(successSubscribe_url,cancelSubscribe_url);
 		SubscriptionDto subscription = new SubscriptionDto(planJson.get("id").getAsString(), subscriber, appCon);
 		
 		String subscriptionUrl = "https://api.sandbox.paypal.com/v1/billing/subscriptions";
@@ -164,6 +176,7 @@ public class PaymentService {
 		subscriptionHeaders.add("Authorization", "Bearer " + token);
 		
 		HttpEntity subscriptionEntity = new HttpEntity(subscription, subscriptionHeaders);
+
 		ResponseEntity<String> subscriptionResponse = new RestTemplate().exchange(subscriptionUrl, HttpMethod.POST, subscriptionEntity, String.class);
 		System.out.println(PAYMENT_URL+" " + subscriptionResponse.getBody());
 
@@ -177,7 +190,7 @@ public class PaymentService {
 				sellerData.setUrl(json.get("href").getAsString());
 			}
 		}
-		
+		transactionService.save(new Transaction(sellerData.getTransactionId(), null, sellerData.getClientId(), sellerData.getAmount(), new Date(), null));
 		return sellerData;
 	}
 

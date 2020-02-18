@@ -5,7 +5,7 @@ spring:
     password: admin
     driver-class-name: com.mysql.cj.jdbc.Driver
   jpa:
-    hibernate.ddl-auto: create
+    hibernate.ddl-auto: update
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL5Dialect
@@ -35,3 +35,15 @@ eureka:
     statusPageUrl: https://${eureka.instance.hostname}:${server.port}/info
     healthCheckUrl: https://${eureka.instance.hostname}:${server.port}/health
     homePageUrl: https://localhost:${server.port}
+
+security:
+  oauth2:
+    client:
+      clientId: oauthorize
+      clientSecret: password
+      accessTokenUri: https://localhost:8081/uaa/oauth/token
+      grantType: client_credentials
+      scope: read write
+    resource:
+      userInfoUri: https://localhost:8081/uaa/user/current
+      tokenInfoUri: https://localhost:8081/uaa/oauth/check_token

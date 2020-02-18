@@ -1,0 +1,22 @@
+<div class="container">
+  <div class="row">
+    <div class="col">
+
+      <form [formGroup]="form">
+        <div class="form-group">
+          <label for="clientId">PayPal Client Id</label>
+          <input type="text" class="form-control" id="clientId" [formControlName]="'paypalClientId'">
+          <label for="secret">PayPal Secret</label>
+          <input type="text" class="form-control" id="secret" [formControlName]="'paypalSecret'">
+        </div>
+
+        <button type="submit" class="form-control" (click)="onSubmit()">Submit</button>
+      </form>
+
+      <br>
+
+      <a href="https://developer.paypal.com/docs/api/overview/#get-credentials"> More info </a>
+
+    </div>
+  </div>
+</div>

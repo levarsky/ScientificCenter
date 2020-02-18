@@ -62,6 +62,8 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.GET,"/cancel*").permitAll()
                 .antMatchers(HttpMethod.GET,"/success*").permitAll()
+                .antMatchers(HttpMethod.GET,"/subscribeSuccess").permitAll()
+                .antMatchers(HttpMethod.GET,"/subscribeCancel").permitAll()
                 .anyRequest().authenticated();
         // @formatter:on
     }

@@ -1,31 +1,48 @@
 package com.microservice.pay.controller;
 
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
-import com.microservice.pay.dto.*;
-import com.microservice.pay.model.Client;
-import com.microservice.pay.model.User;
-import com.microservice.pay.service.ClientService;
-import com.microservice.pay.service.PaymentService;
-import com.microservice.pay.service.UserService;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.*;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+import com.microservice.pay.dto.ApplicationContext;
+import com.microservice.pay.dto.BillingCycle;
+import com.microservice.pay.dto.FixedPrice;
+import com.microservice.pay.dto.Frequency;
+import com.microservice.pay.dto.NameDto;
+import com.microservice.pay.dto.PaymentPreferences;
+import com.microservice.pay.dto.PaypalProductDto;
+import com.microservice.pay.dto.PlanDto;
+import com.microservice.pay.dto.PricingScheme;
+import com.microservice.pay.dto.ProductDTO;
+import com.microservice.pay.dto.Resp;
+import com.microservice.pay.dto.SubscriberDto;
+import com.microservice.pay.dto.SubscriptionDto;
+import com.microservice.pay.model.Client;
+import com.microservice.pay.model.User;
+import com.microservice.pay.service.ClientService;
+import com.microservice.pay.service.SubscriptionService;
+import com.microservice.pay.service.UserService;
 
 @RestController
 @RequestMapping(value = "/subscription")
 public class SubscriptionController {
 
 	@Autowired
-	PaymentService service;
+	SubscriptionService service;
 	
 	@Autowired
 	ClientService clientService;
@@ -35,13 +52,12 @@ public class SubscriptionController {
 	
 	@RequestMapping(method = RequestMethod.POST, value = "/create")
 	public Resp createSubscription(@RequestBody ProductDTO productDto){
-		return null;
-		/*Client client = clientService.findByClientId(productDto.getClientId());
+		
+		Client client = clientService.findByClientId(productDto.getClientId());
 		String token = service.getToken(client.getPaypalClientId(), client.getPaypalSecret());
 		PaypalProductDto product = new PaypalProductDto(productDto.getName(), "DIGITAL");
-		System.out.println(productDto.getSubscriberEmail());
 		User user = userService.findByUserEmail(productDto.getSubscriberEmail());
-		SubscriberDto subscriber = new SubscriberDto(new NameDto(productDto.getSubscriberGivenName(), productDto.getSubscriberSurname()), productDto.getSubscriberEmail());
+		SubscriberDto subscriber = new SubscriberDto(new NameDto(productDto.getSubscriberGivenName(), productDto.getSubscriberSurname()), user.getPaypalUserEmail());
 		
 		String productUrl = "https://api.sandbox.paypal.com/v1/catalogs/products";
 		HttpHeaders productHeaders = new HttpHeaders();
@@ -73,7 +89,7 @@ public class SubscriptionController {
 		ResponseEntity<String> planResponse = new RestTemplate().exchange(planUrl, HttpMethod.POST, planEntity, String.class);
 		JsonObject planJson = new JsonParser().parse(planResponse.getBody()).getAsJsonObject();
 		
-		ApplicationContext appCon = new ApplicationContext("https://www.google.com", "https://www.google.com");
+		ApplicationContext appCon = new ApplicationContext("https://localhost:4200", "https://localhost:4200");
 		SubscriptionDto subscription = new SubscriptionDto(planJson.get("id").getAsString(), subscriber, appCon);
 		
 		String subscriptionUrl = "https://api.sandbox.paypal.com/v1/billing/subscriptions";
@@ -94,6 +110,6 @@ public class SubscriptionController {
 			}
 		}
 		
-		return resp;*/
+		return resp;
 	}
 }

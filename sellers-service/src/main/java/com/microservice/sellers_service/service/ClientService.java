@@ -66,6 +66,16 @@ public class ClientService {
     }
 
 
+    public Object edit(Client client) {
 
+        Client clientDB = getClient();
+
+        clientDB.setClientName(client.getClientName());
+        clientDB.setErrorUrl(client.getErrorUrl());
+        clientDB.setSuccessUrl(client.getSuccessUrl());
+        clientDB.setFailedUrl(client.getFailedUrl());
+
+        return saveClientDB(clientDB);
+    }
 
 }

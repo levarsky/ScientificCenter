@@ -12,6 +12,10 @@ export class DashboardComponent implements OnInit {
 
   navBarForm: FormGroup;
 
+  errorMessage = '';
+  message = '';
+
+
 
   loginDiv = true;
   signupDiv = false;
@@ -39,6 +43,20 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.registerService.getClient().subscribe(data=>{
+
+    },error => {
+
+      this.message = error.error.message;
+
+      setTimeout(() => {
+        this.message = '';
+
+        window.location.href = 'home/client';
+      }, 4000);
+
+    });
 
     this.isView  = true;
     this.isAdd = false;

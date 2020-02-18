@@ -31,7 +31,7 @@ public class ClientService {
         String secret = null;
 
         try {
-            SecureRandom secureRandom = SecureRandom.getInstance("NativePRNG");
+            SecureRandom secureRandom = SecureRandom.getInstance("SHA1PRNG");
 
             byte clientBt[] = new byte[32];
             byte secretBt[] = new byte[64];
