@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import {UserService} from "../services/user.service"
 import {Magazine} from "../model"
+import {PaymentServiceService} from "../services/payment-service.service";
 
 @Component({
   selector: 'app-subscriptions',
@@ -10,7 +11,12 @@ import {Magazine} from "../model"
 export class SubscriptionsComponent implements OnInit {
 
   magazines : Magazine[];
-  constructor(private userService : UserService) {
+  constructor(private userService : UserService,private paymentService:PaymentServiceService) {
+
+    this.paymentService.checkTransaction().subscribe(data=>{
+
+    });
+
     this.userService.subscriptions().subscribe(data => {
       this.magazines = data;
     })

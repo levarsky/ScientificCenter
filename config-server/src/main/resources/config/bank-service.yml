@@ -55,4 +55,4 @@ feign:
         readTimeout: 160000000
 
 logging:
-  file: D:/logs/bank-service/myLog.log
+  file: C:/logs/bank-service/myLog.log

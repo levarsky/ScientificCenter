@@ -48,4 +48,4 @@ security:
       tokenInfoUri: https://localhost:8081/uaa/oauth/check_token
 
 logging:
-  file: D:/logs/sellers/myLog.log
+  file: C:/logs/sellers/myLog.log

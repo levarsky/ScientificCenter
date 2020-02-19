@@ -45,6 +45,12 @@ zuul:
       serviceId: paypal-service
       stripPrefix: true
       sensitiveHeaders:
+    bitcoin-service:
+      url: https://localhost:8063
+      path: /bitcoin/**
+      serviceId: bitcoin-service
+      stripPrefix: true
+      sensitiveHeaders:
   ribbon:
     ReadTimeout: 1000000
     ConnectTimeout: 1000000

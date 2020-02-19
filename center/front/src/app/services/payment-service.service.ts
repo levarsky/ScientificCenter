@@ -28,4 +28,8 @@ export class PaymentServiceService {
     return this.http.get('test/');
   }
 
+  checkTransaction():Observable<any>{
+    return this.http.get(this.basicPath+'check')
+  }
+
 }

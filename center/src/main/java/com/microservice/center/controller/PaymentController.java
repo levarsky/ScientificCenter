@@ -101,4 +101,11 @@ public class PaymentController {
         }
         return new ResponseEntity<>(paymentService.paymentCancel(requestId),HttpStatus.OK);
     }
+
+    @RequestMapping(value= "/check",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<?> check() throws Exception {
+        transactionService.checkTransactions();
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 }
