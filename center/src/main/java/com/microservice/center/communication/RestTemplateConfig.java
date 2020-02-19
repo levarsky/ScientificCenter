@@ -34,10 +34,10 @@ import java.util.Arrays;
 @Configuration
 public class RestTemplateConfig {
 
-    @Value("_CsfltCDjn-RPgxf6hHEjetUIYQDaMa8gM5hpqE-j2A")
+    @Value("${sellers.security.clientId}")
     private String clientId;
 
-    @Value("a2cIAma90jOazqin6NouV4WGWBK5iUCGGNTpHYP9J9yhCbP5ldjgl3ud-oUi_sdNspBxhYCE-5uMJAeidvRCRQ")
+    @Value("${sellers.security.clientSecret}")
     private String clientSecret;
 
     @Value("${sellers.security.grantType}")
@@ -45,7 +45,6 @@ public class RestTemplateConfig {
 
     @Value("${sellers.security.scope}")
     private String scope;
-
 
     @Value("${sellers.accessTokenUri}")
     private String accessTokenUri;

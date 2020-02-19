@@ -76,7 +76,7 @@ public class UserService {
         VerificationToken verificationToken = verificationTokenService.createVerificationToken(user.getUsername());
 
         String confirmationString  = "To confirm your account, please click here : "
-                + "https://localhost:8088/registration/confirm?token=" + verificationToken.getVerificationToken();
+                + "https://localhost:8088/sellers/registration/confirm?token=" + verificationToken.getVerificationToken();
 
 
         emailService.sendEmail(user.getEmail(),"Seller Service - Confirm your account!",confirmationString);
