@@ -138,8 +138,8 @@ public class PaymentService {
         System.out.println(requestToken);
         String url = sellersUrl + "/request?token="+requestToken;
 
-        //transaction.setToken(requestToken);
-        //transactionService.save(transaction);
+        transaction.setToken(requestToken);
+        transactionService.save(transaction);
         Resp r = new Resp(url);
         transactionService.addMagazine(id,transaction.getId());
         transactionService.save(transaction);

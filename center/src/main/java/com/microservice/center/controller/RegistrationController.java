@@ -23,14 +23,14 @@ public class RegistrationController {
 
     @PostMapping(value = "/user")
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO, HttpServletRequest hr) {
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: ");
         return new ResponseEntity<>(userService.saveUser(userDTO), HttpStatus.OK);
     }
 
     @GetMapping(value="/confirm")
     public ResponseEntity<?> confirm(@RequestParam String token, HttpServletRequest hr) {
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: ");
         return new ResponseEntity<>(this.userService.confirmToken(token), HttpStatus.OK);
     }

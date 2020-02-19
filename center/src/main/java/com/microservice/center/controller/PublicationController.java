@@ -30,14 +30,14 @@ public class PublicationController {
 
     @RequestMapping(value ="/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Publication> getById(@PathVariable Long id, HttpServletRequest hr){
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: " + id);
         return new ResponseEntity<>(publicationService.findById(id), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/buy", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> buy(@PathVariable List<Long> id, HttpServletRequest hr){
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: " + id);
         publicationService.buy(id);
         return new ResponseEntity<>(HttpStatus.OK);
@@ -45,7 +45,7 @@ public class PublicationController {
 
     @RequestMapping(value = "/subscribe", method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> subscribe(@PathVariable Long id, HttpServletRequest hr){
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: " + id);
         publicationService.subscribe(id);
         return new ResponseEntity<>(HttpStatus.OK);

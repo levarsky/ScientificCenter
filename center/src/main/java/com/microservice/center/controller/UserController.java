@@ -28,21 +28,21 @@ public class UserController {
 
     @RequestMapping(value ="/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<User> getById(@PathVariable Long id, HttpServletRequest hr){
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: " + id);
         return new ResponseEntity<>(userService.findById(id), HttpStatus.OK);
     }
 
     @RequestMapping(value ="/purchased",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Publication>> purchased(HttpServletRequest hr){
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: ");
         return new ResponseEntity<>(userService.getPurchased(), HttpStatus.OK);
     }
 
     @RequestMapping(value ="/subscriptions",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<List<Magazine>> subscriptions(HttpServletRequest hr){
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: ");
         return new ResponseEntity<>(userService.getSubscriptions(), HttpStatus.OK);
     }

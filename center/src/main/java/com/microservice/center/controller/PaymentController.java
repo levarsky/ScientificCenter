@@ -39,21 +39,21 @@ public class PaymentController {
 
     @RequestMapping(value= "/{amount}",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> pay(@PathVariable(value="amount") Double amount, @RequestBody List<Long> ids, HttpServletRequest hr) throws Exception {
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: " + amount + " " + ids);
         return new ResponseEntity<>(paymentService.pay(amount, ids, hr) ,HttpStatus.OK);
     }
 
     @RequestMapping(value= "/subscribe/{amount}/{id}",method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> subscribe(@PathVariable(value="amount") Double amount,@PathVariable(value="id") Long id, HttpServletRequest hr) throws Exception {
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: " + amount + " " + id);
         return new ResponseEntity<>(paymentService.subscribe(amount,id,hr), HttpStatus.OK);
     }
 
     @RequestMapping(value= "/success",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> paymentSuccess(@RequestParam String requestId, HttpServletRequest hr) throws Exception {
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: " + requestId);
         Transaction transaction = transactionService.getByToken(requestId);
         System.out.println("DOSO U SUCCESS!");
@@ -68,7 +68,7 @@ public class PaymentController {
 
     @RequestMapping(value= "/fail",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> paymentFail(@RequestParam String requestId, HttpServletRequest hr) throws Exception {
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: ");
         Transaction transaction = transactionService.getByToken(requestId);
         if(transaction != null){
@@ -80,7 +80,7 @@ public class PaymentController {
 
     @RequestMapping(value= "/error",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> paymentError(@RequestParam String requestId, HttpServletRequest hr) throws Exception {
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: ");
         Transaction transaction = transactionService.getByToken(requestId);
         if(transaction != null){
@@ -92,7 +92,7 @@ public class PaymentController {
 
     @RequestMapping(value= "/cancel",method = RequestMethod.POST, produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> paymentCancel(@RequestParam String requestId, HttpServletRequest hr) throws Exception {
-        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " USER: " + userService.getCurrentUser().getEmail() + " IP ADDRESS: " +
+        logging.printInfo("ENDPOINT: " + hr.getRequestURL() + " IP ADDRESS: " +
                 hr.getRemoteAddr() + " PARAMETERS: ");
         Transaction transaction = transactionService.getByToken(requestId);
         if(transaction != null){
